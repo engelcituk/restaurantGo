@@ -1,16 +1,15 @@
 <aside class="control-sidebar control-sidebar-dark "> <!-- control-sidebar-open mantiene abierta el sidebar -->
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">      
-      <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab" aria-expanded="true"><i class="fas fa-utensils"></i></a></li>
-      <li class=""><a href="#control-sidebar-home-tab2" data-toggle="tab" aria-expanded="false"><i class="fas fa-clock"></i> </li>
+        <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab" aria-expanded="true"><i class="fas fa-utensils"></i> <strong>Por Día</strong></a></li>
+        <li class=""><a href="#control-sidebar-home-tab2" data-toggle="tab" aria-expanded="false"><i class="fas fa-clock"></i><strong> Por horas</strong></a></li>
     </ul>
     <!-- Tab panes -->
     <div class="tab-content">
 
       <!-- Home tab content -->
       <div class="tab-pane active" id="control-sidebar-home-tab">
-        <h3 class="control-sidebar-heading">Reservas todo el día por restaurante</h3>
-        
+        <!-- <h3 class="control-sidebar-heading"><strong>Reservas todo el día</strong></h3>         -->
         <ul class="control-sidebar-menu">
         <?php 
           $item="idHotel";
@@ -53,7 +52,11 @@
               $rsvTotalesdia= $respuestaPax["totalReservas"];
               /*hago un calculo con regla de tres para general porcentajes de ocupación */
               $porcentaje =100;
-              $porcentajeValor=($sumaPax * $porcentaje) / $paxTotalesDia;
+                if($paxTotalesDia==0){
+                  $porcentajeValor=0;
+                }else{
+                  $porcentajeValor=($sumaPax * $porcentaje) / $paxTotalesDia;
+                }              
               $cutPercentCeros = bcdiv($porcentajeValor, '1', 0);/*corto el porcentaje para tomar solo 2 decimales */              
               if($cutPercentCeros<90){
                 $colorPercet="success";
@@ -87,7 +90,7 @@
           <!-- /.form-group -->        
       </div>
       <div class="tab-pane" id="control-sidebar-home-tab2">
-        <h3 class="control-sidebar-heading">Reservas a detalle</h3>
+        <!-- <h3 class="control-sidebar-heading"><strong>Reservas a detalle</strong></h3> -->
         <ul class="control-sidebar-menu">
         <?php 
           $item="idHotel";

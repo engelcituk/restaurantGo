@@ -20,10 +20,10 @@ class ControladorReportes{
 	static public function ctrMostrarListaReservas($valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3){
 
 		$tabla = "reservas";
-		
+		 
 		$respuesta = ReporteReservas::mdlListaReporteReservas($tabla,$valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3);
 		
-		return $respuesta;		
+		return $respuesta;
 	}
 
 	/*=============================================
@@ -36,8 +36,8 @@ class ControladorReportes{
 		$valorDeMiCampo=$_GET["idRest"];
 		$nombreRestaurante=$_GET["nomRest"];
 		$valorDeMiCampo2=$_GET["fechaInicio"];		
-		$valorDeMiCampo3=$_GET["fechaFinal"];		
-
+		$valorDeMiCampo3=$_GET["fechaFinal"];
+				
 		/*=============================================
 		CREAMOS EL ARCHIVO EXCEL
 		=============================================*/

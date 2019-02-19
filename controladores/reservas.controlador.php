@@ -178,7 +178,7 @@ class ControladorReservas{
 		$valorReservaPorHacer= 1;
 
 		$paxTotDeLaRsv=$totalPaxAcumulados+$numeroDePax;
-		$reservaTotal=$totalReservasHechas+$valorReservaPorHacer;
+		// $reservaTotal=$totalReservasHechas+$valorReservaPorHacer;
 
 		$tabla = "reservas";
 		$estado=1;
@@ -213,6 +213,7 @@ class ControladorReservas{
 			if ($paxTotDeLaRsv > $numDePaxMaxima && $numDePaxMaxima !=  $sinLimites) {
 				echo '
 					<script>
+					event.preventDefault();
 						swal({
 								title: "¡Error!",
 								text: "Se ha alcanzado el limite de pax que puede cubrir para esta hora",
@@ -222,9 +223,9 @@ class ControladorReservas{
 								},
 							function(isConfirm){
 								if(isConfirm){
-									window.location="hacer-reservas"
+									swal("Deleted!", "Your imaginary file has been archived.", "success");
 								}
-						});
+						});					
 					</script>';
 			} else {				
 
@@ -396,11 +397,11 @@ class ControladorReservas{
 	FUNCION PARA MOSTRAR LA LISTA DE RESERVAS ocupado en el modulo
 	administrar-reservas
 	=============================================*/
-	static public function ctrMostrarListaReservas($campoTabla, $valorCampoTabla){
+	static public function ctrMostrarListaReservas($valorCampoTabla, $valorCampoTabla2){
 
 		$tabla = "reservas";
 		
-		$respuesta = ModeloReservas::mdlListaDeReservas($tabla,$campoTabla, $valorCampoTabla);
+		$respuesta = ModeloReservas::mdlListaDeReservas($tabla, $valorCampoTabla,$valorCampoTabla2);
 		
 		return $respuesta;		
 	}

@@ -46,6 +46,16 @@ $("#hotelElige").change( function(){ // al cambiar el foco se ejecuta ajax
 			$("#editarNombre").val(respuesta["nombre"]);			
 			$("#estadoRestaurante").val(respuesta["estado"]);//Siendo option ponemos eso en el html
 			$("#editarEspecialidad").val(respuesta["especialidad"]);
+			var horaCierre= respuesta["horaCierre"];				
+			if(horaCierre != "SIN HORARIO"){
+				$("#radioSIEdit").prop("checked", true);
+				$("#horaDefault").val(horaCierre);
+				$("#horaDefault").html(horaCierre);
+			}else{					
+				$("#radioNOEdit").prop("checked", true);
+				$("#horaDefault").val(horaCierre);
+				$("#horaDefault").html(horaCierre);
+			}
 			
 		}
 	})
@@ -133,9 +143,7 @@ $(document).on("click", ".btnActivarRstrnt", function(){
  ===================================*/
  $(document).on("click", ".listaHotelPdf", function(){
  	// ^--cuando se le da clic a la clase (editarUsuario) obtengo el atributo id  	  	
-    var idHotePdf= $(this).attr('idHotelPdf');
-    console.log("idHotePdf",idHotePdf);
-
+    var idHotePdf= $(this).attr('idHotelPdf');   
 	//envio por la variable get el id del hotel
 })
  /*===============FIN=================*/
@@ -145,9 +153,50 @@ $(document).on("click", ".btnActivarRstrnt", function(){
 = con este cargo el id del hotel a registrar
 ======================================*/
 $("#hotelElige2").change( function(){ // al cambiar el foco se ejecuta ajax 
-	var idHotelPdf = $(this).val();
-	console.log("idHotelPdf",idHotelPdf);
+	var idHotelPdf = $(this).val();	
 	window.open("extensiones/tcpdf/pdf/listaRestaurantes.php?idHotelPdf="+idHotelPdf, "_blank");	
 })
 /*=====  con este cargo el id del hotel a registrar ======*/
 
+//trabajo con los radios button para los horarios de cierre  de los restaurantes AL REGISTRAR O NO HORARIOS DE CIERRE
+$('input[type=radio][name=horarioCierreRadio]').change(function() {
+	if (this.value == 'SI') {
+		$("#horarioCierreCatalogo").removeAttr("readonly");
+		$('#horarioCierreCatalogo').prop('selectedIndex',4);	
+	}
+	else if (this.value == 'NO') {		
+		$("#horarioCierreCatalogo").attr("readonly",true);
+		$('#horarioCierreCatalogo').prop('selectedIndex',0);
+	}
+});
+$("#horarioCierreCatalogo").change(function(){	
+	var horaSeleccionada = $("option:selected",this).val();	
+	if(horaSeleccionada != "SIN HORARIO"){
+		$("#radioSI").prop("checked", true);
+	}else{		
+		$("#horarioCierreCatalogo").attr("readonly",true);
+		$("#radioNO").prop("checked", true);
+	}
+})
+
+//radios button para los horarios de cierre  de los restaurantes AL EDITAR O NO HORARIOS DE CIERRE
+$('input[type=radio][name=horaCierreRadioEdit]').change(function() {
+	if (this.value == 'SI') {
+		$("#horarioCierreEdit").removeAttr("readonly");
+		$('#horarioCierreEdit').prop('selectedIndex',3);	
+	}
+	else if (this.value == 'NO') {		
+		$("#horaDefault").val("SIN HORARIO");
+		$("#horaDefault").html("SIN HORARIO");
+	}
+});
+
+$("#horarioCierreEdit").change(function(){	
+	var horaSeleccionada = $("option:selected",this).val();	
+	if(horaSeleccionada != "SIN HORARIO"){
+		$("#radioSIEdit").prop("checked", true);
+	}else{		
+		$("#horarioCierreEdit").attr("readonly",true);
+		$("#radioNOEdit").prop("checked", true);
+	}
+})

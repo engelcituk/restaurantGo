@@ -303,21 +303,31 @@ class ModeloReservas{
 	administrar-reservas
 	=============================================*/
 	
-	static public function mdlListaDeReservas($tabla,$campoTabla, $valorCampoTabla){
-
+	static public function mdlListaDeReservas($tabla, $valorCampoTabla, $valorCampoTabla2){
 		date_default_timezone_set('UTC');
         $hoy = date("Y-m-d");
         $idHotel = $_SESSION["idHotel"]; 
 
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva>='$hoy' AND $campoTabla = :$campoTabla AND idHotel=$idHotel");
-			if($campoTabla != null){
-
-				$stmt -> bindParam(":".$campoTabla, $valorCampoTabla, PDO::PARAM_INT);
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idRestaurante = :idRestaurante AND fechaDeLaReserva = :fecha AND idHotel=$idHotel");
+			if($valorCampoTabla != null AND $valorCampoTabla2 != null){/*$campoTabla2 ="fechaDeLaReserva";*/
+				
+				$stmt -> bindParam(":idRestaurante", $valorCampoTabla, PDO::PARAM_INT);				
+				$stmt -> bindParam(":fecha", $valorCampoTabla2, PDO::PARAM_STR);
 				$stmt -> execute();
-
+				
 				return $stmt -> fetchAll();
-			 }else
-				{
+				
+			 }else if($valorCampoTabla !=null){
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva>='$hoy' AND idRestaurante = :idRestaurante AND idHotel=$idHotel");
+
+				$stmt -> bindParam(":idRestaurante", $valorCampoTabla, PDO::PARAM_INT);				
+				
+				$stmt -> execute();
+				
+				return $stmt -> fetchAll();
+			 }
+			 else
+			 {
 
 				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva>='$hoy' AND idHotel=$idHotel");
 

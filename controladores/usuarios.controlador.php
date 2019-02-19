@@ -66,6 +66,7 @@ class ControladorUsuarios{
 						$_SESSION["ipImpresora"]=$impresorasIP;
 						$_SESSION["nombreHotel"]= $hotelRespuesta["nombre"];
 						$_SESSION["idHotel"]= $hotelRespuesta["id"];
+						$_SESSION["SUBMENU LATERAL"]=1;
 
 						/*Para generar las variables de sesion para usar el conector adecuado*/
 						$item = "idHotel";//el campo de la tabla

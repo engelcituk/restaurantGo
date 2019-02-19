@@ -1,23 +1,40 @@
 /*======================================
 = PARA QUE NO DEJE VACIO EL SELECT DE RESTAURANTE
 ======================================*/
-$("#lstRestaurantes").change(function(){   
+$("#lstRestaurantes").change(function(){ 
+	// window.location.hash = 'a';   
     // $(".alert").remove();
     var idHotel= $("#idHotelVar").val();
     var idRestaurante= $("#lstRestaurantes option:selected").val();
-    var nombreRestaurante= $("#lstRestaurantes option:selected").text();
+	var nombreRestaurante= $("#lstRestaurantes option:selected").text();
+	var horaCierreRestaurante = $("option:selected",this).attr("horaCierre");
     //guardo en localstorage el id del hotel y restaurante, nombre restaurante
     localStorage.setItem("idHotelLST", idHotel);
     localStorage.setItem("idRestauranteLST", idRestaurante);
-    localStorage.setItem("nombreRestauranteLST", nombreRestaurante);
+	localStorage.setItem("nombreRestauranteLST", nombreRestaurante);
+	localStorage.setItem("horaCierreRestauranteLST", horaCierreRestaurante);
 
     if (idRestaurante != ''){       
         $("#idRestauranteVar").val(idRestaurante);
         $("#campoBuscaHabitacion").removeAttr("readonly");
         $("#btnBuscarReserva").attr("disabled",true);
-        $("#idHotel2").val(idHotel);
+        $("#idHotel2").val(idHotel); 
         $("#idRestaurante2").val(idRestaurante);
-        $("#campoNombreRestaurante").val(nombreRestaurante);
+		$("#campoNombreRestaurante").val(nombreRestaurante);
+
+		var horaActual=obtenerHoraActual();	
+		var fechaHoy = obtenerFechaHoy();
+		var fechaManana= obtenerFechaManana();
+
+		if(horaCierreRestaurante=="SIN HORARIO"){			
+			enviarFecha(fechaHoy);			
+		}else{				
+			if(horaCierreRestaurante >= horaActual){
+				enviarFecha(fechaHoy);
+			}else{
+				enviarFecha(fechaManana);					
+			}
+		}
     }
     else
          {
@@ -186,6 +203,7 @@ $("#fechaReserva").change(function(){
 	var idHotel = localStorage.getItem("idHotelLST");
 	var idRestaurante = localStorage.getItem("idRestauranteLST");
 	var numOcupantes =$("#ocupantes").val();
+	localStorage.setItem("numeroOcupantesPaxLS", numOcupantes);
 
     var datos = new FormData();
 	datos.append("fechaReservaObtenida",fechaReservaObtenida);
@@ -252,8 +270,7 @@ $("#horarioReserva").change(function(){
 
 					$("#numReservasMax").val(reservaMaximas);
 					$("#numDePaxMaxima").val(paxMaximo);
-					
-					// $("#msjPaxYReservasMax").after("<div class='alert alert-info alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a></div>");
+										
 					$.notify({							
 						message: '<i class="fas fa-clock"></i><strong> Nota 2:</strong> Para este día y hora se puede cubrir un limite de '+paxMaximo+' pax..' 
 						},{
@@ -278,11 +295,8 @@ $("#horarioReserva").change(function(){
 	var valueHorario2 = $("option:selected",this).text();
 	//capturo la fecha y la hora elegida
 	var fechaDeLaReserva = $("#fechaReserva").val();
-	var horaDelSeating = $("option:selected",this).attr("horaSeating"); 
-
-	var numReservasMax = $("#numReservasMax").val(); //obtengo estos valores para hacer calculos
-	var numDePaxMaxima = $("#numDePaxMaxima").val(); //obtengo estos valores para hacer calculos
-	var idRestauranteSeat = localStorage.getItem("idRestauranteLS");			
+	var horaDelSeating = $("option:selected",this).attr("horaSeating"); 	
+	var idRestauranteSeat = localStorage.getItem("idRestauranteLST");			
 
   	var datos = new FormData();
 	datos.append("fechaDeLaReserva",fechaDeLaReserva);
@@ -298,7 +312,7 @@ $("#horarioReserva").change(function(){
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){
-			console.log("respuestaF",respuesta);
+			// console.log("respuestaF",respuesta);
 			var totalReservas = respuesta[0];
 			var sumaPax = respuesta[1];			
 
@@ -317,8 +331,8 @@ $("#horarioReserva").change(function(){
 	
 			if (numReservasMax===totalReservas || numDePaxMaxima===sumaPax) {
 				mensaje = "<div class='alert alert-danger alert-dismissible'><a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a><strong>Error!</strong> Ya alcanzó el numero maximo de reservas que puede realizar para esta fecha y hora,  se ha hecho "+totalReservas+" reserva(s). Numero de pax: "+sumaPax+"</div>";
-					$("#msjReservasHechasSeating").html(mensaje);
-					setTimeout("location.href='hacer-reservas'", 4000);
+				$("#msjReservasHechasSeating").html(mensaje);
+					// setTimeout("location.href='hacer-reservas'", 4000);
 
 			} else {
 				var reservasPorHacer = numReservasMax-totalReservas;
@@ -347,7 +361,7 @@ $("#horarioReserva").change(function(){
 				
 				if (valueHorario2 != '') {	             
 		             $.notify({							
-						message: '<i class="fas fa-table"></i> <strong>Nota 3:</strong> Para esta fecha y hora tiene '+totalReservas+' reserva(s), con un total de '+sumaPax+' pax.' 
+						message: '<i class="fas fa-table"></i> <strong>Nota 3:</strong> Para esta fecha y hora tiene '+totalReservas+' reserva(s), con un total de '+totalPaxAcumulados+' pax.' 
 						},{
 						// settings
 						type: 'info',
@@ -375,19 +389,14 @@ $("#horarioReserva").change(function(){
  TRAIGO LA CANTIDA DE RESERVAS QUE HA HECHO EL HUESPED            =
  ==================================================================*/
   $("#ticketElige").change(function(){
-
   	//traigo el identificador de la reserva del hotel y max de reservas que el huesped puede hacer
   	var idReservaHotel = $("#reserva").val();
   	var ticketIdioma = $("option:selected",this).text();
-
-  	console.log("ticketIdioma",ticketIdioma);
-
   	var maxRsvHuesped = localStorage.getItem("numMaxRsvHuespedLST"); 
 
   	if (ticketIdioma != '') {
   		var datos = new FormData();
 		datos.append("idReservaHotel",idReservaHotel);
-
 	  	$.ajax({
 			url:"ajax/reservasRestaurantes.ajax.php", //enviamos a este archivo idReservaHotel para que lo procese
 			method: "POST", //el envio es por POST
@@ -398,8 +407,7 @@ $("#horarioReserva").change(function(){
 			dataType:"json", //los datos son de tipo json
 			success:function(respuesta){ 
 
-			console.log("reservashuesped",respuesta);
-			
+			// console.log("reservashuesped",respuesta);			
 				 totalRsvHuesped = respuesta[0];
 				 //convierto los valores string que recibo, para poder hacer operaciones como numeros 
 				 var valorMaxRsvHuesped=maxRsvHuesped;
@@ -410,7 +418,8 @@ $("#horarioReserva").change(function(){
 					
 				 rsvDisponibles = numeroMaxRsvHuesped - numeroTotalRsvHuesped;		
 															
-				if(numeroMaxRsvHuesped > numeroTotalRsvHuesped) {								
+				if(numeroMaxRsvHuesped > numeroTotalRsvHuesped) {	
+					$("#btnGuardarReserva").removeAttr("disabled");							
 					$.notify({							
 						message: '<i class="fas fa-file-signature"></i><strong> Nota 5:</strong> Esta persona ha hecho '+totalRsvHuesped+' reserva(s). Le quedan '+rsvDisponibles+' disponible(s).' 
 						},{
@@ -418,6 +427,7 @@ $("#horarioReserva").change(function(){
 						type: 'success',
 						delay: 6000
 					});
+						
 					
 				}
 				else if(numeroMaxRsvHuesped == numeroTotalRsvHuesped) {					
@@ -431,7 +441,7 @@ $("#horarioReserva").change(function(){
 					setTimeout("location.href='hacer-reservas'", 4000);
 				}
 				else if (maxRsvHuesped = "sin limites"){								
-					
+					$("#btnGuardarReserva").removeAttr("disabled");
 					$.notify({							
 						message: '<i class="fas fa-times"></i> <strong>Nota!</strong> Esta persona ha hecho '+totalRsvHuesped+' reserva(s). Puede hacer reservas sin limite.' 
 						},{
@@ -440,15 +450,98 @@ $("#horarioReserva").change(function(){
 						delay: 6000
 					});				
 					// setTimeout("location.href='hacer-reservas'", 4000);
+									
 				}
 			}
 		})
-
 	}else{
-		swal ( "Oops","Elija el idioma para el ticket", "error");	
+		swal ( "Oops","Elija el idioma para el ticket", "error");
+		$("#btnGuardarReserva").attr("disabled",true);	
 	}
 	  	
  })
   /*=====  END OF VALIDAR QUE EL HUESPED PUEDA HACER RESERVA  ======*/
+  //validaciones para controlar el numero de pax
+$(document).on("input", "#numeroDePax", function(){
+	this.value = this.value.replace(/[^0-9]/g,'');
+})
+$("#numeroDePax").change(function(){
+	var paxHuesped = parseInt($("#numeroDePax").val());
+	var numDePaxMaxima = parseInt(localStorage.getItem("paxMaximoLST"));
+	var totalPaxAcumulados = parseInt(localStorage.getItem("sumaPaxLST"));
+	var paxAcumuladosMasPaxHuesped = parseInt(totalPaxAcumulados + paxHuesped);
+	var numeroOcupantesPax = localStorage.getItem("numeroOcupantesPaxLS");//para rellenar el campo de pax por si pone un valor fuera del rango aceptado
+	if (paxHuesped != '' && paxHuesped > 0 && paxHuesped < 100) {    			
+		if(paxAcumuladosMasPaxHuesped> numDePaxMaxima){
+			swal ( "Oops","Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");
+			$("#numeroDePax").val(numeroOcupantesPax);
+			$("#btnGuardarReserva").attr("disabled",true); 
+		}
+    }
+    else
+         {
+		  swal ( "Oops","Escriba un valor superior a cero y menor de 100", "error");
+		  $("#numeroDePax").val(numeroOcupantesPax);
+		  $("#btnGuardarReserva").attr("disabled",true);                    
+    }	
+})	
+$(document).on("click", "#btnGuardarReserva", function(){
+	var paxHuesped = parseInt($("#numeroDePax").val());
+	var numDePaxMaxima = parseInt(localStorage.getItem("paxMaximoLST"));
+	var totalPaxAcumulados = parseInt(localStorage.getItem("sumaPaxLST"));
+	var paxAcumuladosMasPaxHuesped = parseInt(totalPaxAcumulados + paxHuesped);
 
+	if(paxAcumuladosMasPaxHuesped > numDePaxMaxima){		
+		swal ( "Oops","Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");
+		return false;
+	}	
+})
+//funcion para retornar la hora actual
+function obtenerHoraActual(){
+	momentoActual = new Date()
+	hora = momentoActual.getHours()
+	minuto = momentoActual.getMinutes()
+	segundo = momentoActual.getSeconds()
+	
+	str_segundo = new String (segundo)
+	if (str_segundo.length == 1) 
+		segundo = "0" + segundo		
+	str_minuto = new String (minuto)
+	if (str_minuto.length == 1) 
+		minuto = "0" + minuto
+	str_hora = new String (hora)
+	if (str_hora.length == 1) 
+		hora = "0" + hora
+		
+	horaImprimible = hora + ":" + minuto + ":" + segundo;
+
+	return horaImprimible;	
+}
+
+function obtenerFechaHoy(){
+    var hoy = new Date();
+    var dia = hoy.getDate();
+    var mes = hoy.getMonth()+1;
+    var anio = hoy.getFullYear();
+        
+    return anio+'-'+mes+'-'+dia;
+}
+function obtenerFechaManana(){
+	var hoy = new Date();
+	var milisegundos=new Date(hoy.getTime() + 24*60*60*1000);
+	var milisegundoDia=milisegundos.getDate();
+	var milisegundosMes=milisegundos.getMonth()+1;
+	var milisegundoAnio=milisegundos.getFullYear();
+	var fechaManana = milisegundoAnio+"-"+milisegundosMes+"-"+milisegundoDia;
+
+	return fechaManana;	
+}
+
+function enviarFecha(fecha){	
+	var fechaRecibida=fecha;
+	var nombreRestaurante= $("#lstRestaurantes option:selected").text();	
+	// return fechaRecibida;
+	window.location="index.php?ruta=hacer-reservas&fechaEnviada="+fechaRecibida+"&nomRest="+nombreRestaurante;
+	// window.location.href=window.location.href +"index.php?ruta=hacer-reservas&fechaEnviada="+fechaRecibida;	
+}
 

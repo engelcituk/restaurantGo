@@ -10,6 +10,7 @@
       <ol class="breadcrumb">
         <li><a href="inicio"><i class="fa fa-dashboard"></i> <?php  echo $_SESSION["nombreHotel"]; ?></a></li>
         <li id="nombreRestaurante" class="active">Restaurante</li>
+        <li id="nombreRestaurante"><a href="hacer-reservas" class="btn btn-warning btn-sm "><i class="fas fa-undo"></i></a></li>
       </ol>
     </section>
     <!-- Main content -->
@@ -17,16 +18,20 @@
       <div class="box box-info">
         <div class="box-header with-border">
         <div class="row">         
-            <div class="col-md-3 col-xs-6">
+            <div class="col-md-6 col-xs-6">
               <a href="#" class="btn btn-success btn-flat" data-toggle="modal" data-target="#rsvExternos"><i class="fas fa-plus"></i> Clientes externos</a>
-            </div>                                
-          </div>         
+            </div>
+        </div>         
           <!-- <a href="#" class="btn btn-success" data-toggle="modal" data-target="#nuevaReserva"><i class="fa fa-plus"></i> Nueva Reserva</a> -->
           <form>
             <div class="row">
               <div class="col-md-12 col-xs-12">
                 <h4><strong>Elija el restaurante e indique el numero de habitación:</strong></h4>
-                
+                <?php 
+                    date_default_timezone_set('America/Bogota');
+                    $obtenerHora=date("H:i:s");
+                    $horaActual = $obtenerHora;
+                ?>
               </div>
               <div class="col-md-3 col-xs-12">
                   <span><strong>Hotel</strong></span><br><br>
@@ -41,13 +46,18 @@
                   <div class="input-group-addon"><i class="fas fa-utensils"></i></div>
                   <!-- traigo los restaurantes de acuerdo al id del hotel -->
                    <?php
+                    if (isset($_GET["nomRest"])) {
+                      $nombreRestaurante=$_GET["nomRest"];
+                    }else{
+                      $nombreRestaurante="";
+                    }
                       $campo ="idHotel";
                       $valorCampo =$_SESSION["idHotel"];                                  
                       $respuesta = ControladorRestaurantes::ctrMostrarListaRestaurantes($campo,$valorCampo);
-                      echo '<select class="form-control" id="lstRestaurantes" required><option value=""></option>';
+                      echo '<select class="form-control" id="lstRestaurantes" required><option value="'.$nombreRestaurante.'">'.$nombreRestaurante.'</option>';
                       foreach ($respuesta as $fila => $elemento) {
                         echo '                              
-                        <option idRestaurante="'.$elemento["id"].'" value="'.$elemento["id"].'">'.$elemento["nombre"].'</option>                            
+                        <option horaCierre="'.$elemento["horaCierre"].'" idRestaurante="'.$elemento["id"].'" value="'.$elemento["id"].'">'.$elemento["nombre"].'</option>                            
                               ';
                       }
                       echo '</select>'; 
@@ -58,12 +68,12 @@
                   <span><strong>Numero de habítacion</strong></span><br><br>
                 <div class="input-group">                  
                     <div class="input-group-addon"><i class="fas fa-sort-numeric-up"></i></div>
-                    <input type="text" class="form-control" name="campoBuscaHabitacion" id="campoBuscaHabitacion"  required readonly>
+                    <input type="text" class="form-control" name="campoBuscaHabitacion" id="campoBuscaHabitacion"  required>
                 </div>
               </div>
               <div class="col-md-3 col-xs-12">
                   <span><strong>Buscar datos habitacion</strong></span><br><br>              
-               <a href="#" class="btn btn-success buscarReserva" id="btnBuscarReserva" disabled><i class="fa fa-search"></i> Buscar</a>
+               <a href="#" class="btn btn-success buscarReserva" id="btnBuscarReserva"><i class="fa fa-search"></i> Buscar</a>
               </div>
               <div class="col-md-3 col-xs-12 hidden">
                 <span><strong>Id hotel</strong></span><br><br>
@@ -82,19 +92,12 @@
             </div><br><br>
             <div id="rowMensajeResultados"></div>                       
           </form>
-
-          <!-- <div class="box-tools pull-right"> -->
-            <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                    title="Collapse">
-              <i class="fa fa-minus"></i></button> -->
-            <!-- <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-              <i class="fa fa-times"></i></button> -->
-          <!-- </div> -->
+      
         </div>
         <div class="box-body">
           <!-- puedo poner texto aquí -->
                   
-          <form method="post" class="form-inline">
+          <form method="post" class="form-inline" id="formularioReserva">
             <div class="row hidden" id="datosHuesped">
                 <div class="col-md-12 col-xs-12">
                   <h4><strong>Se ha encontrado datos con el número de habitación proporcionado:</strong></h4> 
@@ -137,21 +140,21 @@
                 </div>
             </div>
               <?php
-                      date_default_timezone_set('UTC');
-                      $hoy = date("Y-m-d");
+                  $respuestaFechaHoy = ControladorFechas::ctrObtnerFechaHoy();   
+                  $respuestaFechaHoyDMY = ControladorFechas::ctrObtnerFechaHoyDMY(); 
+                  if (isset($_GET["fechaEnviada"])) {
+                    // asignar w1 y w2 a dos variables
+                    $fechaObtenida= $_GET["fechaEnviada"]; 
+                    $fechaFormateada = strtotime($fechaObtenida);
+                    $resultadoFecha = date('Y-m-d',$fechaFormateada);                                        
+                }  
                 ?>
               <div id="camposParaLaReserva" class="hidden"><hr>
                 <div class="row">
                   <div class="col-md-12 col-xs-12">
-                    <h4><strong>Selecciona una fecha con reservas disponibles a partir de hoy: <?php date_default_timezone_set('UTC'); echo date("d-m-Y"); ?></strong></h4>
+                    <h4><strong>Selecciona una fecha con reservas disponibles a partir de hoy: <?php  echo $respuestaFechaHoyDMY; ?></strong></h4>
                   </div><br><br>
-                  <div class="col-md-12 col-xs-12">
-                    <div id="msjNumMaxDeReservas"></div>
-                  </div>
-                  <div class="col-md-12 col-xs-12">
-                    
-                    <div id="msjPaxYReservasMax"></div>
-                  </div> 
+                   
                   <div class="col-md-12 col-xs-12">
                     <div id="msjReservasHechasSeating">                  
                     </div>                    
@@ -160,8 +163,15 @@
                   <div class="col-md-3 col-xs-6">
                     <span><strong>Fecha:</strong></span><br>
                     <div class="input-group">
+                    <?php 
+                        if (isset($_GET["fechaEnviada"])) {
+                          $fechaCalendario=$resultadoFecha;
+                        }else{
+                          $fechaCalendario=$respuestaFechaHoy;
+                        }
+                      ?>
                       <div class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></div>
-                        <input type="date" min="<?php echo $hoy; ?>" class="form-control" id="fechaReserva" name="fechaReserva" required>                        
+                        <input type="date" min="<?php echo  $fechaCalendario; ?>" class="form-control" id="fechaReserva" name="fechaReserva" required>                        
                     </div>
                   </div>
                    <div class="col-md-2 col-xs-6">
@@ -208,7 +218,7 @@
                 </div>                
                 <div class="row">
                   <!-- <button type="submit" id="validarReserva" class="btn btn-primary"><i class="glyphicon glyphicon-list-alt"></i>  Reservar</button> -->
-                  <button type="submit" id="validarReserva" class="btn btn-success pull-right" style="margin:20px;"><i class="fas fa-table"></i> Reservar</button>
+                  <button  id="btnGuardarReserva" class="btn btn-success pull-right" style="margin:20px;" disabled><i class="fas fa-table" ></i> Reservar</button>
                 </div>                                                     
                     <!-- campos de tipo hidden para traer los pax reservas maximos y mas datos-->
                       <input type="number" class="form-control hidden" id="idHotel2" name="idHotel2" readonly>
@@ -439,7 +449,7 @@
                       <label for="usr">Fecha:</label>
                       <div class="input-group">
                         <div class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></div>
-                          <input type="date" min="<?php echo $hoy; ?>" class="form-control" id="fechaReservaExternos" name="fechaReservaExternos" required readonly>                        
+                          <input type="date" min="<?php echo $respuestaFechaHoy; ?>" class="form-control" id="fechaReservaExternos" name="fechaReservaExternos" required readonly>                        
                     </div>
                   </div>
                   <div class="col-md-6 col-xs-12">                    

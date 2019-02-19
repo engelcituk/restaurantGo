@@ -17,6 +17,7 @@ require_once "controladores/permisosHotel.controlador.php";
 require_once "controladores/userPermisos.controlador.php";
 require_once "controladores/conectorSQLSRV.controlador.php";
 require_once "controladores/estadisticas.controlador.php";
+require_once "controladores/fechas.controlador.php";
 
 require_once "modelos/hoteles.modelo.php";
 require_once "modelos/usuarios.modelo.php";

@@ -18,32 +18,40 @@ class ReporteReservas {
 		$stmt = null;
 	}
 	/*=============================================
-	FUNCION PARA CONSULTAR LA LISTA DE reservas POR idRestaurante-Fecha O TODA LA LISTA =============================================*/
+	FUNCION PARA CONSULTAR LA LISTA DE reservas POR idRestaurante-Fecha O TODA LA LISTA 
+	con este genero los datos para el pdf y cargado de datos en el
+	=============================================*/
 	static public function mdlListaReporteReservas($tabla, $valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3){
-
+	
 		date_default_timezone_set('UTC');
 		$hoy = date("Y-m-d");		
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idRestaurante = :idRestaurante AND fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
-			if($valorCampoTabla != null){
-
+		
+			if($valorCampoTabla != 0){
+				
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idRestaurante = :idRestaurante AND fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
 				$stmt->bindParam(":idRestaurante",$valorCampoTabla, PDO::PARAM_INT);
 				$stmt->bindParam(":fechaInicio",$valorCampoTabla2, PDO::PARAM_STR);
 				$stmt->bindParam(":fechaFinal",$valorCampoTabla3, PDO::PARAM_STR);
-				
 				$stmt -> execute();
 
 				return $stmt -> fetchAll();
-			 }else {
-				 /*triago la sesion dle */
+			}elseif ($valorCampoTabla == 0 && isset($valorCampoTabla2) && isset($valorCampoTabla3)){
+				
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
+
+				$stmt->bindParam(":fechaInicio",$valorCampoTabla2, PDO::PARAM_STR);
+				$stmt->bindParam(":fechaFinal",$valorCampoTabla3, PDO::PARAM_STR);				
+				$stmt -> execute();
+				return $stmt -> fetchAll();
+				
+			}else {				
+				 /*ocupo la sesion del id del hotel */
 				$idHotel = $_SESSION["idHotel"];
 				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva>='$hoy' AND idhotel=$idHotel");
 
 				$stmt -> execute();
-
 				return $stmt -> fetchAll();
-
 				$stmt -> close();
-
 				$stmt = null;
 		}
 	}
@@ -53,19 +61,36 @@ class ReporteReservas {
 	 LISTA DE RESERVAS DE EQUIS RESTAURANTE
 	=============================================*/
 	static public function mdlDescargarReporteExcel($tabla,$valorDeMiCampo,$valorDeMiCampo2,$valorDeMiCampo3){
-
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idRestaurante = :idRestaurante AND fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
+		date_default_timezone_set('UTC');
+		$hoy = date("Y-m-d");
 		
-		$stmt->bindParam(":idRestaurante",$valorDeMiCampo, PDO::PARAM_INT);
-		$stmt->bindParam(":fechaInicio",$valorDeMiCampo2, PDO::PARAM_STR);
-		$stmt->bindParam(":fechaFinal",$valorDeMiCampo3, PDO::PARAM_STR);
+		if($valorDeMiCampo = "" && $valorDeMiCampo2 ="" && $valorDeMiCampo3 =""){
+			// echo "<script>console.log(objeto 1 ".$valorDeMiCampo." ".$valorDeMiCampo2." ".$valorDeMiCampo2.")</script>";
+			$idHotel = $_SESSION["idHotel"];							
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva>='$hoy' AND idhotel=$idHotel");
+			
+			$stmt -> execute();
 
-		$stmt -> execute();
+			return $stmt -> fetchAll();
 
-		return $stmt -> fetchAll();
+			$stmt -> close();
 
-		$stmt -> close();
+			$stmt = null;
+		}else{
+			echo "<script>console.log('objeto 2 ".$valorDeMiCampo." ".$valorDeMiCampo2." ".$valorDeMiCampo2."');</script>";
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idRestaurante = :idRestaurante AND fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
+			
+			$stmt->bindParam(":idRestaurante",$valorDeMiCampo, PDO::PARAM_INT);
+			$stmt->bindParam(":fechaInicio",$valorDeMiCampo2, PDO::PARAM_STR);
+			$stmt->bindParam(":fechaFinal",$valorDeMiCampo3, PDO::PARAM_STR);
 
-		$stmt = null;
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+
+			$stmt -> close();
+
+			$stmt = null;
+		}
 	}
 }

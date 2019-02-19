@@ -183,24 +183,51 @@
                         <input type="number" class="form-control hidden" id="idHotelReg" name="idHotelReg" placeholder="id" required readonly>
                         
                       </div>
-                    <strong>Elige a que hotel pertenece</strong>
-                      <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1"><i class="fas fa-hotel"></i></span>
-                          <select class="form-control" name="hotelElige" id="hotelElige" required>
-                            <option value=""></option>
-                            <?php 
-                              $listaHoteles = new ControladorReservas();
-                              $listaHoteles->ctrTraerListaDeHoteles();
-                             ?>
-                          </select>
-                      </div><br>                    
-                    
-                      <strong>Nombre del Restaurante</strong>
-                      <div class="input-group has-feedback">
-                        <span class="input-group-addon" id="basic-addon1"><i class="fas fa-file-signature"></i></span>
-                        <input type="text" class="form-control" id="regRestaurante" name="regRestaurante" placeholder="Nombre Completo" required>
-                        <span class="glyphicon glyphicon-cutlery form-control-feedback"></span>
-                      </div><br>
+                      <div class="row">
+                        <div class="col-md-6">
+                        <strong>Elige a que hotel pertenece</strong>
+                        <div class="input-group">
+                          <span class="input-group-addon" id="basic-addon1"><i class="fas fa-hotel"></i></span>
+                            <select class="form-control" name="hotelElige" id="hotelElige" required>
+                              <option value=""></option>
+                              <?php 
+                                $listaHoteles = new ControladorReservas();
+                                $listaHoteles->ctrTraerListaDeHoteles();
+                              ?>
+                            </select>
+                        </div>
+                        </div>
+                        <div class="col-md-6">
+                          <strong>Nombre del Restaurante</strong>
+                          <div class="input-group has-feedback">
+                            <span class="input-group-addon" id="basic-addon1"><i class="fas fa-file-signature"></i></span>
+                            <input type="text" class="form-control" id="regRestaurante" name="regRestaurante" placeholder="Nombre Completo" required>
+                            <span class="glyphicon glyphicon-cutlery form-control-feedback"></span>
+                          </div>
+                        </div>
+                      </div>                    
+                      <br>                                        
+                      <div class="row">
+                        <div class="col-md-6">
+                          <strong>Con horario de cierre</strong><br>
+                            <label class="radio-inline"><input type="radio" name="horarioCierreRadio" id="radioSI" value="SI">SI</label>
+                            <label class="radio-inline"><input type="radio" name="horarioCierreRadio" id="radioNO" value="NO" checked>NO</label>                            
+                        </div>
+                        <div class="col-md-6">
+                          <strong>Elija un horario</strong><br>  
+                          <div class="input-group" id="lstHoraCierreRestaurante">
+                          <div class="input-group-addon"><i class="fas fa-clock"></i></div>
+                          <select class="form-control" name="horarioCierreCatalogo" id="horarioCierreCatalogo" readonly required>
+                              <option value="SIN HORARIO">SIN HORARIO</option>
+                              <?php 
+                                $catalogoDeHorarios = new ControladorSeatings();
+                                $catalogoDeHorarios->ctrTraerCatalogoHorario();
+                              ?>                                    
+                          </select>                
+                        </div>
+                        </div>
+                      </div>
+                      <br>
                       <div class="form-group">
                         <label for="comment">Especialidad-Descripcion:</label>
                         <textarea class="form-control" rows="3" id="regEspecialidad" name="regEspecialidad" required></textarea>
@@ -255,18 +282,43 @@
                     <div class="form-group has-feedback">
                       <input type="text" class="form-control hidden" id="idRstrntEditar" name="idRstrntEditar" placeholder="id" >
                     </div>
-                    <strong>Nombre del Restaurante</strong>
-                    <div class="input-group has-feedback">
-                      <span class="input-group-addon" id="basic-addon1"><i class="fas fa-file-signature"></i></span>
-                      <input type="text" class="form-control" id="editarNombre" name="editarNombre" placeholder="nombre" required>                      
+                    <div class="row">
+                      <div class="col-md-12">
+                        <strong>Nombre del Restaurante</strong>
+                        <div class="input-group has-feedback">
+                          <span class="input-group-addon" id="basic-addon1"><i class="fas fa-file-signature"></i></span>
+                          <input type="text" class="form-control" id="editarNombre" name="editarNombre" placeholder="nombre" required>                      
+                        </div>
+                      </div>                      
+                    </div><br>
+                    <div class="row">
+                      <div class="col-md-6">
+                      <strong>Con horario de cierre</strong><br>
+                            <label class="radio-inline"><input type="radio" name="horaCierreRadioEdit" id="radioSIEdit" value="SI">SI</label>
+                            <label class="radio-inline"><input type="radio" name="horaCierreRadioEdit" id="radioNOEdit" value="NO" >NO</label>
+                      </div>
+                      <div class="col-md-6">
+                      <strong>Elija un horario</strong><br>  
+                          <div class="input-group">
+                          <div class="input-group-addon"><i class="fas fa-clock"></i></div>
+                          <select class="form-control" name="horarioCierreEdit" id="horarioCierreEdit" readonly required>
+                              <option id="horaDefault" value=""></option>
+                              <?php 
+                                $catalogoDeHorariosEdit = new ControladorSeatings();
+                                $catalogoDeHorariosEdit->ctrTraerCatalogoHorario();
+                              ?>                                    
+                          </select>                
+                        </div> 
+                      </div>
                     </div>
-                    <div class="form-group has-feedback">
-                      <input type="text" class="form-control hidden" id="estadoRestaurante" name="estadoRestaurante" placeholder="estado" required>                      
-                    </div>                   
+                                                           
                     <div class="form-group">
                         <label for="comment">Especialidad:</label>
                         <textarea class="form-control" rows="3" id="editarEspecialidad" name="editarEspecialidad" required></textarea>
-                    </div>                              
+                    </div> 
+                    <div class="form-group has-feedback">
+                      <input type="text" class="form-control hidden" id="estadoRestaurante" name="estadoRestaurante" placeholder="estado" required>                      
+                    </div>                             
                     <div class="row">
                       <div class="col-xs-4">
                         <div class="checkbox icheck">

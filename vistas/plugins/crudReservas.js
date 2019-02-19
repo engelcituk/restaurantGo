@@ -119,9 +119,31 @@ $(document).on("click", ".eliminarReserva", function(){
 $("#lstSelectRest").change(function(){ //lstSelectRest es lista Select de restaurantes
 	
 	var idRestaurante = $("#lstSelectRest").val();
-	var nombreRestaurante = $("option:selected",this).text(); //obtengo el texto que tengo en la lista	
+	localStorage.setItem("idRestauranteLST", idRestaurante);
+
+	var nombreRestaurante = $("option:selected",this).text(); //obtengo el texto que tengo en la lista
+	localStorage.setItem("nombreRestauranteLST", nombreRestaurante);
+
 	window.location="index.php?ruta=administrar-reservas&idRest="+idRestaurante+"&nomRest="+nombreRestaurante;	
 	
+})
+ /*===============FIN=================*/
+ /*==============================================
+	CAPTURAR valor idRestaurante por localshtorage Y LO MANDO POR GET PARA 
+	GENERA LA LISTA DE RESERVAS, así como la fecha del filtro 
+ ===================================*/
+$("#fechaFiltro").change(function(){ //lstSelectRest es lista Select de restaurantes
+	
+	var idRestaurante=localStorage.getItem("idRestauranteLST");
+	var nombreRestaurante=localStorage.getItem("nombreRestauranteLST");
+	var fechaFiltro = $("#fechaFiltro").val();
+
+	if (idRestaurante != ''){       		 
+		window.location="index.php?ruta=administrar-reservas&idRest2="+idRestaurante+"&nomRest2="+nombreRestaurante+"&fechaFiltro="+fechaFiltro;
+	 }else {
+		   swal ( "Oops","Elija un restaurante", "error");                
+	 }
+			
 })
  /*===============FIN=================*/
  /*======================================

@@ -9,7 +9,7 @@ class AjaxHoteles{
 =TRAIGO LOS DATOS PARA PODER EDITAR HOTEL=
 ======================================*/
 	public $idHotelEditar;
-	public function ajaxEditarHotel(){
+	public function ajaxEditarHotel(){ 
 
 	$item = "id"; //sería el campo de la tabla
 	$valor = $this->idHotelEditar; // el valor del id. por ejemplo (id = 7)

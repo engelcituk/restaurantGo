@@ -39,7 +39,7 @@
                       $fechaFinal=$_GET["fechaFinal"];
                       $nombreRestauranteSelec=$nombreRestaurante;                  
                     } else {
-                      $nombreRestaurante="Restaurantes";                  
+                      $nombreRestaurante="Restaurante";                  
                       $fechaInicio="Fecha Inicio";
                       $fechaFinal="Fecha Final";
                       $nombreRestauranteSelec="Elija restaurante";
@@ -50,8 +50,7 @@
                   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#"><i class="fas fa-hotel"></i> <?php  echo $_SESSION["nombreHotel"]; ?></a></li>
                     <li class="breadcrumb-item"><a href="#"> <i class="fas fa-list-ul"></i> <?php echo $nombreRestaurante ?></a></li>
-                    <li class="breadcrumb-item"><i class="fas fa-calendar-alt"></i> <?php echo $fechaInicio." / ".$fechaFinal ?></li>
-                                    
+                    <li class="breadcrumb-item"><i class="fas fa-calendar-alt"></i> <?php echo $fechaInicio." / ".$fechaFinal ?></li>                                                       
                   </ol>
                 </nav> 
               </div>
@@ -63,14 +62,15 @@
                       $estadoBoton="hidden";
                     }
                  ?>
-                <a href="reportes-reservacion" id="descartarReporte" class="btn btn-sm btn-warning <?php echo $estadoBoton; ?>">
-                  <i class="fas fa-undo"></i> Descartar 
+                <a href="reportes-reservacion" id="btnResetearFiltro" class="btn btn-sm btn-warning <?php echo $estadoBoton; ?>">
+                  <i class="fas fa-undo"></i> Reset Filtro 
                   </a>
               </div>
             </div>
             
         </div>
         <div class="box-body">
+        <form action="#" id="filtroFormulario">
           <div class="row">  
              <form action="">
               <div class="col-md-3 col-xs-12 hidden">                  
@@ -88,7 +88,8 @@
                       $campo ="idHotel";
                       $valorCampo =$_SESSION["idHotel"];                                  
                       $respuesta = ControladorRestaurantes::ctrMostrarListaRestaurantes($campo,$valorCampo);
-                      echo '<select class="form-control" id="lstRestaurantesReportes" required><option value="">'.$nombreRestauranteSelec.'</option>';
+                      echo '<select class="form-control" id="lstRestaurantesReportes" required>
+                      <option value="">'.$nombreRestauranteSelec.'</option>';
                       foreach ($respuesta as $fila => $elemento) {
                         echo '                              
                         <option idRestaurante="'.$elemento["id"].'" value="'.$elemento["id"].'">'.$elemento["nombre"].'</option>                            
@@ -107,53 +108,55 @@
                 <span><strong>Fecha Inicio</strong></span><br><br> 
                 <div class="input-group">
                   <div class="input-group-addon"><i class="fas fa-calendar-alt"></i></div>
-                    <input type="date"  min="<?php echo $hoy; ?>" class="form-control" id="fechaReporte" name="fechaReporte" readonly required>                        
+                    <input type="date"  class="form-control" id="fechaReporte" name="fechaReporte">                        
                 </div>
                 
               </div>
-              <div class="col-md-3 col-xs-12">
-                <?php
-                  date_default_timezone_set('UTC');
-                  $hoy = date("Y-m-d");
-                ?>
+              <div class="col-md-3 col-xs-12">            
                 <span><strong>Fecha final</strong></span><br><br> 
                 <div class="input-group">
                   <div class="input-group-addon"><i class="fas fa-calendar-alt"></i></div>
-                    <input type="date" min="<?php echo $hoy; ?>" class="form-control" id="fechaReporteFin" name="fechaReporte"  readonly >                        
+                    <input type="date" class="form-control" id="fechaReporteFin" name="fechaReporte"  >                        
                 </div>
                 
               </div>
               <div class="col-md-3 col-xs-6">
               <span><strong>Ver/descargar reporte</strong></span><br><br> 
                 <?php 
-                  if (isset($_GET["idRest"])) {
+                  if (isset($_GET["idRest"]) || isset($_GET["fechaInicio"])) {
                     $estadoBoton="";
+                    $mostrarBotones="";
+                    $mostrarBotonesPdfExcel="hidden";
                     } else {
                       $estadoBoton="hidden";
+                      $mostrarBotones="hidden";
+                      $mostrarBotonesPdfExcel="";
                     }
                  ?>
-                <div class="input-group">                                    
-                  <a href="#" id="btnReporte" class="btn btn-info <?php echo $estadoBoton; ?>"><i class="fas fa-file-pdf"></i> PDF</a><span>&nbsp &nbsp</span>
+                <div class="input-group <?php echo  $mostrarBotones;?>">                                    
+                  <a href="#" id="btnReporte" class="btn btn-info <?php echo  $estadoBoton;?> "><i class="fas fa-file-pdf"></i> PDF</a><span>&nbsp &nbsp</span>
                   <?php
                     if(isset($_GET["fechaInicio"])){
-                      $fechaInformeInicio =$_GET["fechaInicio"];
-                      $fechaInformefinal =$_GET["fechaFinal"];
                       $idRestauranteInforme=$_GET["idRest"];
                       $nombreRestaurante=$_GET["nomRest"];
+                      $fechaInformeInicio =$_GET["fechaInicio"];
+                      $fechaInformefinal =$_GET["fechaFinal"];
                     }else {
-                      $fechaInformeInicio="";
-                      $fechaInformefinal="";
                       $idRestauranteInforme="";
                       $nombreRestaurante="";
+                      $fechaInformeInicio="";
+                      $fechaInformefinal="";
                     }
                   ?>
-                  <a href="vistas/modulos/descargar-excel.php?reporte=reporte&idRest=<?php echo $idRestauranteInforme ?>&fechaInicio=<?php echo $fechaInformeInicio ?>&fechaFinal=<?php echo $fechaInformefinal ?>&nomRest=<?php echo $nombreRestaurante ?>" id="btnReporteExcel" class="btn btn-success <?php echo $estadoBoton; ?>"><i class="fas fa-file-excel"></i> EXCEL</a>
+                  <a href="vistas/modulos/descargar-excel.php?reporte=reporte&idRest=<?php echo $idRestauranteInforme ?>&fechaInicio=<?php echo $fechaInformeInicio ?>&fechaFinal=<?php echo $fechaInformefinal ?>&nomRest=<?php echo $nombreRestaurante ?>" id="btnReporteExcel" class="btn btn-success <?php echo  $estadoBoton;?>"><i class="fas fa-file-excel"></i> EXCEL</a>
                 </div>
+                <div id="botonesReportePdfExcel" class=" <?php echo  $mostrarBotonesPdfExcel;?>"></div>
               </div>             
              </form>                        
           </div>
-
+        </form>
           <br><br>
+         
                       <!-- TABLA DE RESERVAS -->
           <div class="row">
             <div id="reservas" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">      
@@ -176,16 +179,22 @@
                 <tbody>
                   <!-- LLAMO AL CONTROLADOR PARA TRAER LA LISTA DE RESERVAS -->
                   <?php 
-                    if (isset($_GET["idRest"])) {
+                    if(!isset($_GET["idRest"])&&isset($_GET["fechaInicio"])&& isset($_GET["fechaFinal"])){           
+                      $valorCampoTabla =0;                       
+                      $valorCampoTabla2 =$_GET["fechaInicio"];                                            
+                      $valorCampoTabla3 =$_GET["fechaFinal"];
+                    }
+                    elseif (isset($_GET["idRest"])&&isset($_GET["fechaInicio"])&& isset($_GET["fechaFinal"])) {
                         $valorCampoTabla =$_GET["idRest"];                      
                         $valorCampoTabla2 =$_GET["fechaInicio"];                                            
                         $valorCampoTabla3 =$_GET["fechaFinal"];
                       } else {                        
-                        $valorCampoTabla =null;                       
-                        $valorCampoTabla2=null;                                                
-                        $valorCampoTabla3=null; 
+                        $valorCampoTabla =0;                       
+                        $valorCampoTabla2 =null;                                                
+                        $valorCampoTabla3 =null; 
                       }
-                                    
+
+                               
                       $respuesta = ControladorReportes::ctrMostrarListaReservas($valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3);
                       $contador=1;                  
                         foreach ($respuesta as $fila => $elemento) {
@@ -204,7 +213,7 @@
                               <td></td>
                           </tr>';
                           $contador++;
-                        }
+                        }                      
               ?> 
                 </tbody>
               </table>                      

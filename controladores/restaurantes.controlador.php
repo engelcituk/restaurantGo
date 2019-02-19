@@ -13,7 +13,7 @@ class ControladorRestaurantes{
 		foreach ($respuesta as $fila => $elemento){
         	echo '<li class="listaHotel listaHotelPdf" nombreHotel="'.$elemento["nombre"].'" idHotelPdf="'.$elemento["id"].'" idHotel="'.$elemento["id"].'"><a href="#">'.$elemento["nombre"].'</a></li>';
         }
-        // 
+        //  
 	}
 	/*=============================================
 	FUNCION PARA MOSTRAR LA LISTA DE RESTAURANTES:solicitud Ajax
@@ -48,7 +48,8 @@ class ControladorRestaurantes{
 			$estado = 1;	
 			$datos = array("idHotel" =>$_POST["idHotelReg"],
 						   "nombre" =>$_POST["regRestaurante"],
-						   "especialidad" =>$_POST["regEspecialidad"],
+						   "especialidad" =>$_POST["regEspecialidad"],						   
+						   "horarioCierreLista" =>$_POST["horarioCierreCatalogo"],
 						   "estado" =>$estado);
 
 			$respuesta = ModeloRestaurantes::mdlRegistroRestaurante($tabla, $datos);
@@ -104,6 +105,7 @@ class ControladorRestaurantes{
 			$datos = array("id" =>$_POST["idRstrntEditar"],
 						   "nombre" =>$_POST["editarNombre"],
 						   "especialidad" =>$_POST["editarEspecialidad"],
+						   "horarioCierreLista" =>$_POST["horarioCierreEdit"],
 						   "estado" =>$_POST["estadoRestaurante"]);
 
 				//LLAMO AL MODELO QUE HACE EL UPDATE

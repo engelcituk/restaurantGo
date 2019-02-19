@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,6 +28,8 @@
   <link rel="stylesheet" href="vistas/dist/css/dataTables.bootstrap.min.css">
   <link rel="stylesheet" href="vistas/dist/css/responsive.bootstrap.min.css">
   <link rel="stylesheet" href="vistas/bower_components/bootstrap/dist/css/estilo.css">
+  <!-- <link rel="stylesheet" href="vistas/bower_components/bootstrap/dist/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="vistas/bower_components/bootstrap/dist/css/buttons.dataTables.min.css"> -->
   <link rel="stylesheet" href="vistas/bower_components/bootstrap/dist/css/sweetalert.css">
   
   
@@ -42,7 +45,7 @@
   <script src="vistas/dist/js/adminlte.min.js"></script>
 
   <!-- iCheck -->
-  <script src="vistas/plugins/iCheck/icheck.min.js"></script>
+  <!-- <script src="vistas/plugins/iCheck/icheck.min.js"></script> -->
     <!-- Morris.js charts -->
   <!-- <script src="vistas/bower_components/raphael/raphael.min.js"></script> -->
   <!-- <script src="vistas/bower_components/morris.js/morris.min.js"></script> -->
@@ -55,21 +58,27 @@
   <script src="vistas/plugins/datatable/jquery.dataTables.min.js"></script>
   <script src="vistas/plugins/datatable/dataTables.bootstrap.min.js"></script>
   <script src="vistas/plugins/datatable/dataTables.responsive.min.js"></script>
-  <script src="vistas/plugins/datatable/responsive.bootstrap.min.js"></script>
-   
+  <script src="vistas/plugins/datatable/responsive.bootstrap.min.js"></script>   
   <script src="vistas/plugins/usuarios.js"></script>
   <script src="vistas/plugins/bootstrap-notify.min.js"></script>
-  
+
+  <!-- botones para reportes -->
+  <script src="vistas/plugins/datatable/buttons/dataTables.buttons.min.js"></script>
+  <script src="vistas/plugins/datatable/buttons/jszip.min.js"></script>
+  <script src="vistas/plugins/datatable/buttons/pdfmake.min.js"></script>
+  <script src="vistas/plugins/datatable/buttons/vfs_fonts.js"></script>
+  <script src="vistas/plugins/datatable/buttons/buttons.html5.min.js"></script>
+ 
   <!-- ChartJS -->
   <!-- <script src="vistas/bower_components/Chart.js/Chart.js"></script> -->
 
   <script>
     $(function () {
-      $('input').iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
-        increaseArea: '20%' // optional
-      });
+      // $('input').iCheck({
+      //   checkboxClass: 'icheckbox_square-blue',
+      //   radioClass: 'iradio_square-blue',
+      //   increaseArea: '20%' // optional
+      // });
       /* jQueryKnob */
       $('.knob').knob();
       /* SideBar Menu */
@@ -79,8 +88,7 @@
 
 </head>
   <body class="hold-transition skin-blue sidebar-mini login-page">
-  <?php
-  session_start();
+  <?php  
    if(isset($_SESSION["validarSesionBackend"]) && $_SESSION["validarSesionBackend"] === "ok"){
       echo '<div class="wrapper">';
       /*===============  MENU SUPERIOR==============*/
@@ -143,5 +151,6 @@
   <script src="vistas/plugins/reporteReservas.js"></script>
   <script src="vistas/plugins/reservaRestaurantes.js"></script>
   <script src="vistas/plugins/rsvExternosRestaurantes.js"></script>
+  
 </body>
 </html>

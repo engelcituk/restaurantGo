@@ -34,19 +34,34 @@
           
         <div class="box-body">
           <div class="row">
-          <?php 
+          <?php    
+            date_default_timezone_set('UTC');
+            $hoy = date("Y-m-d");       
+            $hoyMiga = date("d-m-Y");
+          //al hacer el filtro por restaurante
               if (isset($_GET["nomRest"])) {
                   $nombreRestaurante=$_GET["nomRest"];                  
                   $elijaRestaurante=$_GET["nomRest"];              
+                  $fecha="a partir del ".$hoyMiga;
                 } else {
                     $nombreRestaurante="Todos los restaurantes";
-                    $elijaRestaurante="Elija restaurante";                                               
+                    $elijaRestaurante="Elija restaurante";
+                    $fecha="a partir del ".$hoyMiga;                                               
                 }
+                //por si hace el filtro por por restaurante y fecha
+                if (isset($_GET["nomRest2"])) {
+                  $nombreRestaurante=$_GET["nomRest2"];                  
+                  $elijaRestaurante=$_GET["nomRest2"];
+                  $fechaPorGet = $_GET["fechaFiltro"];
+                  $fechaFormateada = date("d-m-Y", strtotime($fechaPorGet));
+                  $fecha=$fechaFormateada;           
+                } 
             ?>
             <div class="col-md-6 col-xs-12 col-lg-6 col-sm-6">
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">                  
-                  <li class="breadcrumb-item"><a href="#"> <i class="fas fa-utensils"></i> <?php  echo $nombreRestaurante; ?></a></li>                                      
+                  <li class="breadcrumb-item"><a href="#"> <i class="fas fa-utensils"></i> <?php  echo $nombreRestaurante; ?></a></li>
+                  <li class="breadcrumb-item"><a href="#"> <i class="fas fa-calendar-alt"></i> <?php  echo $fecha; ?></a></li>                                       
                 </ol>
               </nav> 
             </div>                        
@@ -77,18 +92,35 @@
                      ?>                
                 </div>               
               </div>
-              <div class="col-md-6 col-xs-12 col-lg-6 col-sm-6">
-              <!-- muestro boton descargar si estoy recibiendo variables get -->
-              <?php 
-               if (isset($_GET["idRest"])){
-                   $estadoBtn = "";   
-                }
-                else{
-                 $estadoBtn = "hidden"; 
-                }
-             ?>
-              <a href="administrar-reservas" id="descartarFiltroBtn" class="btn btn-sm btn-warning <?php echo $estadoBtn; ?>">
-                <i class="fas fa-undo"></i> Descartar 
+                  <?php 
+                  if (isset($_GET["idRest"])){
+                      $estadoBtn = "";                                                       
+                    }
+                    else{
+                    $estadoBtn = "hidden"; 
+                    }
+                    //cuando aplica el segundo filtro (fecha)
+                    if (isset($_GET["idRest2"])){
+                      $estadoBtn = "";                                     
+                    }
+                    //para mostrar una fecha en el value de fecha al filtrar
+                    if (isset($_GET["fechaFiltro"])){
+                      $fechaFiltro = $_GET["fechaFiltro"]; 
+                    }else{
+                      $fechaFiltro = $hoy; 
+                    }
+                              
+                ?>
+             <div class="col-md-3 col-xs-12 col-lg-3 col-sm-3">
+              <!-- muestro boton descargar si estoy recibiendo variables get -->                           
+              <div class="input-group <?php echo $estadoBtn; ?>">
+                  <div class="input-group-addon"><i class="fas fa-calendar-alt"></i></div>
+                    <input type="date" min="<?php echo $hoy; ?>"  value="<?php echo $fechaFiltro; ?>" class="form-control" id="fechaFiltro" name="fechaFiltro">                        
+                </div>
+            </div>
+              <div class="col-md-3 col-xs-12 col-lg-3 col-sm-3">
+              <!-- muestro boton descargar si estoy recibiendo variables get -->              
+              <a href="administrar-reservas" id="descartarFiltroBtn" class="btn btn-sm btn-warning <?php echo $estadoBtn; ?>"><i class="fas fa-undo"></i> Descartar 
               </a>
             </div>                                    
              </form>                        
@@ -125,21 +157,30 @@
                   <!-- LLAMO AL CONTROLADOR PARA TRAER LA LISTA DE RESERVAS -->
                   <?php 
                     if (isset($_GET["idRest"])){
-                      $campo ="idRestaurante";
-                      $valorCampo =$_GET["idRest"];
-                    } else {
-                        $campo =null;
-                        $valorCampo =null;                     
-                      }                                    
-                      $respuesta = ControladorReservas::ctrMostrarListaReservas($campo,$valorCampo);
+                        
+                        $valorCampoTabla =$_GET["idRest"];                                              
+                        $valorCampoTabla2 =null;
+                        
+                      }else if(isset($_GET["fechaFiltro"])){
+                        
+                        $valorCampoTabla =$_GET["idRest2"];                                             
+                        $valorCampoTabla2 =$_GET["fechaFiltro"];
+                        
+                      } else{                                               
+                        $valorCampoTabla =null;                                               
+                        $valorCampoTabla2 =null;
+                        
+                      }                                  
+                      $respuesta = ControladorReservas::ctrMostrarListaReservas($valorCampoTabla,$valorCampoTabla2);
+                      // var_dump($respuesta);
                       $contador=1;
                         foreach ($respuesta as $fila => $elemento) {
                           $cortarCadenaHora = substr($elemento["hora"], 0, 8);
                           echo '
-                          <tr id="'.$elemento["id"].'">
+                          <tr id="'.$elemento["id"].' ">
                               <td>'.$contador.'</td>
                               <td>'.$elemento["fechaDeLaReserva"].'</td>
-                              <td>'.$elemento["habitacion"].'</td>
+                              <td>'.$elemento["habitacion"].' </td>
                               <td>'.$elemento["apellido"].'</td>
                               <td>'.$elemento["nombreRestaurante"].'</td>
                               <td>'.$elemento["pax"].'</td>
@@ -180,6 +221,7 @@
                           </tr>';
                           $contador++;
                 }
+               
               ?> 
                 </tbody>
               </table>                      
@@ -360,7 +402,7 @@
                       <!-- /.col -->
                       <div class=" col-sm-offset-4 col-xs-4">
                         <div class="checkbox icheck">
-                          <button type="submit" id="enviarNuevaRsv" class="btn btn-primary btn-block btn-flat" disabled><i class="fas fa-share-square"></i> Enviar</button>
+                          <button type="submit" id="enviarNuevaRsv" class="btn btn-primary btn-block btn-flat" disabled><i class="fas fa-save"></i> Guardar</button>
 
                       </div>
                       </div>
