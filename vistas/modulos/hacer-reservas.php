@@ -237,8 +237,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                                  Footer
-                                </div> -->
+                                      Footer
+                                    </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -306,12 +306,12 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     </div>
                                 </div>
                                 <!-- <div class="col-md-4 col-xs-4">
-                                                  <span><strong>Mesa</strong></span>
-                                                    <div class="input-group">
-                                                    <div class="input-group-addon"><i class="fas fa-table"></i></div>
-                                                    <input type="text" class="form-control" id="reservaMesa" readonly>
-                                                  </div>
-                                                </div> -->
+                                                      <span><strong>Mesa</strong></span>
+                                                        <div class="input-group">
+                                                        <div class="input-group-addon"><i class="fas fa-table"></i></div>
+                                                        <input type="text" class="form-control" id="reservaMesa" readonly>
+                                                      </div>
+                                                    </div> -->
                             </div><br>
                             <div class="row">
                                 <div class="col-md-6 col-xs-6">
@@ -362,8 +362,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
     </div>
 
     <!-- =============================================
-                          MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
-                          =============================================-->
+                              MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
+                              =============================================-->
     <div id="rsvExternos" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -401,9 +401,9 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                         <div class="input-group-addon"><i class="fas fa-utensils"></i></div>
                                         <!-- traigo los restaurantes de acuerdo al id del hotel -->
                                         <?php
-                                        $campo = "idHotel";
-                                        $valorCampo = $_SESSION["idHotel"];
-                                        $respuesta = ControladorRestaurantes::ctrMostrarListaRestaurantes($campo, $valorCampo);
+                                        $campoTabla = "idHotel";
+                                        $valorCampoTabla = $_SESSION["idHotel"];
+                                        $respuesta = ControladorRestaurantes::ctrMostrarListaRestaurantesActivos($campoTabla, $valorCampoTabla);
                                         echo '<select class="form-control" name="restauranteNombreExternos" id="lstRestaurantesExt" required><option value="Elija Restaurante">Elija Restaurante</option>';
                                         foreach ($respuesta as $fila => $elemento) {
                                             echo '                              
@@ -521,8 +521,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div> -->
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                            </div> -->
             </div>
 
         </div>
