@@ -1,11 +1,11 @@
 <?php
-
-class ControladorEstadisticas{	
+ 
+class ControladorEstadisticas{	 
 	/*=============================================
 	LISTADO DE restaurantes
 	=============================================*/
 	static public function ctrMostrarListaRestaurantes($item, $valor){
-
+  
 		$tabla = "restaurantes";
 		//$item, $valor-->pueden venir como nulos, en ese caso en el modelo se ejecuta una consulta diferente
 		$respuesta = ModeloEstadisticas::mdlMostrarListaRestaurantes($tabla,$item, $valor);

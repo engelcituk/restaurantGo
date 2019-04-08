@@ -170,6 +170,26 @@ PARA GUARDAR LOS DATOS AL EDITAR  la configuracion de numero
 			return "ERROR";
 		}
 
+		$stmt->close();
+
+		$stmt = null;
+	}
+	/*=============================================
+	  PARA ELIMINAR TODAS LAS CONFIGURACIONES DE RESERVAS
+	POR NOCHE DE ESTANCIA AL BORRAR UN HOTEL
+	=============================================*/
+	static public function mdlBorrarConfiguracionEstanciaTodos($tablaRSVPorEstancia, $datos){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tablaRSVPorEstancia WHERE idHotel = :idHotel");
+
+		$stmt->bindParam(":idHotel", $datos, PDO::PARAM_INT);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}else {
+			return "ERROR";
+		}
+
 		$stmt-> close();
 
 		$stmt = null;

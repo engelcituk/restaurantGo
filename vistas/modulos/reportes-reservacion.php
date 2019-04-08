@@ -63,7 +63,7 @@
                     }
                  ?>
                 <a href="reportes-reservacion" id="btnResetearFiltro" class="btn btn-sm btn-warning <?php echo $estadoBoton; ?>">
-                  <i class="fas fa-undo"></i> Reset Filtro 
+                  <i class="fas fa-undo"></i> Descartar Filtro 
                   </a>
               </div>
             </div>
@@ -104,11 +104,20 @@
                 <?php
                   date_default_timezone_set('UTC');
                   $hoy = date("Y-m-d");
+                
+                  if (isset($_GET["fechaInicio"])) {                                       
+                      $fechaInicioCampo=$_GET["fechaInicio"];
+                      $fechaFinalCampo=$_GET["fechaFinal"];
+                                       
+                    } else {                                        
+                      $fechaInicioCampo="";
+                      $fechaFinalCampo="";                      
+                    }
                 ?>
                 <span><strong>Fecha Inicio</strong></span><br><br> 
                 <div class="input-group">
                   <div class="input-group-addon"><i class="fas fa-calendar-alt"></i></div>
-                    <input type="date"  class="form-control" id="fechaReporte" name="fechaReporte">                        
+                    <input type="date"  class="form-control" id="fechaReporte" name="fechaReporte" value="<?php echo $fechaInicioCampo; ?>">                        
                 </div>
                 
               </div>
@@ -116,7 +125,7 @@
                 <span><strong>Fecha final</strong></span><br><br> 
                 <div class="input-group">
                   <div class="input-group-addon"><i class="fas fa-calendar-alt"></i></div>
-                    <input type="date" class="form-control" id="fechaReporteFin" name="fechaReporte"  >                        
+                    <input type="date" class="form-control" id="fechaReporteFin" name="fechaReporte" value="<?php echo $fechaFinalCampo; ?>" >                        
                 </div>
                 
               </div>
@@ -171,7 +180,7 @@
                     <th>Pax</th>
                     <th>Hora</th>                       
                     <th>usuario</th>
-                    <th>Idioma</th>
+                    <th>Ticket</th>
                     
                     <th></th>
                   </tr>

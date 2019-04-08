@@ -22,7 +22,7 @@ class ModeloPermisos{
 	=============================================*/
 	static public function mdlMostrarPermisosTipoHotel($tabla){
 		
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE estado=1");
 
 		$stmt -> execute();
 		return $stmt -> fetchAll();

@@ -146,7 +146,7 @@ PARA GUARDAR LOS DATOS AL EDITAR EL HOTEL DENTRO DEL MODAL
 	 PARA ELIMINAR EL HOTEL DESDE EL sweetalert
 	=============================================*/
 	static public function mdlEliminarHotel($tabla, $datos){
-
+ 
 		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
 
 		$stmt -> bindParam(":id", $datos, PDO::PARAM_INT);

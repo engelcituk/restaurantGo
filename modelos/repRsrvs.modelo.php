@@ -55,7 +55,7 @@ class ReporteReservas {
 				$stmt = null;
 		}
 	}
-
+ 
 	/*=============================================
 	PARA LA CONSULTA QUE GENERA EL ARCHIVO EXCEL DE
 	 LISTA DE RESERVAS DE EQUIS RESTAURANTE
@@ -63,34 +63,36 @@ class ReporteReservas {
 	static public function mdlDescargarReporteExcel($tabla,$valorDeMiCampo,$valorDeMiCampo2,$valorDeMiCampo3){
 		date_default_timezone_set('UTC');
 		$hoy = date("Y-m-d");
-		
-		if($valorDeMiCampo = "" && $valorDeMiCampo2 ="" && $valorDeMiCampo3 =""){
-			// echo "<script>console.log(objeto 1 ".$valorDeMiCampo." ".$valorDeMiCampo2." ".$valorDeMiCampo2.")</script>";
-			$idHotel = $_SESSION["idHotel"];							
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva>='$hoy' AND idhotel=$idHotel");
-			
-			$stmt -> execute();
 
-			return $stmt -> fetchAll();
-
-			$stmt -> close();
-
-			$stmt = null;
-		}else{
-			echo "<script>console.log('objeto 2 ".$valorDeMiCampo." ".$valorDeMiCampo2." ".$valorDeMiCampo2."');</script>";
+		if($valorDeMiCampo != 0){
+				
 			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idRestaurante = :idRestaurante AND fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
-			
 			$stmt->bindParam(":idRestaurante",$valorDeMiCampo, PDO::PARAM_INT);
 			$stmt->bindParam(":fechaInicio",$valorDeMiCampo2, PDO::PARAM_STR);
 			$stmt->bindParam(":fechaFinal",$valorDeMiCampo3, PDO::PARAM_STR);
-
 			$stmt -> execute();
-
+		
 			return $stmt -> fetchAll();
-
+		}elseif ($valorDeMiCampo == 0 && isset($valorDeMiCampo2) && isset($valorDeMiCampo3)){
+			
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
+		
+			$stmt->bindParam(":fechaInicio",$valorDeMiCampo2, PDO::PARAM_STR);
+			$stmt->bindParam(":fechaFinal",$valorDeMiCampo3, PDO::PARAM_STR);				
+			$stmt -> execute();
+			return $stmt -> fetchAll();
+			
+		}else {				
+			 /*ocupo la sesion del id del hotel */
+			$idHotel = $_SESSION["idHotel"];
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva>='$hoy' AND idhotel=$idHotel");
+		
+			$stmt -> execute();
+			return $stmt -> fetchAll();
 			$stmt -> close();
-
 			$stmt = null;
 		}
+		
 	}
 }
+

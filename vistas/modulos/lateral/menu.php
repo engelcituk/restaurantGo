@@ -55,7 +55,7 @@ if($_SESSION["HACER RESERVAS"]==1 || $_SESSION["SUBMENU LATERAL"]==1){
         </li>';
    }
   //menú configuracion 
-  if($_SESSION["CONFIGURACION"]==1){
+  if($_SESSION["C-HOTELES"]==1||$_SESSION["C-USUARIOS"]==1||$_SESSION["C-RESTAURANTES"]==1||$_SESSION["C-SEATINGS"]==1||$_SESSION["C-TICKETS"]==1||$_SESSION["C-RSVXESTANCIA"]==1||$_SESSION["C-IMPRESORAS"]==1){
     echo '
           <li class="treeview">
               <a href="#">

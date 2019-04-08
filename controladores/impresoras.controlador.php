@@ -12,7 +12,7 @@ class ControladorImpresoras{
 		foreach ($respuesta as $fila => $elemento){
         	echo '<option idhotelLstPrinter='.$elemento["id"].'>'.$elemento["nombre"].'</option>';
         }
-	}
+	} 
 
 	/*=============================================
 	TRAIGO LA LISTA DE IMPRESORAS DE IMPRESORAS DISPONIBLES
@@ -154,7 +154,7 @@ class ControladorImpresoras{
 						<script>
 							swal({
 								title: "¡OK!",
-								text: "¡La modificaión de la impresora, fue exitosa!",
+								text: "¡La modificación de la impresora, fue exitosa!",
 								type:"success",
 								confirmButtonText: "Cerrar",
 								closeOnConfirm: false

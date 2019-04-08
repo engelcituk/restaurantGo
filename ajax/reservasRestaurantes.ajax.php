@@ -9,7 +9,7 @@ class AjaxReservasRestaurantes{
 PARA TRAER LA LISTA DE RESTAURANTES DE ACUERDO AL ID
 DEL HOTEL OBTENIDO
 ======================================*/
-	public $idHotel;
+	public $idHotel;  
 	public function obtnerListaDeRestaurantes(){
 
 		$idHotelValor= $this->idHotel;
@@ -71,7 +71,7 @@ PARA OBTENER LA LISTA DE MESAS DISPONIBLES PARA EL RESTAURANTE
 
 		$idRestauranteValor= $this->idRestauranteQ;
 
-		$campoDeMiTabla ="idRestaurante";
+		$campoDeMiTabla ="idRestaurante"; 
 		$valorDeMiCampo =$idRestauranteValor;
 
 		$respuesta = ControladorReservas::ctrObtenerListaDeMesasDisponibles($campoDeMiTabla,$valorDeMiCampo);
@@ -81,10 +81,10 @@ PARA OBTENER LA LISTA DE MESAS DISPONIBLES PARA EL RESTAURANTE
 /*======================================
 PARA VERIFICAR QUE EL HUESPED PUEDA HACER RESERVA
 ======================================*/
-	public $idReservaHotel;
+	public $identificadorReservaHotel;
 	public function validarPoderHacerReserva(){
 
-		$idReservaHotelValor= $this->idReservaHotel;
+		$idReservaHotelValor= $this->identificadorReservaHotel;
 
 		$campoDeMiTabla ="reservaIdentificador";
 		$valorDeMiCampo =$idReservaHotelValor;
@@ -157,10 +157,10 @@ if(isset($_POST["idRestauranteQ"])){
 /*======================================
 =   OBJETO-->validarPoderHacerReserva   =
 ======================================*/
-if(isset($_POST["idReservaHotel"])){
+if(isset($_POST["identificadorReservaHotel"])){
 
 	$idReservaObtenida = new AjaxReservasRestaurantes();
-	$idReservaObtenida -> idReservaHotel = $_POST["idReservaHotel"]; //la variable toma el valor por POST
+	$idReservaObtenida -> identificadorReservaHotel = $_POST[ "identificadorReservaHotel"]; //la variable toma el valor por POST
 	$idReservaObtenida -> validarPoderHacerReserva();
 }
 /*======================================

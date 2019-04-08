@@ -1,5 +1,5 @@
  <?php 
-  if($_SESSION["CONFIGURACION"]==1){
+  if($_SESSION["C-RSVXESTANCIA"]==1){
  ?>
  <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -128,7 +128,7 @@
                         echo '<td>
                               <a href="#" class="btn btn-success editConfigRsv" data-toggle="modal" data-target="#editConfigRsv" nombreHotel="'.$elemento["nombreHotel"].'" idRsvEstancia="'.$elemento["idConfig"].'"><i class="fa fa-edit"></i> </a>
                               
-                              <button class="btn btn-danger eliminarConfig" idRsvEstancia="'.$elemento["idConfig"].'"><i class="fa fa-trash "></i></button>               
+                              <button class="btn btn-danger eliminarConfig" idRsvEstancia="'.$elemento["idConfig"].'" disabled><i class="fa fa-trash "></i></button>               
                         </td>
 
                         <td></td>
@@ -280,7 +280,7 @@
                   <label for="usr">Num. máximo de Reservas</label>
                 <div class="input-group hidden" id="numMaxRsvOculto">
                   <div class="input-group-addon"><i class="fas fa-list-ol"></i></div>
-                  <input type="number"  class="form-control" id="regNuevoNumMaxRsvs" name="regNuevoNumMaxRsvs" min="1" max="100" required>
+                  <input type="number"  class="form-control" id="regNuevoNumMaxRsvs" name="regNuevoNumMaxRsvs" min="0" max="100" required>
                 </div>
               </div>
             </div><br><span id="rowNumNochesEstancia"></span>

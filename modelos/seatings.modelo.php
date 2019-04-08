@@ -176,4 +176,44 @@ EDITAR EL SEATING EN EL MODAL
 
 		$stmt = null;
 	}
+	/*=============================================
+	PARA BORRAR SEATINGS DE TODOS LOS RESTAURANTES QUE TIENE UN
+	HOTEL AL SER BORRADO
+	=============================================*/
+	static public function mdlBorrarSeatingsTodos($tablaSeatings, $datos){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tablaSeatings WHERE idHotel = :idHotel");
+
+		$stmt -> bindParam(":idHotel", $datos, PDO::PARAM_INT);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}else {
+			return "ERROR";
+		}
+
+		$stmt->close();
+
+		$stmt = null;
+	}
+	/*=============================================
+	PARA BORRAR TODOS LOS SEATINGS DE UN RESTAURANTE AL BORRAR EL RESTAURANTE
+	=============================================*/
+	static public function mdlBorrarSeatingsRestaurante($tablaSeatings, $datos){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tablaSeatings WHERE idRestaurante = :idRestaurante");
+
+		$stmt->bindParam(":idRestaurante", $datos, PDO::PARAM_INT);
+
+		if ($stmt->execute()) {
+			return "OK";
+	
+		}else {
+			return "ERROR";
+		}
+
+		$stmt-> close();
+
+		$stmt = null;
+	}
 }

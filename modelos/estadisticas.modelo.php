@@ -77,7 +77,7 @@ class ModeloEstadisticas{
 	IDHOTEL, IDRESTAURANTE, IDDIAsemana
 	=============================================*/
 	static public function mdlMostrarSeatingDelDia($tabla,$valorDeMiCampo,$valorDeMiCampo2,$valorDeMiCampo3){
-
+ 
 		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idHotel=:idHotel AND idRestaurante=:idRestaurante AND idDiaSemana=:idDiaSemana AND estado=1");
 		
 		$stmt->bindParam(":idHotel",$valorDeMiCampo, PDO::PARAM_INT);

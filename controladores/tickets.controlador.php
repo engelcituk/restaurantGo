@@ -15,7 +15,7 @@ class ControladorTicket{
 		echo '<div class="row">';
 			foreach ($respuesta as $row => $item){
 				echo 
-				'			
+				'			 
 		        <div class="col-xs-6 col-md-2">
 			        <div class="small-box colorTickets ">
 				        <div class="inner">
@@ -24,16 +24,20 @@ class ControladorTicket{
 				        </div>
 				        <div class="icon">
 				            <i class="fas fa-language"></i>
-				        </div>
-				            <a href="#" idTicket="'.$item["id"].'" class="btn btn-sm btn-primary verTicket" data-toggle="modal" data-target="#verTicket" title="Ver Ticket"><i class="fas fa-eye"></i></a>
-				            <a href="#" idTicketEditar="'.$item["id"].'" class="btn btn-sm btn-primary editarTicket" data-toggle="modal" data-target="#editarTicket" title="Editar Ticket"><i class="fas fa-edit"></i></a>';
+						</div>
+						<span data-toggle="modal" data-target="#verTicket" idTicket="'.$item["id"].'" class=" verTicket">
+							<a  class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" title="Ver Ticket"><i class="fas fa-eye"></i></a>
+						</span>
+						<span data-toggle="modal" idTicketEditar="'.$item["id"].'" data-target="#editarTicket" class="editarTicket">
+							<a data-toggle="tooltip" class="btn btn-sm btn-primary" data-placement="top" title="Editar Ticket"><i class="fas fa-edit"></i></a>
+						</span>';
 				       if ($item["estado"]!=0) {
-                         echo ' <a href="#" class="btn btn-success btn-sm btnActivarTicket" idTicketEstado="'.$item["id"].'" estadoTicket="0"><i class="fas fa-times-circle"></i></a>';
+                         echo ' <a href="#" id="ticketEstado" class="btn btn-success btn-sm btnActivarTicket" idTicketEstado="'.$item["id"].'" estadoTicket="0" data-toggle="tooltip" data-placement="bottom" title="Desactivar Ticket"><i class="fas fa-check"></i></a>';
                         }else{
-                          echo' <a href="#" class="btn btn-danger btn-sm btnActivarTicket" idTicketEstado="'.$item["id"].'" estadoTicket="1"><i class="fas fa-check"></i></a>';
+                          echo' <a href="#" id="ticketEstado" class="btn btn-warning btn-sm btnActivarTicket" idTicketEstado="'.$item["id"].'" estadoTicket="1" data-toggle="tooltip" data-placement="bottom" title="Activar Ticket"><i class="fas fa-ban"></i></a>';
 
                         }				            
-			     echo' <a href="#" idTicketEliminar="'.$item["id"].'" class="btn btn-sm btn-danger eliminarTicket"><i class="fas fa-trash-alt"></i></a>
+			     echo' <a href="#" idTicketEliminar="'.$item["id"].'" class="btn btn-sm btn-danger eliminarTicket" data-toggle="tooltip" data-placement="top" title="Borrar Ticket"><i class="fas fa-trash-alt"></i></a>
 			     </div>
 		        </div>		   
 				';
@@ -98,10 +102,12 @@ class ControladorTicket{
 			$idioma=strtoupper($_POST["idioma"]);
 			$encabezado=strtoupper($_POST["encabezado"]);
 			$pieDepagina=strtoupper($_POST["pieDePagina"]);
+			$idHotel =$_POST["idHotel"];
 
 			$datos = array("idioma" =>$idioma,
 						   "encabezado" =>$encabezado,
-						   "pieDePagina" =>$pieDepagina,
+							 "pieDePagina" =>$pieDepagina,
+							 "idHotel"=> $idHotel,
 						   "estado"=>$estado);
 
 			$respuesta = ModeloTicket::mdlRegistrarNuevoTicket($tabla, $datos);

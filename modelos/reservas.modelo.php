@@ -90,7 +90,7 @@ class ModeloReservas{
 
 	static public function mdlRegistrarReserva($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(fechaDeLaReserva,reservaIdentificador,idHotel,idRestaurante,nombreRestaurante,apellido,hora,estado,usuario,habitacion,pax,ticket,observaciones,origen) VALUES (:fechaReserva,:reservaIdentificador,:idHotel,:idRestaurante,:nombreRestaurante,:apellido,:hora,:estado,:usuario,:habitacion,:pax,:ticket,:observaciones,:origen)");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(fechaDeLaReserva,reservaIdentificador,idHotel,idRestaurante,nombreRestaurante,apellido,hora,estado,usuario,habitacion,pax,ticket,fechaLimite,observaciones,origen) VALUES (:fechaReserva,:reservaIdentificador,:idHotel,:idRestaurante,:nombreRestaurante,:apellido,:hora,:estado,:usuario,:habitacion,:pax,:ticket, :fechaLimiteRSV,:observaciones,:origen)");
 
 		$stmt -> bindParam(":fechaReserva", $datos["fechaReserva"], PDO::PARAM_STR);
 		$stmt -> bindParam(":reservaIdentificador", $datos["reservaIdentificador"], PDO::PARAM_STR);
@@ -103,8 +103,8 @@ class ModeloReservas{
 		$stmt -> bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
 		$stmt -> bindParam(":habitacion", $datos["habitacion"], PDO::PARAM_STR);
 		$stmt -> bindParam(":pax", $datos["pax"], PDO::PARAM_INT);
-		// $stmt -> bindParam(":numeroMesa", $datos["numeroMesa"], PDO::PARAM_INT);
 		$stmt -> bindParam(":ticket", $datos["ticket"], PDO::PARAM_STR);
+		$stmt -> bindParam(":fechaLimiteRSV", $datos["fechaLimiteRSV"], PDO::PARAM_STR);
 		$stmt -> bindParam(":observaciones", $datos["observaciones"], PDO::PARAM_STR);
 		$stmt -> bindParam(":origen", $datos["origen"], PDO::PARAM_STR);
 
@@ -182,7 +182,7 @@ class ModeloReservas{
 	}
 
 	/*=============================================
-	TRAIGO LOS SEATING DEL DIA DADO, QUE  ctrTraerSeatingDelDiaDado ESTA SOLICITANDO
+	TRAIGO LOS SEATING DEL DIA DADO, QUE   ESTA SOLICITANDO
 	EN ESTA CASO ESTOY TRAYENDO TODO SOBRE ESTOS HORARIOS
 	=============================================*/
 	static public function mdlTraerSeatingDelDiaDado($tabla,$valorDeMiCampo, $valorDeMiCampo2,$valorDeMiCampo3){
@@ -193,6 +193,26 @@ class ModeloReservas{
 		$stmt->bindParam(":idDiaSemana",$valorDeMiCampo, PDO::PARAM_INT);
 		$stmt->bindParam(":idHotel",$valorDeMiCampo2, PDO::PARAM_INT);
 		$stmt->bindParam(":idRestaurante",$valorDeMiCampo3, PDO::PARAM_INT);
+
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+
+		$stmt->close();
+
+		$stmt = null;
+	}
+	/*=============================================
+	TRAIGO LOS SEATING DEL DIA DADO, QUE  ESTA SOLICITANDO
+	EN ESTA CASO ESTOY TRAYENDO TODO SOBRE ESTOS HORARIOS
+	=============================================*/
+	static public function mdlTraerSeatingDelDiaDadoTodos($tabla,$valorDeMiCampo, $valorDeMiCampo2){
+
+		//CONSULTO CON BASE AL los Id que recibo, hotel, restaurante, dia
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idHotel=:idHotel AND idDiaSemana=:idDiaSemana AND estado=1");
+
+		$stmt->bindParam(":idDiaSemana",$valorDeMiCampo, PDO::PARAM_INT);
+		$stmt->bindParam(":idHotel",$valorDeMiCampo2, PDO::PARAM_INT);		
 		
 		$stmt -> execute();
 
@@ -200,7 +220,7 @@ class ModeloReservas{
 
 		$stmt -> close();
 
-		$stmt = null;
+		$stmt  = null;
 
 	}
 	/*=============================================
@@ -286,6 +306,46 @@ class ModeloReservas{
 		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
 
 		$stmt -> bindParam(":id", $datos, PDO::PARAM_INT);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}else {
+			return "ERROR";
+		}
+
+		$stmt->close();
+
+		$stmt = null;
+	}
+	/*=============================================
+	  PARA ELIMINAR TODAS LAS RESERVAS LIGADAS A UN HOTEL
+	  AL SER BORRADO ESTE
+	=============================================*/
+	static public function mdlEliminarReservasHotel($tablaReservas, $datos){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tablaReservas WHERE idHotel = :idHotel");
+
+		$stmt->bindParam( ":idHotel", $datos, PDO::PARAM_INT);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}else {
+			return "ERROR";
+		}
+
+		$stmt->close();
+
+		$stmt = null;
+	}
+	/*=============================================
+ 	  PARA ELIMINAR TODAS LAS RESERVAS LIGADAS A UN RESTAURANTE
+	  AL SER BORRADO ESTE
+	=============================================*/
+	static public function mdlEliminarReservasRestaurante($tablaReservas, $datos){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tablaReservas WHERE idRestaurante = :idRestaurante");
+
+		$stmt->bindParam( ":idRestaurante", $datos, PDO::PARAM_INT);
 
 		if ($stmt->execute()) {
 			return "OK";

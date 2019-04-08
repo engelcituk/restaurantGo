@@ -93,10 +93,10 @@ function registroUsuario(){
 	================================================*/
 	var password = $("#regPassword").val();
 	if (password != "") {
-		var expresion = /^[a-zA-Z]*$/;
+		var expresion = /^[a-zA-Z0-9]*$/;
 		if (!expresion.test(password)){
 
-			$("#regPassword").parent().before('<div class="alert alert-danger"><strong>Error!</strong>Escriba correctamente la constraseña. Solo letras</div>')
+			$("#regPassword").parent().before('<div class="alert alert-danger"><strong>Error!</strong> Escriba correctamente la constraseña. Solo letras y numeros, no caracteres especiales</div>')
 		return false;
 
 		}

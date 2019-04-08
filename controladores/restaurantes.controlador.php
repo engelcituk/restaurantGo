@@ -14,7 +14,7 @@ class ControladorRestaurantes{
         	echo '<li class="listaHotel listaHotelPdf" nombreHotel="'.$elemento["nombre"].'" idHotelPdf="'.$elemento["id"].'" idHotel="'.$elemento["id"].'"><a href="#">'.$elemento["nombre"].'</a></li>';
         }
         //  
-	}
+	}  
 	/*=============================================
 	FUNCION PARA MOSTRAR LA LISTA DE RESTAURANTES:solicitud Ajax
 	=============================================*/
@@ -25,6 +25,17 @@ class ControladorRestaurantes{
 		$respuesta = ModeloRestaurantes::mdlMostrarListaRestaurantes($tabla,$campoTabla, $valorCampoTabla);
 		
 		return $respuesta;		
+	}
+	/*=============================================
+	FUNCION PARA MOSTRAR LA LISTA DE RESTAURANTES:solicitud Ajax
+	=============================================*/
+	static public function ctrMostrarListaRestaurantesActivos($campoTabla, $valorCampoTabla)
+	{
+		$tabla = "restaurantes";
+
+		$respuesta = ModeloRestaurantes:: mdlMostrarListaRestaurantesActivos($tabla, $campoTabla, $valorCampoTabla);
+
+		return $respuesta;
 	}
 	/*=============================================
 	FUNCION PARA traer el dato del RESTAURANTE por id:solicitud Ajax
@@ -38,7 +49,7 @@ class ControladorRestaurantes{
 		return $respuesta;		
 	}
 	/*=============================================
-	REGISTRO DE RESTAURANTES
+	REGISTRO DE RESTAURANTES 
 	=============================================*/
 	public function ctrRegistroRestaurante(){
 
@@ -49,7 +60,7 @@ class ControladorRestaurantes{
 			$datos = array("idHotel" =>$_POST["idHotelReg"],
 						   "nombre" =>$_POST["regRestaurante"],
 						   "especialidad" =>$_POST["regEspecialidad"],						   
-						   "horarioCierreLista" =>$_POST["horarioCierreCatalogo"],
+						   "horarioCierre" =>$_POST["horarioCierre"],
 						   "estado" =>$estado);
 
 			$respuesta = ModeloRestaurantes::mdlRegistroRestaurante($tabla, $datos);
@@ -105,7 +116,7 @@ class ControladorRestaurantes{
 			$datos = array("id" =>$_POST["idRstrntEditar"],
 						   "nombre" =>$_POST["editarNombre"],
 						   "especialidad" =>$_POST["editarEspecialidad"],
-						   "horarioCierreLista" =>$_POST["horarioCierreEdit"],
+						   "horarioCierreEdit" =>$_POST["horarioCierreEdit"],
 						   "estado" =>$_POST["estadoRestaurante"]);
 
 				//LLAMO AL MODELO QUE HACE EL UPDATE
@@ -135,12 +146,19 @@ class ControladorRestaurantes{
 	FUNCION PARA ELIMINAR EL HOTEL
 	=============================================*/
 	public function ctrBorrarRestaurante(){
-
+ 
 		if (isset($_GET["idRestaurante"])) {
 			
 			$tabla = "restaurantes";
+			$tablaReservas="reservas";
+			$tablaSeatings= "seatings";
+
 			$datos = $_GET["idRestaurante"];
 
+			//borro seatings, reservas, ligadas a este restaurante	
+			ModeloSeatings:: mdlBorrarSeatingsRestaurante($tablaSeatings, $datos);
+			ModeloReservas::mdlEliminarReservasRestaurante($tablaReservas, $datos);
+			//borro el restaurante
 			$respuesta = ModeloRestaurantes::mdlEliminarRestaurante($tabla, $datos);
 
 			if ($respuesta == "OK"){
@@ -166,4 +184,5 @@ class ControladorRestaurantes{
 	}
 		
 }
+
 

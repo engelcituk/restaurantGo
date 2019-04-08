@@ -31,6 +31,7 @@ EOF;
 $pdf->writeHTML($bloque1,false,false,false,false,'');
 //cabecera de la tabla
 $nomRestaurante=$this->nomRestaurantePdf;
+if($nomRestaurante=="null"){$nomRestaurante="Todos los restaurantes";}
 $valorCampoTabla = $this->idRestaurantePdf; // el valorCampoTabla del id. por ejemplo (id = 7)
 //traigo los resultados de acuerdo al id hotel que recibo
 $valorCampoTabla2 = $this->fechaInformePdfInicio;

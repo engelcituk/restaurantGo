@@ -27,13 +27,13 @@ class ControladorHoteles{
 				$datosPermisosHotel = array("idHotel" =>$idHotelPermiso,
 									   		"permisohotel" =>$nombrePermisoHotel);
 
-				ModeloHoteles::mdlRegistroPermisosHotel($tblHotelPermisos, $datosPermisosHotel);											
+				ModeloHoteles::mdlRegistroPermisosHotel($tblHotelPermisos, $datosPermisosHotel);				/////$respuesta trae el id del hotel creado						
 
 					echo '
 						<script>
 							swal({
 								  title: "¡OK!",
-								  text: "¡EL registro del hotel, fue exitoso! su id es '.$respuesta.'",
+								  text: "¡EL registro del hotel, fue exitoso!",
 								  type:"success",
 								  confirmButtonText: "Cerrar",
 								  closeOnConfirm: false
@@ -88,14 +88,16 @@ class ControladorHoteles{
 		if (isset($_POST["editarNombre"])) {//SI EDITAR NOMBRE VIENE LLENO 
 
 			$tabla = "hoteles";
+			$tablaPermisoHotel="permisoshotel";
 			
 			$datos = array("idHotel" =>$_POST["idhotelEditar"],
 						   "nombre" =>$_POST["editarNombre"],
 						   "descripcion" =>$_POST["editarDescripcion"],
 						   "estado" =>$_POST["estadoHotel"]);
 
-				//LLAMO AL MODELO QUE HACE EL UPDATE
+			//LLAMO AL MODELO QUE HACE EL UPDATE
 			$respuesta = ModeloHoteles::mdlEditarHotel($tabla, $datos);
+			ModeloPermisosHotel::mdlEditarHotelPermisos($tablaPermisoHotel, $datos);
 
 			if ($respuesta == "OK"){
 					echo '
@@ -125,10 +127,26 @@ class ControladorHoteles{
 
 		if (isset($_GET["idHotelBorrar"])) {
 			
+			//tablas con relaciones
 			$tabla = "hoteles";
-			$datos = $_GET["idHotelBorrar"];
+			$tablaPermisos ="permisoshotel";
+			$tablaRestaurantes="restaurantes";
+			$tablaSeatings="seatings";
+			$tablaRSVPorEstancia="reservasporestancia";
+			$tablaImpresorasTickets="ticketimpresoras";
+			$tablaReservas="reservas";
 
-			$respuesta = ModeloHoteles::mdlEliminarHotel($tabla, $datos);
+			$datos = $_GET["idHotelBorrar"]; 
+
+			/*borro registros de configuraciones ligados al hotel a borrar, sus restaurantes, seatings de sus restaurantes, configuración de noches de estancia, sus impresoras de tickets, la reservas*/
+			ModeloPermisosHotel::mdlEliminarHotelPermiso($tablaPermisos,$datos);//permisos hotel
+			ModeloRestaurantes:: mdlEliminarRestaurantes($tablaRestaurantes,$datos); //sus restaurantes
+			ModeloSeatings:: mdlBorrarSeatingsTodos($tablaSeatings,$datos); //seatings de sus restaurantes
+			ModeloReservaEstancia::mdlBorrarConfiguracionEstanciaTodos($tablaRSVPorEstancia,$datos); //reservas por noches de estancia
+			ModeloTicket:: mdlEliminarTicketsHotel($tablaImpresorasTickets,$datos); //impresoras de tickets del hotel
+			ModeloReservas:: mdlEliminarReservasHotel($tablaReservas,$datos);// reservas ligadas al hotel
+
+			$respuesta = ModeloHoteles::mdlEliminarHotel($tabla, $datos);//borro el hotel
 
 			if ($respuesta == "OK"){
 
@@ -153,4 +171,5 @@ class ControladorHoteles{
 	}
 	
 } 
+
 

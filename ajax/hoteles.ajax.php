@@ -2,6 +2,7 @@
 //se requiere el controlador y el modelo para obtener respuesta
 require_once "../controladores/hoteles.controlador.php";
 require_once "../modelos/hoteles.modelo.php";
+require_once "../modelos/permisosHotel.modelo.php";
 
 
 class AjaxHoteles{
@@ -31,17 +32,20 @@ class AjaxHoteles{
 	public function ajaxActivarHotel(){
 
 		$tabla = "hoteles";
+		$tablaPermisos="permisoshotel";
 
 		$campo = "id";
 		$valorCampo =$this->idHotelEstado;
+		$campoPermisos = "idHotel";
+		$valorCampoPermisos =$this->idHotelEstado;
 
 		$campo2 = "estado";
 		$valorCampo2 = $this->estadoHotel;
 
-
-		$respuesta = ModeloHoteles::mdlActualizarEstadoHotel($tabla, $campo, $valorCampo, $campo2, $valorCampo2);
+		ModeloHoteles::mdlActualizarEstadoHotel($tabla, $campo, $valorCampo, $campo2, $valorCampo2);
+		ModeloPermisosHotel::mdlActualizarEstadoHotelPermiso($tablaPermisos, $campoPermisos, $valorCampoPermisos, $campo2, $valorCampo2);
 		
-
+ 
 }
 /*=====FIN  DE ACTIVAR A UN Hotel  ======*/
 

@@ -3,20 +3,25 @@
 ======================================*/
 $("#lstRestaurantesExt").change(function(){   
     // $(".alert").remove();
-    var idHotel= $("#idHotelVar").val();
+	var idHotel= $("#idHotelVar").val();
+	$("#fechaReservaExternos").val("");
 	var idRestaurante= $("option:selected",this).attr("idrestauranteexternos");	
+	var horaCierre = $("option:selected", this).attr("horaCierre");	
     var nombreRestaurante= $("#lstRestaurantesExt option:selected").text();
 	//guardo en localstorage el id del hotel y restaurante, nombre restaurante
 	// console.log("idHotel", idHotel);
-	// console.log("idRestaurante", idRestaurante);
     localStorage.setItem("idHotelLST", idHotel);
     localStorage.setItem("idRestauranteLST", idRestaurante);
     localStorage.setItem("nombreRestauranteLST", nombreRestaurante);
+	
 
-    if (idRestaurante != ''){       
+	if (idRestaurante != '' && nombreRestaurante !="Elija Restaurante"){       
         $("#idRestauranteVar").val(idRestaurante);
         $("#nombreCompleto").removeAttr("readonly");                
-        $("#idRestauranteEx").val(idRestaurante);        
+		$("#idRestauranteEx").val(idRestaurante);
+		var fechaMinimaMostrar = verificaSiHayHoraCierre(horaCierre);//obtengo la fecha que se debe mostrar
+		$("#fechaReservaExternos").attr({ "min": fechaMinimaMostrar });
+		// console.log("fechaMinimaMostrar", fechaMinimaMostrar);     
     }
     else
          {
@@ -31,6 +36,48 @@ $("#lstRestaurantesExt").change(function(){
 		  $("#horarioReservaExternos").html("<div class='input-group-addon'><i class='fas fa-clock'></i></div><select class='form-control'><option></option></select>");            
     }              
 })
+/*verifica si tiene horario de cierre*/
+function verificaSiHayHoraCierre(horaCierre) {
+	horaCierreRestaurante = horaCierre;
+	var fechaHoy = obtenerFechaHoy();
+
+	if (horaCierreRestaurante == "SIN HORARIO") {
+		$.notify({
+			message: '<i class="fas fa-clock"></i> <strong>Nota:</strong> Este restaurante no tiene definido un horario de cierre, puede hacer reservas para hoy ' + fechaHoy   
+		}, {
+			type: 'info',
+			z_index: 2000,
+			delay: 6000
+		});
+		var valorFechaMinimo = fechaHoy;
+	}else{
+		$.notify({
+			message: '<i class="fas fa-clock"></i> <strong>Nota:</strong> Este restaurante tiene horario definido de cierre, las reservas para hoy lo tiene que hacer antes de las ' + horaCierreRestaurante 
+		}, {
+			type: 'warning',
+			z_index: 2000,
+			delay: 6000
+		});
+		var valorFechaMinimo=procesarHoraCierre(horaCierre); //si tiene horaCierre verifico si poner fecha de hoy o de mañana
+	}
+	return valorFechaMinimo;
+}
+// funcion para controlar la fecha minimo de las reservas
+function procesarHoraCierre(horaCierre){
+
+	var horaActual = obtenerHoraActual();
+	var fechaHoy = obtenerFechaHoy();
+	var fechaManana = obtenerFechaManana();
+	horaCierreRestaurante = horaCierre;
+
+	if (horaCierreRestaurante >= horaActual) {		
+		var valorFechaMinimo = fechaHoy;
+		
+	} else {
+		var valorFechaMinimo = fechaManana;
+	}
+	return valorFechaMinimo;
+}
 /*======================================
 = PARA QUE NO DEJE VACIO nombreCompleto
 del modal "Ingrese los datos del cliente" 

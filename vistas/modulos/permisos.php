@@ -1,5 +1,5 @@
 <?php 
-  if($_SESSION["CONFIGURACION"]==1){
+  if($_SESSION["C-HOTELES"]==1||$_SESSION["C-USUARIOS"]==1||$_SESSION["C-RESTAURANTES"]==1||$_SESSION["C-SEATINGS"]==1||$_SESSION["C-TICKETS"]==1||$_SESSION["C-RSVXESTANCIA"]==1||$_SESSION["C-IMPRESORAS"]==1){
  ?>
 <!-- =============================================== --> 
   <!-- Content Wrapper. Contains page content -->
@@ -65,15 +65,16 @@
                         <td>'.$elemento["nombrePermiso"].'</td>';
                         
                         echo '<td>
-                              <a href="#" class="btn btn-success editPermiso" data-toggle="modal" data-target="#editPermiso" nombrePermiso="'.$elemento["nombrePermiso"].'" idPermiso="'.$elemento["id"].'"><i class="fa fa-edit"></i> </a>
+                              <a href="#" class="btn btn-success editPermiso" data-toggle="modal" data-target="#editPermiso" nombrePermiso="'.$elemento["nombrePermiso"].'" idPermiso="'.$elemento["id"].'" style="pointer-events: none;"><i class="fa fa-edit"></i> </a>
                               
-                              <button class="btn btn-danger eliminarPermiso" idPermiso="'.$elemento["id"].'"><i class="fa fa-trash "></i></button>               
+                              <button class="btn btn-danger eliminarPermiso" idPermiso="'.$elemento["id"].'" disabled><i class="fa fa-trash "></i></button>               
                         </td>
                         <td></td>
                     </tr>';
                 $contador=$contador +1;
                 }
               ?>
+              
               </tbody>
             </table>        
             </div>

@@ -19,11 +19,11 @@ class ControladorPermisos{
 	impresoras---para cargar en el datatable
 	=============================================*/
 	static public function ctrMostrarPermisosTipoHotel(){
-
+ 
 		$tabla = " permisoshotel";
 		
 		$respuesta = ModeloPermisos::mdlMostrarPermisosTipoHotel($tabla);
-		
+		 
 		foreach ($respuesta as $row => $item){
 			echo 
 			'

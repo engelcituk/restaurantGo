@@ -1,5 +1,5 @@
 <?php 
-  if($_SESSION["CONFIGURACION"]==1){
+  if($_SESSION["C-IMPRESORAS"]==1){
  ?>
 <!-- =============================================== --> 
   <!-- Content Wrapper. Contains page content -->
@@ -61,7 +61,8 @@
                       <?php 
                         $listaHoteles= new ControladorImpresoras();
                         $listaHoteles->ctrListaDeHotelesSelect();
-                      ?>                    
+                      ?>   
+                      <option idhotelLstPrinter="TODOS" value="TODOS"><a href="impresoras">TODOS</a></option>                 
                   </select>
                 </div>
               </div>             
@@ -128,7 +129,7 @@
                         echo '<td>
                               <a href="#" class="btn btn-success editImpresora" data-toggle="modal" data-target="#editImpresora" nombreHotel="'.$elemento["nombreHotel"].'" idImpresora="'.$elemento["idImpresora"].'"><i class="fa fa-edit"></i> </a>
                               
-                              <button class="btn btn-danger eliminarImpresora" idImpresora="'.$elemento["idImpresora"].'"><i class="fa fa-trash "></i></button>               
+                              <button class="btn btn-danger eliminarImpresora" idImpresora="'.$elemento["idImpresora"].'" disabled><i class="fa fa-trash "></i></button>               
                         </td>
 
                         <td></td>
@@ -174,11 +175,12 @@
                 <div class="input-group">                 
                   <div class="input-group-addon"><i class="fas fa-hotel"></i></div>
                   <select class="form-control" name="newLstHotelesModal" id="newLstHotelesModal" required>
-                      <option value="">Elige Hotel</option>
+                      <option value="">Elige Hotel</option>                      
                       <?php 
                         $listaHoteles= new ControladorReservaEstancia();
                         $listaHoteles->ctrListaDeHotelesSelect();
-                      ?>                    
+                        ?>  
+                        <!-- <option value="TODOS">TODOS</option>                  -->
                   </select>
                 </div>
               </div>
@@ -260,8 +262,12 @@
                   <h4 id="nombreHotelImpresora"></h4>
                   <ul class="list-group">                    
                     <li class="list-group-item"><strong>IP Actual: </strong><span id="ipImpresoraSpan"></span></li>
-                    <li class="list-group-item"><strong>Nombre Impresora Actual:</strong> <span id="nombreImpresoraSpan"></span></li>                   
+                    <li class="list-group-item"><strong>Nombre Impresora Actual:</strong> <span id="nombreImpresoraSpan"></span></li>                                       
                   </ul>
+                  <div class="alert alert-danger alert-dismissible">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>¡Nota!</strong> Sí va cambiar la dirección ip, asegurese de ocupar uno que NO esté en la base de datos. Sí cambia el nombre de la impresora, mantener la dirección IP actual.
+                  </div>
                 </div>
               </div>                                     
             </div>
@@ -274,7 +280,7 @@
               </div>
             </div><br><div id="ipValidoMensajeEditar"></div>
             <div class="row">              
-               <div class="col-md-6 col-xs-12">
+               <div class="col-md-6 col-xs-12"> 
                 <label for="usr">Nueva dirección IP</label>
                 <div class="input-group">
                   <div class="input-group-addon"><i class="fas fa-network-wired"></i></div>
@@ -283,7 +289,7 @@
               </div>
               <div class="col-md-6 col-xs-12">
                   <label for="usr">Nuevo nombre impresora</label>
-                <div class="form-group hidden" id="nombreImpresoraOcultoModal">
+                <div class="form-group" id="nombreImpresoraOcultoModal">
                   <input type="text" class="form-control nombreImpresora" id="nuevoNomImpresora" name="nuevoNomImpresora" required>
                 </div>
               </div>

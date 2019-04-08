@@ -3,7 +3,7 @@
 class ControladorReservas{
 
 	/*=============================================
-	TRAIGO LISTA DE HOTELES
+	TRAIGO LISTA DE HOTELES 
 	=============================================*/
 	public function ctrTraerListaDeHoteles(){
 		$tabla = "hoteles";
@@ -17,7 +17,7 @@ class ControladorReservas{
 
 			';
 		}
-	}
+	} 
 	/*=============================================
 	TRAIGO LISTA DE HOTELES--Para ocupar en un dropdown
 	=============================================*/
@@ -154,7 +154,7 @@ class ControladorReservas{
 	PARA VERIFICAR QUE EL HUESPED PUEDA HACER RESERVA: solicitud ajax
 	=============================================*/
 	static public function ctrValidarPoderHacerReserva($campoDemiTabla, $valorDeMiCampo){
-
+ 
 		$tabla= "reservas";
 
 		$respuesta = ModeloReservas::mdlValidarPoderHacerReserva($tabla,$campoDemiTabla, $valorDeMiCampo);
@@ -187,7 +187,8 @@ class ControladorReservas{
 					   "fechaReserva" =>$_POST["fechaReserva"],
 					   "reservaIdentificador" =>$_POST["reserva"],
 					   "idHotel" =>$_POST["idHotel2"],
-					   "idRestaurante" =>$_POST["idRestaurante2"],
+						 "idRestaurante" =>$_POST["idRestaurante2"],
+						 "fechaLimiteRSV" =>$_POST["fechaMaximaRSV"],
 					   "nombreRestaurante" =>$_POST["campoNombreRestaurante"],
 					   "apellido" =>$_POST["apellido"],
 					   "horario" =>$_POST["horarioReserva"],					  

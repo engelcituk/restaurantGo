@@ -108,8 +108,25 @@ $('#tablaUsuarios').DataTable({
   }
 });
 // probando a mostrar consulta en inicio
+$(document).ready(function() {
 $('#tablaReservasReservix').DataTable({
-  "lengthMenu": [[25, 50, 100, 200, -1], [25, 50, 100, 200, "Todos"]],
+  dom: 'Blfrtip',
+    buttons: [
+      {
+        extend:    'pdfHtml5',
+        className: 'btn colorBoton',            
+        title :'Lista de huespedes',
+        text:      '<i class="fas fa-file-pdf"> PDF</i>',
+        titleAttr: 'PDF'                            
+        },{
+        extend:'excelHtml5',
+        className: 'btn btn-success',
+        title :'Lista de huespedes',
+        text:      '<i class="fas fa-file-excel"> Excel</i>',
+        titleAttr: 'Excel'
+        }                                  
+    ],
+  "lengthMenu": [[10,25, 50, 100, 200, -1], [10, 25, 50, 100, 200, "Todos"]],
   "language": {
             "sProcessing":     "Procesando...",
       "sLengthMenu":     "Mostrar _MENU_ registros",
@@ -136,11 +153,8 @@ $('#tablaReservasReservix').DataTable({
   }
            
 });
-// datatable para generar el report de las reservas
-// $( document ).ready(function() {
-//   
-// });
-
+  $("#tablaReservasReservix_wrapper > .dt-buttons").appendTo("#btnDocsListaDatatable");
+});
 $(document).ready(function() {
   $('#tblReservasReporte').DataTable({  
     dom: 'Blfrtip',

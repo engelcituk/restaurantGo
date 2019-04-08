@@ -4,8 +4,8 @@
  $(document).on("click", ".listaHotel", function(){
  	// ^--cuando se le da clic a la clase (listaHotel) obtengo el atributo id  	  	
 	var idHotel= $(this).attr('idHotel');
-	var nombreHotel = $(this).attr('nombreHotel');    
-    window.location="index.php?ruta=restaurantes&idHotel="+idHotel+"&nomHotel="+nombreHotel;
+	var nombreHotel = $(this).attr('nombreHotel'); 
+		window.location="index.php?ruta=restaurantes&idHotel="+idHotel+"&nomHotel="+nombreHotel;	
 	
 })
  /*===============FIN=================*/
@@ -46,16 +46,10 @@ $("#hotelElige").change( function(){ // al cambiar el foco se ejecuta ajax
 			$("#editarNombre").val(respuesta["nombre"]);			
 			$("#estadoRestaurante").val(respuesta["estado"]);//Siendo option ponemos eso en el html
 			$("#editarEspecialidad").val(respuesta["especialidad"]);
-			var horaCierre= respuesta["horaCierre"];				
-			if(horaCierre != "SIN HORARIO"){
-				$("#radioSIEdit").prop("checked", true);
-				$("#horaDefault").val(horaCierre);
-				$("#horaDefault").html(horaCierre);
-			}else{					
-				$("#radioNOEdit").prop("checked", true);
-				$("#horaDefault").val(horaCierre);
-				$("#horaDefault").html(horaCierre);
-			}
+			var horaCierre= respuesta["horaCierre"];
+			$("#horaCierreResult").val(horaCierre);
+			$("#noModificarHorarioEdit").val(horaCierre);
+			localStorage.setItem("horaCierreEditLS", horaCierre);		
 			
 		}
 	})
@@ -148,55 +142,105 @@ $(document).on("click", ".btnActivarRstrnt", function(){
 })
  /*===============FIN=================*/
 
-
+ 
  /*======================================
 = con este cargo el id del hotel a registrar
 ======================================*/
 $("#hotelElige2").change( function(){ // al cambiar el foco se ejecuta ajax 
-	var idHotelPdf = $(this).val();	
-	window.open("extensiones/tcpdf/pdf/listaRestaurantes.php?idHotelPdf="+idHotelPdf, "_blank");	
+	var idHotelPdf = $(this).val();
+	if(idHotelPdf>0){
+		window.open("extensiones/tcpdf/pdf/listaRestaurantes.php?idHotelPdf="+idHotelPdf, "_blank");	
+	}else{
+		idHotelPdf="null";
+		window.open("extensiones/tcpdf/pdf/listaRestaurantes.php", "_blank");	
+		// console.log();
+	}
 })
 /*=====  con este cargo el id del hotel a registrar ======*/
 
 //trabajo con los radios button para los horarios de cierre  de los restaurantes AL REGISTRAR O NO HORARIOS DE CIERRE
 $('input[type=radio][name=horarioCierreRadio]').change(function() {
 	if (this.value == 'SI') {
-		$("#horarioCierreCatalogo").removeAttr("readonly");
-		$('#horarioCierreCatalogo').prop('selectedIndex',4);	
+		// $("#horarioCierre").removeAttr("readonly");
+		$('#horarioCierre').val("");
+		$('#horarioCierre').removeClass('hidden');
+		$("#horarioCierre").attr("name", "horarioCierre");
+		$("#horarioCierre").prop("required", true);		
+		$('#sinHorario').removeAttr('required');
+		$('#sinHorario').removeAttr('name');	
+		$('#sinHorario').addClass('hidden');
 	}
 	else if (this.value == 'NO') {		
-		$("#horarioCierreCatalogo").attr("readonly",true);
-		$('#horarioCierreCatalogo').prop('selectedIndex',0);
+		// $("#horarioCierre").attr("readonly",true);
+		// $('#horarioCierre').prop('selectedIndex',0);
+		$('#sinHorario').removeClass('hidden');
+		$("#sinHorario").attr("name", "horarioCierre")
+		$("#sinHorario").prop("required", true);		
+		$('#horarioCierre').removeAttr('required');	
+		$('#horarioCierre').removeAttr('name');
+		$('#horarioCierre').addClass('hidden');
 	}
 });
-$("#horarioCierreCatalogo").change(function(){	
-	var horaSeleccionada = $("option:selected",this).val();	
-	if(horaSeleccionada != "SIN HORARIO"){
+$("#horarioCierre").change(function(){	
+	var horaSeleccionada = $("#horarioCierre").val();
+	// console.log("horaSeleccionada", horaSeleccionada);
+	if(horaSeleccionada != ""){
 		$("#radioSI").prop("checked", true);
-	}else{		
-		$("#horarioCierreCatalogo").attr("readonly",true);
+	}else{				
 		$("#radioNO").prop("checked", true);
 	}
 })
 
 //radios button para los horarios de cierre  de los restaurantes AL EDITAR O NO HORARIOS DE CIERRE
 $('input[type=radio][name=horaCierreRadioEdit]').change(function() {
-	if (this.value == 'SI') {
-		$("#horarioCierreEdit").removeAttr("readonly");
-		$('#horarioCierreEdit').prop('selectedIndex',3);	
+	if (this.value == 'SI') {		
+		$('#horarioCierreEdit').val("");
+		$('#horarioCierreEdit').removeClass('hidden');
+		$("#horarioCierreEdit").attr("name", "horarioCierreEdit");
+		$("#horarioCierreEdit").prop("required", true);
+		$('#noModificarHorarioEdit').removeAttr('required');
+		$('#noModificarHorarioEdit').removeAttr('name');
+		$('#noModificarHorarioEdit').addClass('hidden');
+		$('#sinHorarioCierreNuevo').removeAttr('required');
+		$('#sinHorarioCierreNuevo').removeAttr('name');
+		$('#noModificarHorarioEdit').removeAttr('readonly');		
+		$('#sinHorarioCierreNuevo').addClass('hidden');
 	}
-	else if (this.value == 'NO') {		
-		$("#horaDefault").val("SIN HORARIO");
-		$("#horaDefault").html("SIN HORARIO");
+	else if (this.value == 'NO') {
+		
+		var valorCierre = localStorage.getItem("horaCierreEditLS");
+		$('#noModificarHorarioEdit').val(valorCierre);
+		$('#noModificarHorarioEdit').removeClass('hidden');
+		$("#noModificarHorarioEdit").attr("name", "horarioCierreEdit")
+		$("#noModificarHorarioEdit").prop("required", true);
+		$('#horarioCierreEdit').removeAttr('required');
+		$('#horarioCierreEdit').removeAttr('name');
+		$('#horarioCierreEdit').addClass('hidden');
+		$('#noModificarHorarioEdit').removeAttr('required');	
+		$('#sinHorarioCierreNuevo').addClass('hidden');
+	}
+	else if (this.value == 'SIN HORARIO') {
+
+		var valorCierre = localStorage.getItem("horaCierreEditLS");
+		$('#sinHorarioCierreNuevo').val("SIN HORARIO");
+		$('#sinHorarioCierreNuevo').removeClass('hidden');
+		$("#sinHorarioCierreNuevo").attr("name", "horarioCierreEdit")
+		$("#sinHorarioCierreNuevo").prop("required", true);
+		$('#horarioCierreEdit').removeAttr('required');
+		$('#horarioCierreEdit').removeAttr('name');
+		$('#horarioCierreEdit').addClass('hidden');
+		$('#noModificarHorarioEdit').removeAttr('required');
+		$('#noModificarHorarioEdit').removeAttr('name');
+		$('#noModificarHorarioEdit').addClass('hidden');
 	}
 });
 
-$("#horarioCierreEdit").change(function(){	
-	var horaSeleccionada = $("option:selected",this).val();	
-	if(horaSeleccionada != "SIN HORARIO"){
-		$("#radioSIEdit").prop("checked", true);
-	}else{		
-		$("#horarioCierreEdit").attr("readonly",true);
-		$("#radioNOEdit").prop("checked", true);
-	}
-})
+// $("#horarioCierreEdit").change(function(){	
+// 	var horaSeleccionada = $("option:selected",this).val();	
+// 	if(horaSeleccionada != "SIN HORARIO"){
+// 		$("#radioSIEdit").prop("checked", true);
+// 	}else{		
+// 		$("#horarioCierreEdit").attr("readonly",true);
+// 		$("#radioNOEdit").prop("checked", true);
+// 	}
+// })

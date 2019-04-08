@@ -27,12 +27,18 @@ $("#lstRestaurantes").change(function(){
 		var fechaManana= obtenerFechaManana();
 
 		if(horaCierreRestaurante=="SIN HORARIO"){			
-			enviarFecha(fechaHoy);			
+			// enviarFecha(fechaHoy);
+			console.log("fechaHoy",fechaHoy);
+			localStorage.setItem("fechaMinimoLS", fechaHoy);			
 		}else{				
 			if(horaCierreRestaurante >= horaActual){
-				enviarFecha(fechaHoy);
+				// enviarFecha(fechaHoy);
+				console.log("fechaHoy",fechaHoy);
+				localStorage.setItem("fechaMinimoLS", fechaHoy);
 			}else{
-				enviarFecha(fechaManana);					
+				// enviarFecha(fechaManana);
+				console.log("fechaManana", fechaManana);
+				localStorage.setItem("fechaMinimoLS", fechaManana);					
 			}
 		}
     }
@@ -390,13 +396,13 @@ $("#horarioReserva").change(function(){
  ==================================================================*/
   $("#ticketElige").change(function(){
   	//traigo el identificador de la reserva del hotel y max de reservas que el huesped puede hacer
-  	var idReservaHotel = $("#reserva").val();
+  	var identificadorReservaHotel = $("#reserva").val();
   	var ticketIdioma = $("option:selected",this).text();
   	var maxRsvHuesped = localStorage.getItem("numMaxRsvHuespedLST"); 
 
   	if (ticketIdioma != '') {
   		var datos = new FormData();
-		datos.append("idReservaHotel",idReservaHotel);
+		datos.append("identificadorReservaHotel",identificadorReservaHotel);
 	  	$.ajax({
 			url:"ajax/reservasRestaurantes.ajax.php", //enviamos a este archivo idReservaHotel para que lo procese
 			method: "POST", //el envio es por POST
@@ -408,7 +414,7 @@ $("#horarioReserva").change(function(){
 			success:function(respuesta){ 
 
 			// console.log("reservashuesped",respuesta);			
-				 totalRsvHuesped = respuesta[0];
+				 totalRsvHuesped = respuesta[0]; 
 				 //convierto los valores string que recibo, para poder hacer operaciones como numeros 
 				 var valorMaxRsvHuesped=maxRsvHuesped;
 				 var numeroMaxRsvHuesped=parseInt(valorMaxRsvHuesped);
@@ -496,6 +502,12 @@ $(document).on("click", "#btnGuardarReserva", function(){
 		return false;
 	}	
 })
+/*los meses y dias me retorna sin los ceros cuando son menores a 10
+FUNCION PARA AGREGAR LOS CEROS*/
+function agregarCeroFecha(valorCadena) {
+	valorCadena = ("0" + valorCadena).slice(-2);	
+	return valorCadena;
+}
 //funcion para retornar la hora actual
 function obtenerHoraActual(){
 	momentoActual = new Date()
@@ -524,7 +536,7 @@ function obtenerFechaHoy(){
     var mes = hoy.getMonth()+1;
     var anio = hoy.getFullYear();
         
-    return anio+'-'+mes+'-'+dia;
+	return anio + '-' +agregarCeroFecha(mes)+'-'+agregarCeroFecha(dia);
 }
 function obtenerFechaManana(){
 	var hoy = new Date();
@@ -532,16 +544,18 @@ function obtenerFechaManana(){
 	var milisegundoDia=milisegundos.getDate();
 	var milisegundosMes=milisegundos.getMonth()+1;
 	var milisegundoAnio=milisegundos.getFullYear();
-	var fechaManana = milisegundoAnio+"-"+milisegundosMes+"-"+milisegundoDia;
+	var fechaManana = milisegundoAnio + "-" +agregarCeroFecha(milisegundosMes)+"-"+agregarCeroFecha(milisegundoDia);
 
 	return fechaManana;	
 }
-
-function enviarFecha(fecha){	
-	var fechaRecibida=fecha;
-	var nombreRestaurante= $("#lstRestaurantes option:selected").text();	
-	// return fechaRecibida;
-	window.location="index.php?ruta=hacer-reservas&fechaEnviada="+fechaRecibida+"&nomRest="+nombreRestaurante;
-	// window.location.href=window.location.href +"index.php?ruta=hacer-reservas&fechaEnviada="+fechaRecibida;	
-}
-
+//Esta es para 
+$("#fechaRsvFiltro").change(function () {
+	var fechaSeleccionada = $("#fechaRsvFiltro").val();	
+	if (fechaSeleccionada != '') {
+		console.log("fechaSeleccionada", fechaSeleccionada);		
+		window.location = "index.php?ruta=hacer-reservas&fechaSeleccionada=" + fechaSeleccionada;			
+	}
+	else {
+		swal("Oops", "Elija un fecha por favor", "error")
+	}
+})

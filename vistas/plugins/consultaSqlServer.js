@@ -28,8 +28,15 @@
 			dataType:"json", //los datos son de tipo json
 			success:function(respuesta){ //obtengo una respuesta tipo json
 				if (respuesta) { //si obtengo resultados muestro datos
-					// console.log("respuesta",respuesta);
-					// $("#numHabitacion").val(respuesta["Habitacion"])//le cargo en esos campos los resultados
+					console.log("respuestaFechaSalida",respuesta.FechaSalida);
+					var fecha = respuesta.FechaSalida;
+					fechaMinima = localStorage.getItem("fechaMinimoLS");
+					fechaMaxima = fecha.substring(0,10);//corto resto de cadena que sobra para la fecha MAxima
+					console.log("fechaMinimaLS",fechaMinima);
+
+					// $("#numHabitacion").val(respuesta["Habitacion"])//le cargo en esos campos los resultados				
+					$("#fechaReserva").attr({ "min": fechaMinima, "max": fechaMaxima });
+					$("#fechaMaximaRSV").val(fechaMaxima);
 					$('#datosHuesped').removeClass("hidden");
 					$("#apellido").val(respuesta["Apellido"]);
 					$("#reserva").val(respuesta["Reserva"]);
@@ -66,6 +73,7 @@
 })
 /*=====  FIN DE BUSCAR HABITACION  ======*/
 function mostrarAlertasHorarios(horaCierreRestaurante){
+	
 	if(horaCierreRestaurante=="SIN HORARIO"){												
 		$.notify({							
 			message: '<i class="fas fa-sun"></i> <strong>Nota:</strong> Este restaurante no tiene definido un horario de cierre, puede hacer reservas para hoy sin restricciones' 

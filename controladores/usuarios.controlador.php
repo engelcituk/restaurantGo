@@ -44,18 +44,23 @@ class ControladorUsuarios{
 						$permisosUser=ModeloUsuarioPermisos::mdlTraerPermisosUsuario($tablaUsrPermisos,$valorDeMiCampo);
 
 						foreach ($permisosUser as $filaUser => $elementoUser) {
-		                //cargo el array $arreglo con valores
-		                 array_push($arreglo, $elementoUser["idPermiso"]); 
-		                }		               
-		               /*determinamos los permisos del usuario, creando variables de sesión
-		               los numeros son los id de los permisos*/
+						//cargo el array $arreglo con valores
+							array_push($arreglo, $elementoUser["idPermiso"]); 
+		        }		               
+		          /*determinamos los permisos del usuario, creando variables de sesión los numeros son los id de los permisos*/
 				       in_array(3, $arreglo)?$_SESSION["HACER RESERVAS"]=1:$_SESSION["HACER RESERVAS"]=0;
 				       in_array(4, $arreglo)?$_SESSION["ACTIVAR RESERVAS"]=1:$_SESSION["ACTIVAR RESERVAS"]=0;
 				       in_array(5, $arreglo)?$_SESSION["REIMPRIMIR TICKET"]=1:$_SESSION["REIMPRIMIR TICKET"]=0;
 				       in_array(6, $arreglo)?$_SESSION["EDITAR RESERVAS"]=1:$_SESSION["EDITAR RESERVAS"]=0;
 				       in_array(7, $arreglo)?$_SESSION["BORRAR RESERVAS"]=1:$_SESSION["BORRAR RESERVAS"]=0;
 				       in_array(8, $arreglo)?$_SESSION["REPORTES"]=1:$_SESSION["REPORTES"]=0;
-				       in_array(9, $arreglo)?$_SESSION["CONFIGURACION"]=1:$_SESSION["CONFIGURACION"]=0;
+							 in_array(9, $arreglo)?$_SESSION["C-HOTELES"]=1:$_SESSION["C-HOTELES"]=0;
+							 in_array(1011, $arreglo)?$_SESSION["C-USUARIOS"]=1:$_SESSION["C-USUARIOS"]=0;
+							 in_array(1012, $arreglo)?$_SESSION["C-RESTAURANTES"]=1:$_SESSION["C-RESTAURANTES"]=0;
+							 in_array(1013, $arreglo)?$_SESSION["C-SEATINGS"]=1:$_SESSION["C-SEATINGS"]=0;
+							 in_array(1014, $arreglo)?$_SESSION["C-TICKETS"]=1:$_SESSION["C-TICKETS"]=0;
+							 in_array(1015, $arreglo)?$_SESSION["C-RSVXESTANCIA"]=1:$_SESSION["C-RSVXESTANCIA"]=0;
+							 in_array(1016, $arreglo)?$_SESSION["C-IMPRESORAS"]=1:$_SESSION["C-IMPRESORAS"]=0;
 				       /*fin variables de sesion permisos usuario*/
 
 		                /*variables de sesión para ocupar en todo el sistema--estos son datos del usuario*/
@@ -70,15 +75,16 @@ class ControladorUsuarios{
 
 						/*Para generar las variables de sesion para usar el conector adecuado*/
 						$item = "idHotel";//el campo de la tabla
-              			$valor = $_SESSION["idHotel"];//el valor
-              			$respuesta = ControladorConectorSQLSRV::ctrMostrarDatosConector($item,$valor);
+            $valor = $_SESSION["idHotel"];//el valor
+            $respuesta = ControladorConectorSQLSRV::ctrMostrarDatosConector($item,$valor);
 		              
-		                $_SESSION["servidorSQLSRV"] = $respuesta["ipServidor"];
-		                $_SESSION["bdSQLSRV"] = $respuesta["baseDeDatos"];
-		                $_SESSION["usuarioSQLSRV"] = $respuesta["usuario"];
+		        $_SESSION["servidorSQLSRV"] = $respuesta["ipServidor"];
+		        $_SESSION["bdSQLSRV"] = $respuesta["baseDeDatos"];
+		        $_SESSION["usuarioSQLSRV"] = $respuesta["usuario"];
 						$_SESSION["passwordSQLSRV"] = $respuesta["password"];
-						$_SESSION["ICONO BANDERA"]=1;
-		                /*fin variables de sesion para usar el conector adecuado*/						
+						$_SESSION["VER-MENU-CONFIGURACION"]=1;
+						$_SESSION["ICONO BANDERA"]=1; //para mostrar la bandera que despliega el lateral de estadisticas
+		        /*fin variables de sesion para usar el conector adecuado*/						
 						echo '<script>
 								window.location="hacer-reservas";
 					          </script>';					  
@@ -98,7 +104,7 @@ class ControladorUsuarios{
 	REGISTRO DE USUARIOS
 	=============================================*/	
 	public function ctrRegistroUsuario(){
-
+		
 		if (isset($_POST["regUsuario"])) {
 			
 			if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ ]*$/', $_POST["regUsuario"]) &&
@@ -383,19 +389,26 @@ class ControladorUsuarios{
 						$_SESSION["bdSQLSRV "]=0;
 						$_SESSION["usuarioSQLSRV"]=0;
 						$_SESSION["passwordSQLSRV"]=0;
-						
+							
 						/*SOLO LE PERMITO ACCESO A LA PARTE DE CONFIGURACION*/
 						$_SESSION["HACER RESERVAS"]=0;
 						$_SESSION["ADMINISTRARRESERVASPAGINAS"]=0;						
 						$_SESSION["PAGINAINICIO"]=0;
-				        $_SESSION["ACTIVAR RESERVAS"]=0;
-				        $_SESSION["REIMPRIMIR TICKET"]=0;
-				        $_SESSION["EDITAR RESERVAS"]=0;
-				        $_SESSION["BORRAR RESERVAS"]=0;
+				    $_SESSION["ACTIVAR RESERVAS"]=0;
+				    $_SESSION["REIMPRIMIR TICKET"]=0;
+				    $_SESSION["EDITAR RESERVAS"]=0;
+				    $_SESSION["BORRAR RESERVAS"]=0;
 						$_SESSION["REPORTES"]=0;
-						$_SESSION["SUBMENU LATERAL"]=0;						
-						$_SESSION["ICONO BANDERA"]=0;	
-						$_SESSION["CONFIGURACION"]=1;
+						$_SESSION["SUBMENU LATERAL"]=0;
+						$_SESSION["VER-MENU-CONFIGURACION"]=1;					
+						$_SESSION["ICONO BANDERA"]=0;// 0	para mostrar iconoBandera para mostrar el lateral de estadisticas
+						$_SESSION["C-HOTELES"]=1;
+						$_SESSION["C-USUARIOS"]=1;
+						$_SESSION["C-RESTAURANTES"]=1;
+						$_SESSION["C-SEATINGS"]=1;
+						$_SESSION["C-TICKETS"]=1;
+						$_SESSION["C-RSVXESTANCIA"]=1;
+						$_SESSION["C-IMPRESORAS"]=1;
 					
 						echo '<script>
 								window.location="hoteles";

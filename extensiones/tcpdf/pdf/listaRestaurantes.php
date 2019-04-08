@@ -47,10 +47,11 @@ EOF;
 $pdf->writeHTML($bloque2, false, false, false, false, '');
 
 // ---------------------------------------------------------
+$tabla = "restaurantes";
 $campoTabla = "idHotel"; //sería el campo de la tabla
 $valorCampoTabla = $this->idHotelPdf; // el valorCampoTabla del id. por ejemplo (id = 7)
 //traigo los resultados de acuerdo al id hotel que recibo
-$respuesta = ControladorRestaurantes::ctrMostrarListaRestaurantes($campoTabla,$valorCampoTabla);
+$respuesta = ModeloRestaurantes::mdlMostrarListaRestaurantesPdf($tabla,$campoTabla,$valorCampoTabla);
 
 foreach ($respuesta  as $key => $elemento) {
 
@@ -81,8 +82,10 @@ $pdf->Output('listaRestaurantes.pdf');
 }
 
 $listaRestaurantes = new imprimirLista();
-$listaRestaurantes -> idHotelPdf = $_GET["idHotelPdf"];
+if(isset($_GET["idHotelPdf"])){
+	$listaRestaurantes -> idHotelPdf = $_GET["idHotelPdf"];
+}else{
+	$listaRestaurantes -> idHotelPdf = null;
+}
 $listaRestaurantes -> imprimirListaRestaurantes();
-
-
 ?>

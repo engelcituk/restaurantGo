@@ -18,7 +18,7 @@
               <?php 
                 $lstPermisosNivelHotel = new ControladorPermisos();
                 $lstPermisosNivelHotel ->ctrMostrarPermisosTipoHotel();
-              ?>
+              ?> 
           </select>
       </div>
       <div class="form-group has-feedback">

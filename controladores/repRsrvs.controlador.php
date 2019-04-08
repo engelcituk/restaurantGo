@@ -34,7 +34,8 @@ class ControladorReportes{
 		$tabla ="reservas";
 					
 		$valorDeMiCampo=$_GET["idRest"];
-		$nombreRestaurante=$_GET["nomRest"];
+		$nameRestaurante=$_GET['nomRest'];
+		$nombreRestaurante = $nameRestaurante=="Todos" ? "Todos los restaurantes" : $nameRestaurante;
 		$valorDeMiCampo2=$_GET["fechaInicio"];		
 		$valorDeMiCampo3=$_GET["fechaFinal"];
 				

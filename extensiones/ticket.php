@@ -1,4 +1,5 @@
 <?php 
+session_start();
 require __DIR__ . '/posTicket/autoload.php'; //Nota: si renombraste" cambia el nombre en esta línea
 require_once "../modelos/tickets.modelo.php";
 
@@ -13,7 +14,7 @@ class AjaxTickets{
 	public $restauranteDelaReserva;
 	public $fechaDeLaReserva;
 	public $HoraDelaReserva;
-	public $apellidoDeLaReserva;
+	public $apellidoDeLaReserva; 
 	public $paxDelaReserva;
 	public $habitacionDelaReserva;
 	// public $mesaDelaReserva;
@@ -53,7 +54,7 @@ class AjaxTickets{
 				/* 172.16.0.207 ip de la impresora que ocupé para pruebas,
 				cambiar la variable parametro $ipImpresoraParaTicket por una ip fija para pruebas si es
 				necesaria */
-			    $conectarImpresora = new NetworkPrintConnector("172.16.0.207", 9100);
+			    $conectarImpresora = new NetworkPrintConnector( $ipImpresoraParaTicket, 9100);
 			    $saltoLogo="";
 			    $impresora = new Printer($conectarImpresora);
 				$logo = EscposImage::load("logo.png", false);
@@ -75,7 +76,7 @@ class AjaxTickets{
 				$impresora->text($fechaGeneracionTicket. "\n\n");
 			    $impresora -> cut();			    
 			    /* Close printer */
-			    $impresora -> close();
+				$impresora -> close();				
 			} catch (Exception $e) {
 				echo "No se puede imprimir con esta impresora: " . $e -> getMessage() . "\n";
 		}

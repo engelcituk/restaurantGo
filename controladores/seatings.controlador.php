@@ -102,7 +102,7 @@ class ControladorSeatings{
 				$datos = array("idHotel" =>$_POST["idHotelfield"],
 						   "idRestaurante" =>$_POST["idRestaurantefield"],
 						   "idDiaSemana" =>$dia,
-						   "horaSeating" =>$_POST["horaElegidaCampo"],
+						   "horaSeating" =>$_POST["catalogoHorarios"],
 						   "pm" =>$_POST["numPaxModal"],
 						   "rm" =>$_POST["numRSVModal"],
 						   "estado" =>$estado);			

@@ -1,5 +1,5 @@
 <?php 
-  if($_SESSION["CONFIGURACION"]==1){
+  if($_SESSION["C-USUARIOS"]==1){
  ?>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">

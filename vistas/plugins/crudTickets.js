@@ -23,18 +23,18 @@ $("#idioma").change(function(){
                 // console.log("respuesta",respuesta);
                 if (respuesta){ //si respuesta es true (si me trae resultados)..
                 //coloco una alerta despues del elemento con el columnaIdioma en su elemento padre.
-                    $("#columnaIdioma").after('<div class="alert alert-warning"><strong>Nota: </strong> Este idioma ya existe</div>');
+                    $("#columnaIdioma").after('<div class="alert alert-warning"><strong>Nota: </strong> Este nombre de ticket ya existe</div>');
                     $("#idioma").val(""); //limpiamos el value con el identificador idioma
                     $("#btnNuevoTicket").attr("disabled",true);   
                 }else {
-                    $("#columnaIdioma").after('<div class="alert alert-success"><strong>Nota: </strong> Idioma disponible para crear Ticket</div>');                    
+                    $("#columnaIdioma").after('<div class="alert alert-success"><strong>Nota: </strong> Nombre disponible para crear Ticket</div>');                    
                 }
             }
         })
     }
     else
          {
-          swal ( "Oops","Escriba un idioma", "error")
+          swal ( "Oops","Escriba un nombre", "error")
           $("#idioma").val("");
           $("#btnNuevoTicket").attr("disabled",true);           
     }              
@@ -197,21 +197,29 @@ $(document).on("click", ".btnActivarTicket", function(){
             
             console.log("respuesta",respuesta);
         }
-    })
-        
+    })        
         if (estadoTicket == 0) {
-
             $(this).removeClass('btn-success');
-            $(this).addClass('btn-danger');
-            $(this).html('<i class="fas fa-check"></i>');
+            $(this).addClass('btn-warning');
+            $(this).html('<i class="fas fa-ban"></i>');
             $(this).attr('estadoTicket', 1);
+            $(this).attr({title: "Activar Ticket"});
+            // $('#ticketEstado').tooltip('dispose');            
         }
         else {
-            $(this).removeClass('btn-danger');
+            $(this).removeClass('btn-warning');
             $(this).addClass('btn-success');
-            $(this).html('<i class="fas fa-times-circle"></i>');
+            $(this).html('<i class="fas fa-check"></i>');
             $(this).attr('estadoTicket', 0);
+            $(this).attr({title: "Desactivar Ticket"});
+            // $('#ticketEstado').tooltip('dispose'); 
+            
         }
 
 })
 /*=====  END OF PARA ACTIVAR UN TICKET  ======*/
+// PARA MOSTRAR TOOLTIPS A LOS BOTONES
+// $(document).ready(function(){
+//   $('[data-toggle="tooltip"]').tooltip();     
+// });
+

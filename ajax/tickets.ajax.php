@@ -1,4 +1,5 @@
 <?php 
+session_start();
 //se requiere el controlador y el modelo para obtener respuesta
 require_once "../controladores/tickets.controlador.php";
 require_once "../modelos/tickets.modelo.php";
@@ -10,7 +11,7 @@ class AjaxTickets{
 = VALIDAR NO REPETIR A UN ticket    =
 ======================================*/
 	public $validarTicket;
-
+ 
 	public function ajaxValidarTicket(){
 		
 		$tabla="tickets";

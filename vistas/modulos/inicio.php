@@ -35,12 +35,15 @@ PÁGINA DE INICIO
          
           <!-- <h3 class="box-title">Title</h3> -->
 
-          <div class="box-tools pull-right">
+          <div class="pull-right">
             <!-- <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                     title="Collapse">
               <i class="fa fa-minus"></i></button> -->
             <!-- <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
               <i class="fa fa-times"></i></button> -->
+              <div id="btnDocsListaDatatable">
+              
+            </div>
           </div>
         </div>
         <div class="box-body">
@@ -93,9 +96,7 @@ PÁGINA DE INICIO
               ?>
                 
               </tbody>
-        </table>
-
-            <button class="btn btn-info pull-right" style="margin:20px;"><i class="fa fa-print"></i> Imprimir Consulta</button>
+        </table>                        
             </div>
 
             </div>

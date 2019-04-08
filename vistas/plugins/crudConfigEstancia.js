@@ -229,7 +229,7 @@ $("#regNochesEstancia").change(function(){ //regNochesEstancia es lista Select d
  $("#regNuevoNumMaxRsvs").change(function(){ 	
  	var regNuevoNumMaxRsvs = $("#regNuevoNumMaxRsvs").val(); 	
  	var soloDigitos = this.value.replace(/[^0-9]/g,'');
-	    if(soloDigitos > 0 && soloDigitos < 100 && regNuevoNumMaxRsvs !=''){	       
+	    if(soloDigitos >= 0 && soloDigitos < 100 && regNuevoNumMaxRsvs !=''){	       
 	        $("#btnConfEstanciaGuardar").removeAttr("disabled");	        
 	    }else{
 	        swal ( "Oops" ,  "Ingrese un valor válido" ,  "error" )

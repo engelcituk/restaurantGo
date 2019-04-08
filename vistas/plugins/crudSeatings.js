@@ -276,8 +276,7 @@ $("#catalogoHorarios").change(function(){
 
  	// console.log(idHotelLS);
  	// console.log(idRestauranteLS);
- 	if (horaElegida != '') {                    	     	   	 
-	  	$("#horaElegidaCampo").val(horaElegida);
+ 	if (horaElegida != '') {                    	     	   	 	
 	  	 var datos = new FormData();
 		 datos.append("idHotelVS",idHotelLS);
 		 datos.append("idRestauranteVS",idRestauranteLS);
@@ -294,17 +293,19 @@ $("#catalogoHorarios").change(function(){
 			success:function(respuesta){ //obtengo una respuesta tipo json							
 				//si se regresa un array con valores
 				if (respuesta.length>0) {
-					$("#elegirHorarioSeating").after('<div class="alert alert-warning"><strong>Nota: </strong> Este horario ya ha sido ocupado</div>');
+					$(".alert").remove();
+					$("#mensajeHoraDisponible").after('<div class="alert alert-warning"><strong>Horario ocupado</strong></div>');
+					// swal("Oops", "Horario ocupado", "error");
 					$("#campoPaxModal").addClass("hidden");
 		  			$("#campoPaxRSV").addClass("hidden");
-		  			$("#catalogoHorarios").val("");
-		  			$("#horaElegidaCampo").val("");
+		  			$("#catalogoHorarios").val("");		  			
 		  			$("#btnNuevoSeating").attr("disabled",true);
 		  			$("#numPaxModal").val("");
 					$("#numRSVModal").val("");
 
-				}else{					
-					$("#elegirHorarioSeating").after('<div class="alert alert-success"><strong>Nota: </strong> Horario disponible</div>');
+				}else{
+					$(".alert").remove();				
+					$("#mensajeHoraDisponible").after('<div class="alert alert-success"><strong>Horario disponible</strong> </div>');
 					$("#campoPaxModal").removeClass("hidden");
 					$("#campoPaxRSV").removeClass("hidden");
 				}			
@@ -313,8 +314,7 @@ $("#catalogoHorarios").change(function(){
 	}
 	else
 		 {
-		  swal ( "Oops","Elija un horario", "error")
-		  $("#horaElegidaCampo").val("");
+		  swal ( "Oops","Elija un horario", "error");		  
 		  $("#campoPaxModal").addClass("hidden");
 		  $("#campoPaxRSV").addClass("hidden");
 	}		

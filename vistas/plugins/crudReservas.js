@@ -46,7 +46,7 @@ $(document).on("click", ".eliminarReserva", function(){
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){ //obtengo una respuesta tipo json
-			console.log("respuesta",respuesta);
+			// console.log("respuesta",respuesta);
 			var cortarCadenaHora = respuesta["hora"];
 					var inicio = 0;
 					var fin = 8;
@@ -66,7 +66,7 @@ $(document).on("click", ".eliminarReserva", function(){
 });
 /*=====  FIN DE CARGAR DATOS PARA EL TICKET  ======*/
 /*======================================
-=PARA ENVIAR LOS DATOS DEL TICKET A IMPRIMIR =
+=PARA ENVIAR LOS DATOS DEL TICKET A IMPRIMIR = 
 ======================================*/
  $(document).on("click", ".obtenerDatosTicket", function(){
  	
@@ -105,7 +105,7 @@ $(document).on("click", ".eliminarReserva", function(){
 				dataType:"json", //los datos son de tipo json
 				success:function(respuesta){ //obtengo una respuesta tipo json
 					
-					// console.log("respuesta",respuesta);
+					 console.log("respuesta",respuesta);
 		}
 	})
 });
@@ -159,7 +159,7 @@ $("#fechaFiltro").change(function(){ //lstSelectRest es lista Select de restaura
 	$("#espacioPax").addClass("hidden");
 
  	var idReserva = $(this).attr("idReserva");
- 	console.log(idReserva);
+ 	// console.log(idReserva);
  	$("#idDeLaReserva").val(idReserva);
 
  	var datos = new FormData();
@@ -175,26 +175,30 @@ $("#fechaFiltro").change(function(){ //lstSelectRest es lista Select de restaura
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){ //obtengo una respuesta tipo json
 			// console.log("respuesta",respuesta);
+			
 			var cortarCadenaHora = respuesta["hora"];
 					var inicio = 0;
 					var fin = 8;
 					var subCadenaHora=cortarCadenaHora.substring(inicio,fin);
-			$("#fechaElaboracion").val(respuesta["fechaElaboracion"]); //le cargo en esos campos los resultados
-			$("#fechaDeLaReserva").val(respuesta["fechaDeLaReserva"]);
-			$("#reserva").val(respuesta["reservaIdentificador"]);
-			$("#nombreRestaurante").val(respuesta["nombreRestaurante"]);
-			$("#apellido").val(respuesta["apellido"]);
-			$("#pax").val(respuesta["pax"]);
-			$("#observaciones").val(respuesta["observaciones"]);
-			$("#habitacion").val(respuesta["habitacion"]);			
-			$("#hora").val(subCadenaHora);
+					$("#fechaElaboracion").val(respuesta["fechaElaboracion"]); //le cargo en esos campos los resultados
+					$("#fechaDeLaReserva").val(respuesta["fechaDeLaReserva"]);
+					var fechaLimite=respuesta["fechaLimite"];
+					var tieneFechaLimite = fechaLimite == null ? "SIN FECHA LIMITE" : fechaLimite;
+					$("#fechaLimiteMax").val(tieneFechaLimite);
+					$("#reserva").val(respuesta["reservaIdentificador"]);
+					$("#nombreRestaurante").val(respuesta["nombreRestaurante"]);
+					$("#apellido").val(respuesta["apellido"]);
+					$("#pax").val(respuesta["pax"]);
+					$("#observaciones").val(respuesta["observaciones"]);
+					$("#habitacion").val(respuesta["habitacion"]);			
+					$("#hora").val(subCadenaHora);
 
-			var idhotel= respuesta["idHotel"];
-			var idRestaurante= respuesta["idRestaurante"];
+					var idhotel= respuesta["idHotel"];
+					var idRestaurante= respuesta["idRestaurante"];
 
-			localStorage.setItem("idHotelEditLS", idhotel);	//guardo en LocalStorage idhotel
-			localStorage.setItem("idRestauranteEditLS", idRestaurante);	//guardo en LS idRestaurante
-			localStorage.setItem("nuevoPaxLS", respuesta["pax"]);
+					localStorage.setItem("idHotelEditLS", idhotel);	//guardo en LocalStorage idhotel
+					localStorage.setItem("idRestauranteEditLS", idRestaurante);	//guardo en LS idRestaurante
+					localStorage.setItem("nuevoPaxLS", respuesta["pax"]);
 		}					
 	})
 
@@ -210,24 +214,73 @@ $("#lstSelectRestEdit").change(function(){
     
     var idHotel = $("option:selected",this).attr("idhoteleditar");
     var idRestaurante = $("option:selected",this).attr("idrestauranteeditar");         
-
-    var nombreRestaurante= $("#lstSelectRestEdit option:selected").text();
+		var fechaLimiteMax = $("#fechaLimiteMax").val();
+		var horaCierreRestaurante = $("option:selected", this).attr("horaCierre");
+    // var nombreRestaurante= $("#lstSelectRestEdit option:selected").text();
 
     localStorage.setItem("idHotelEditNuevoLS", idHotel);//guardo en LocalStorage idhotel
-	localStorage.setItem("idRestauranteNuevoLS", idRestaurante);//guardo en LS idRestaurante
+		localStorage.setItem("idRestauranteNuevoLS", idRestaurante);//guardo en LS 
+		localStorage.setItem("hcierreRestLST", horaCierreRestaurante);
+		localStorage.setItem("fechaLimiteRSVLST", fechaLimiteMax);
     
-    if (idRestaurante != ''){       
-       console.log("idRestaurante",idRestaurante); 
-       console.log("idHotel",idHotel); 
+	if (idRestaurante != '' && idRestaurante != undefined){       
+      //  console.log("idRestaurante",idRestaurante); 
+			//  console.log("idHotel",idHotel); 
+			//  console.log("fechaLimiteRSV", fechaLimiteMax); 
+			 activarRangoFechas();//ejecuto la funcion para mostrar la notificacion de los horarios de cierre
        $("#nuevaFecha").removeAttr("readonly");
     }
     else
          {
           swal ( "Oops","Elija un restaurante", "error");
-          $("#nuevaFecha").attr("readonly",true); 
+					$("#nuevaFecha").attr("readonly",true); 
+					$("#nuevoHorario").addClass("hidden");
           $("#nuevaFecha").val("");                  
     }              
 })
+// funcion para trabajar con las horas de cierre
+function activarRangoFechas() {
+	var horaCierreRestaurante = localStorage.getItem("hcierreRestLST");//obtengo el horario de cierre
+	var fechaLimiteMax = localStorage.getItem("fechaLimiteRSVLST");//obtengo el horario de cierre
+
+	var horaActual = obtenerHoraActual();
+	var fechaHoy = obtenerFechaHoy();
+	var fechaManana = obtenerFechaManana();
+
+	if (horaCierreRestaurante == "SIN HORARIO") {	
+		var fechaMinimoCal = horaCierreRestaurante == "SIN HORARIO" ? fechaHoy : fechaManana;
+		var fechaMaximoCal = fechaLimiteMax == "SIN FECHA LIMITE" ? "" : fechaLimiteMax;
+		$("#nuevaFecha").attr({ "min": fechaMinimoCal, "max": fechaMaximoCal });
+
+		$.notify({
+			message: '<i class="fas fa-sun"></i> <strong>Nota:</strong> Este restaurante no tiene definido un horario de cierre, puede hacer reservas para hoy ' + fechaHoy +' sin restricciones '  
+		}, {
+				type: 'info',
+				z_index: 2000,
+				delay: 5000
+			});		
+	} else {
+			if (horaCierreRestaurante >= horaActual) {
+				var fechaMinimoCal = horaCierreRestaurante >= horaActual ? fechaManana : fechaHoy;
+				var fechaMaximoCal = fechaLimiteMax == "SIN FECHA LIMITE" ? "" : fechaLimiteMax;
+				$("#nuevaFecha").attr({ "min": fechaMinimoCal, "max": fechaMaximoCal });
+				var fechaMostrar = fechaHoy;
+			} else {
+				var fechaMostrar = fechaManana;
+				var fechaMinimoCal = horaCierreRestaurante == "SIN HORARIO" ? fechaHoy : fechaManana;
+				var fechaMaximoCal = fechaLimiteMax == "SIN FECHA LIMITE" ? "" : fechaLimiteMax;
+				$("#nuevaFecha").attr({ "min": fechaMinimoCal, "max": fechaMaximoCal });
+			}		
+		$.notify({
+			message: '<i class="fas fa-clock"></i> <strong>Nota:</strong> Este restaurante tiene horario definido de cierre, las reservas para hoy lo tiene que hacer antes de las ' + horaCierreRestaurante 
+		}, {
+				type: 'warning',
+				z_index: 2000,
+				delay: 5000
+			});
+		}
+	}	
+
  /*======================================
 = PARA QUE NO DEJE VACIO EL SELECT DE RESTAURANTE
 ======================================*/
@@ -346,110 +399,109 @@ $(".nuevoHorario").change(function(){
 	var idRestaurante = localStorage.getItem("idRestauranteEditLS");
 	var numReservasMax = localStorage.getItem("reservaMaximasLS");
 	var numDePaxMaxima = localStorage.getItem("paxMaximoLS");
-
-	console.log("idRestaurante",idRestaurante);
+	
 	var datos = new FormData();
 
 	datos.append("fechaDeLaReserva",fechaDeLaReserva);
 	datos.append("horaDelSeating",horaDelSeating);
 	datos.append("idRestauranteSeating",idRestaurante);
+	// console.log();	
+		$.ajax({
+			url: "ajax/reservasRestaurantes.ajax.php", //enviamos a este archivo para que lo procese
+			method: "POST", //el envio es por POST
+			data: datos, //datos es la instancia de ajax por el que se envia 
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json", //los datos son de tipo json
+			success: function (respuesta) {
+				console.log("respuestaF", respuesta);
+				var totalReservas = respuesta[0];
+				var sumaPax = respuesta[1];
 
-  	$.ajax({
-  		url:"ajax/reservasRestaurantes.ajax.php", //enviamos a este archivo para que lo procese
-		method: "POST", //el envio es por POST
-		data: datos, //datos es la instancia de ajax por el que se envia 
-		cache: false,
-		contentType: false,
-		processData: false,
-		dataType:"json", //los datos son de tipo json
-		success:function(respuesta){
-			console.log("respuestaF",respuesta);
-			var totalReservas = respuesta[0];
-			var sumaPax = respuesta[1];			
+				if (sumaPax === null || totalReservas === null) {
+					totalReservas = 0;
+					sumaPax = 0;
+				} else {
+					totalReservas = respuesta[0];
+					sumaPax = respuesta[1];
+				}
 
-			if (sumaPax===null || totalReservas===null) {
-				totalReservas= 0;
-				sumaPax = 0;
-			} else {
-				totalReservas=respuesta[0];
-				sumaPax=respuesta[1];
-			}
-			
-			localStorage.setItem("totalReservasLS", totalReservas);
-			localStorage.setItem("sumaPaxLS", sumaPax);
+				localStorage.setItem("totalReservasLS", totalReservas);
+				localStorage.setItem("sumaPaxLS", sumaPax);
 
-			$("#totalReservasHechas").val(totalReservas);
-			$("#totalPaxAcumulados").val(sumaPax);
+				$("#totalReservasHechas").val(totalReservas);
+				$("#totalPaxAcumulados").val(sumaPax);
 
-			if (numReservasMax===totalReservas || numDePaxMaxima===sumaPax) {
-				$("#enviarNuevaRsv").attr("disabled",true);
-				swal({
-					title: "¡Error!",
-					text: "Llegó al limite de pax/reservas que puede cubrir para esta hora, se ha hecho "+totalReservas+" reserva(s). Numero de pax: "+sumaPax+"",
-					type:"error",
-					confirmButtonText: "Cerrar",
-					closeOnConfirm: false
+				if (numReservasMax === totalReservas || numDePaxMaxima === sumaPax) {
+					$("#enviarNuevaRsv").attr("disabled", true);
+					swal({
+						title: "¡Error!",
+						text: "Llegó al limite de pax/reservas que puede cubrir para esta hora, se ha hecho " + totalReservas + " reserva(s). Numero de pax: " + sumaPax + "",
+						type: "error",
+						confirmButtonText: "Cerrar",
+						closeOnConfirm: false
 					},
-					function(isConfirm){
-						if(isConfirm){
-							window.location="administrar-reservas"
-						}
-					});
+						function (isConfirm) {
+							if (isConfirm) {
+								window.location = "administrar-reservas"
+							}
+						});
 
-			} else
-				{
-					var reservasPorHacer = numReservasMax-totalReservas;
-					var paxFaltantes = numDePaxMaxima-sumaPax;
+				} else {
+					var reservasPorHacer = numReservasMax - totalReservas;
+					var paxFaltantes = numDePaxMaxima - sumaPax;
 					var numReservasMax = localStorage.getItem("reservaMaximasLS");
-					var numDePaxMaxima = localStorage.getItem("paxMaximoLS");				
+					var numDePaxMaxima = localStorage.getItem("paxMaximoLS");
 					var totalReservasHechas = localStorage.getItem("totalReservasLS");
 					var totalPaxAcumulados = localStorage.getItem("sumaPaxLS");
 
-				  	var a=numReservasMax;
-					var ab=parseInt(a);
-					var c=numDePaxMaxima;
-				    var cd=parseInt(c);
+					var a = numReservasMax;
+					var ab = parseInt(a);
+					var c = numDePaxMaxima;
+					var cd = parseInt(c);
 
-				    var e=totalReservasHechas;
-					var ef=parseInt(e);
-					var g=totalPaxAcumulados;
-				    var gh=parseInt(g);
+					var e = totalReservasHechas;
+					var ef = parseInt(e);
+					var g = totalPaxAcumulados;
+					var gh = parseInt(g);
 
-				  	var numRsvQuedan = ab - ef;
-				  	var numPaxQuedan = cd - gh;	
-				  	var valorHora= $(".nuevoHorario option:selected").val();
+					var numRsvQuedan = ab - ef;
+					var numPaxQuedan = cd - gh;
+					var valorHora = $(".nuevoHorario option:selected").val();
 
-				  	//sino elige hora del listado
-				  	if (valorHora === '') {
-					    // $("#editarFechaHoraPax").before('<div class="alert alert-warning"><strong>Advertencia:</strong> Elige una hora del listado para poder hacer los calculos</div>');
-					    $.notify({							
-							message: '<i class="fas fa-exclamation-triangle"></i> <strong>Advertencia:</strong> Elige una hora del listado para poder hacer los calculos' 
-							},{
-							// settings
-							type: 'warning',
-							z_index: 2000,
-							delay: 6000
-						});
+					//sino elige hora del listado
+					if (valorHora === '') {
+						// $("#editarFechaHoraPax").before('<div class="alert alert-warning"><strong>Advertencia:</strong> Elige una hora del listado para poder hacer los calculos</div>');
+						$.notify({
+							message: '<i class="fas fa-exclamation-triangle"></i> <strong>Advertencia:</strong> Elige una hora del listado para poder hacer los calculos'
+						}, {
+								// settings
+								type: 'warning',
+								z_index: 2000,
+								delay: 6000
+							});
 
-					    $("#totalReservasHechas").val("");
-					    $("#totalPaxAcumulados").val("");
-					   } else {        						
-						
-						$.notify({							
-							message: '<i class="fas fa-clock"></i> <strong>Nota</strong> Para esta fecha tiene '+totalReservas+' reserva(s), con un total de '+sumaPax+' pax. Tiene espacio para un total de '+numPaxQuedan+' pax.' 
-							},{
-							// settings
-							type: 'info',
-							z_index: 2000,
-							delay: 6000
-						});
+						$("#totalReservasHechas").val("");
+						$("#totalPaxAcumulados").val("");
+					} else {
+
+						$.notify({
+							message: '<i class="fas fa-clock"></i> <strong>Nota</strong> Para esta fecha tiene ' + totalReservas + ' reserva(s), con un total de ' + sumaPax + ' pax. Tiene espacio para un total de ' + numPaxQuedan + ' pax.'
+						}, {
+								// settings
+								type: 'info',
+								z_index: 2000,
+								delay: 6000
+							});
 
 						$("#totalReservasHechas").val(totalReservas);
-						$("#totalPaxAcumulados").val(sumaPax); 
-				}								  					  						
-			}						
-		}
-  	})
+						$("#totalPaxAcumulados").val(sumaPax);
+					}
+				}
+			}
+		})
+	  	
 })
 /*======================================
 = CON ESTO NO PERMITO EL INGRESO DE ELEMENTOS QUE NO SEAN NUMERICOS en campo pax

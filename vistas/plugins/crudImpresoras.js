@@ -7,8 +7,13 @@ $("#lstSelectHotelPrinters").change(function(){ //lstSelectHotelPrinters es list
 	var idHotel = $("option:selected",this).attr("idhotelLstPrinter");
 	var nombreHotel = $("option:selected",this).text();
 	
-	window.location="index.php?ruta=impresoras&idHotel="+idHotel+"&nomHotel="+nombreHotel;	
-	
+	// window.location="index.php?ruta=impresoras&idHotel="+idHotel+"&nomHotel="+nombreHotel;	
+	if(idHotel=="TODOS"){
+		var url="impresoras";		
+		location.href = url;	
+	}else{		
+		window.location="index.php?ruta=impresoras&idHotel="+idHotel+"&nomHotel="+nombreHotel;		
+	}
 })
  /*===============================================
 =PARA ACTIVAR/DESACTIVAR UNA CONFIGURACION DE
@@ -222,9 +227,12 @@ $("#regNombreImpresora").change(function(){
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){ //obtengo una respuesta tipo json						
-			// console.log("respuesta",respuesta);								
+			// console.log("respuesta",respuesta);	
+			localStorage.setItem("nuevaDireccionIPLS", respuesta["direccionIP"]);							
 			$("#ipImpresoraSpan").html(respuesta["direccionIP"]);
+			$("#nuevaDireccionIP").val(respuesta["direccionIP"]);
 			$("#nombreImpresoraSpan").html(respuesta["nombreImpresora"]);			
+			$("#nuevoNomImpresora").val(respuesta["nombreImpresora"]);			
 		}					
 	})
 
@@ -265,7 +273,7 @@ $(".alert").remove();
 	    }
 	}
 })
-// se verifica que no exista esa ip que se desea agregar
+// se verifica que no exista esa ip que se desea agregar para editar la direccion IP y el nombre de la impresora
 $("#nuevaDireccionIP").change(function(){
 	$(".alert").remove();
 	var ipImpresora = $(this).val();
@@ -287,12 +295,14 @@ $("#nuevaDireccionIP").change(function(){
 		success:function(respuesta){ //obtengo una respuesta tipo json			
 			// console.log("respuesta",respuesta);
 			if (respuesta){ //si respuesta es true (si me trae resultados)..
-				$("#rowEditarImpresora").after('<div class="alert alert-warning">Esta IP ya existe en la base de datos, intente con otra dirección.</div>');
-				$("#nuevaDireccionIP").val(""); 
-				$("#nombreImpresoraOcultoModal").addClass("hidden");
-				$("#nuevoNomImpresora").val("");
+				// console.log(respuesta);
+				$("#rowEditarImpresora").after('<div class="alert alert-warning">IP de impresora existente en la base de datos, por favor mantener la ip actual.</div>');
+				var ipActual = localStorage.getItem("nuevaDireccionIPLS");
+				$("#nuevaDireccionIP").val(ipActual);
+				$("#nombreImpresoraOcultoModal").removeClass("hidden");
+				// $("#nuevoNomImpresora").val("");
 			}else {
-				$("#rowEditarImpresora").after('<div class="alert alert-success"><strong>Dirección disponible para ocupar</strong></div>');
+				$("#rowEditarImpresora").after('<div class="alert alert-success"><strong>Está indicando una nueva dirección IP, sí esta disponible para ocupar</strong></div>');
 				$("#nombreImpresoraOcultoModal").removeClass("hidden");
 			}
 		}
@@ -301,6 +311,7 @@ $("#nuevaDireccionIP").change(function(){
 
 /*==============================================
  PARA EVITAR COPIAR Y PEGAR EN INPUT DE IP en modal  Registrar nueva impresora
+ 192.168.109.155 172.16.0.175
  ===================================*/
 $(document).ready(function(){
   $("#nuevaDireccionIP").on('paste', function(e){
@@ -320,6 +331,7 @@ $(document).ready(function(){
 //habilito botón para guardar impresora
 $("#nuevoNomImpresora").change(function(){
 	var nombreImpresora = $(this).val();
+	$(".alert").remove();
 	// console.log("nombreImpresora",nombreImpresora);
 	if (nombreImpresora === "") { 
 		$("#btnNuevaImpresoraEdit").attr("disabled",true);		

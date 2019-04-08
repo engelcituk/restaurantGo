@@ -7,14 +7,13 @@ class ModeloTicket{
 	FUNCION PARA CONSULTAR LA LISTA DE Tickets 
 	=============================================*/
 	static public function mdlMostrarListaTickets($tabla){
-		
-		//DE LO CONTRARIO SI ID VIENE VACIO HAGO CONSULTA DE TODO LA TABLA
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+		$idHotel = $_SESSION["idHotel"];	
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idHotel= $idHotel");
 
 		$stmt -> execute();
 
 		return $stmt -> fetchAll();
-
+ 
 		$stmt -> close();
 
 		$stmt = null;
@@ -26,9 +25,9 @@ class ModeloTicket{
 	 Activo
 	 =============================================*/
 	static public function mdlMostrarListaTicketsActivos($tabla){
-		
+		$idHotel = $_SESSION["idHotel"];
 		//DE LO CONTRARIO SI ID VIENE VACIO HAGO CONSULTA DE TODO LA TABLA
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE estado=1");
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE estado=1 AND idHotel=  $idHotel");
 
 		$stmt -> execute();
 
@@ -46,8 +45,8 @@ class ModeloTicket{
 	DE TICKETS--campo idioma
 	=============================================*/
 	static public function mdlMostrarDatoTicket($tabla,$valorDeMiCampo){		
-	
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE ticketTipo=:idioma");
+		$idHotel = $_SESSION["idHotel"];
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE ticketTipo=:idioma AND idHotel= $idHotel");
 		
 		$stmt->bindParam(":idioma",$valorDeMiCampo, PDO::PARAM_STR);
 
@@ -86,12 +85,13 @@ class ModeloTicket{
 	=============================================*/
 	static public function mdlRegistrarNuevoTicket($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (pie, encabezado, ticketTipo, estado) VALUES (:pie, :encabezado, :ticketTipo, :estado)");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (pie, encabezado, ticketTipo, estado, idHotel) VALUES (:pie, :encabezado, :ticketTipo, :estado,:idHotel)");
 
 		$stmt -> bindParam(":pie", $datos["pieDePagina"], PDO::PARAM_STR);
 		$stmt -> bindParam(":encabezado", $datos["encabezado"], PDO::PARAM_STR);
 		$stmt -> bindParam(":ticketTipo", $datos["idioma"], PDO::PARAM_STR);
 		$stmt -> bindParam(":estado", $datos["estado"], PDO::PARAM_INT);
+		$stmt->bindParam(":idHotel", $datos["idHotel"], PDO::PARAM_INT);
 	
 
 		if ($stmt->execute()) {
@@ -136,7 +136,27 @@ PARA GUARDAR LOS DATOS AL EDITAR EL TICKET DENTRO DEL MODAL
 
 		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
 
-		$stmt -> bindParam(":id", $datos, PDO::PARAM_INT);
+		$stmt -> bindParam(":id",$datos, PDO::PARAM_INT);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}else {
+			return "ERROR";
+		}
+
+		$stmt->close();
+
+		$stmt = null;
+	}
+	/*=============================================
+	 PARA BORRAR TODAS LAS IMPRESORAS DE TICKETS LIGADAS AL 
+	 BORRAR UN HOTEL EN ESPECIFICO
+	=============================================*/
+	static public function mdlEliminarTicketsHotel($tablaImpresorasTickets, $datos){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tablaImpresorasTickets WHERE idHotel = :idHotel");
+
+		$stmt->bindParam(":idHotel", $datos, PDO::PARAM_INT);
 
 		if ($stmt->execute()) {
 			return "OK";
@@ -148,7 +168,6 @@ PARA GUARDAR LOS DATOS AL EDITAR EL TICKET DENTRO DEL MODAL
 
 		$stmt = null;
 	}
-
 	/*=============================================
 	 PARA ACTUALIZAR EL ESTADO  DE UN TICKET 
 	=============================================*/

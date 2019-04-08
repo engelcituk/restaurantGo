@@ -8,12 +8,12 @@ class ModeloRestaurantes{
 	=============================================*/
 	static public function mdlRegistroRestaurante($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (idHotel, nombre, especialidad, horaCierre, estado) VALUES (:idHotel, :nombre, :especialidad, :horarioCierreLista, :estado)");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (idHotel, nombre, especialidad, horaCierre, estado) VALUES (:idHotel, :nombre, :especialidad, :horarioCierre, :estado)");
 
 		$stmt -> bindParam(":idHotel", $datos["idHotel"], PDO::PARAM_INT);
 		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
 		$stmt -> bindParam(":especialidad", $datos["especialidad"], PDO::PARAM_STR);		
-		$stmt -> bindParam(":horarioCierreLista", $datos["horarioCierreLista"], PDO::PARAM_STR);
+		$stmt -> bindParam(":horarioCierre", $datos["horarioCierre"], PDO::PARAM_STR);
 		$stmt -> bindParam(":estado", $datos["estado"], PDO::PARAM_INT);
 	
 		if ($stmt->execute()) {
@@ -46,8 +46,9 @@ class ModeloRestaurantes{
  
 
 	/*=============================================
-	FUNCION PARA CONSULTAR LA LISTA DE RESTAURANTES POR idHotel O TODA LA LISTA =============================================*/
-	static public function mdlMostrarListaRestaurantes($tabla,$campoTabla, $valorCampoTabla){
+	FUNCION PARA CONSULTAR LA LISTA DE RESTAURANTES POR idHotel O TODA LA LISTA 
+	=============================================*/
+	static public function mdlMostrarListaRestaurantes($tabla, $campoTabla, $valorCampoTabla){
 
 
 		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $campoTabla = :$campoTabla");
@@ -58,9 +59,70 @@ class ModeloRestaurantes{
 				$stmt -> execute();
 
 				return $stmt -> fetchAll();
-			 }else
+
+			 } 
+			 else
 				{
 
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE estado=1");
+
+				$stmt -> execute();
+
+				return $stmt -> fetchAll();
+
+				$stmt -> close();
+
+				$stmt = null;
+		}
+	}
+	/*=============================================
+	FUNCION PARA CONSULTAR LA LISTA DE RESTAURANTES POR idHotel O TODA LA LISTA 
+	=============================================*/
+	static public function mdlMostrarListaRestaurantesActivos($tabla, $campoTabla, $valorCampoTabla)
+	{
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $campoTabla = :$campoTabla AND estado=1");
+		if ($campoTabla != null) {
+
+			$stmt->bindParam(":" . $campoTabla, $valorCampoTabla, PDO::PARAM_INT);
+
+			$stmt->execute();
+
+			return $stmt->fetchAll();
+		} else {
+
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ");
+
+				$stmt->execute();
+
+				return $stmt->fetchAll();
+
+				$stmt->close();
+
+				$stmt = null;
+			}
+	}
+	
+	/*=============================================
+	FUNCION PARA CONSULTAR LA LISTA DE RESTAURANTES POR idHotel O TODA LA LISTA 
+	para generar el pdf 
+	=============================================*/
+	static public function mdlMostrarListaRestaurantesPdf($tabla,$campoTabla, $valorCampoTabla){
+
+
+		if($campoTabla != null ){
+			// echo "<script> console.log('entré aquí');</script>";
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $campoTabla = :$campoTabla");
+
+				$stmt -> bindParam(":".$campoTabla, $valorCampoTabla, PDO::PARAM_INT);
+
+				$stmt -> execute();
+
+				return $stmt -> fetchAll();
+
+			 } 
+			 elseif($campoTabla==null)
+				{
+				// echo "<script> console.log('entré aquí');</script>";
 				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
 
 				$stmt -> execute();
@@ -95,12 +157,12 @@ PARA GUARDAR LOS DATOS AL EDITAR EL RESTAURANTE EN EL MODAL
 =============================================*/
 	static public function mdlEditarRestaurante($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre =:nombre, especialidad= :especialidad, horaCierre= :horarioCierreLista, estado =:estado WHERE id =:id");
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre =:nombre, especialidad= :especialidad, horaCierre= :horarioCierreEdit, estado =:estado WHERE id =:id");
 
 		$stmt -> bindParam(":id", $datos["id"], PDO::PARAM_INT);
 		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
 		$stmt -> bindParam(":especialidad", $datos["especialidad"], PDO::PARAM_STR);
-		$stmt -> bindParam(":horarioCierreLista", $datos["horarioCierreLista"], PDO::PARAM_STR);
+		$stmt -> bindParam( ":horarioCierreEdit", $datos[ "horarioCierreEdit"], PDO::PARAM_STR);
 		$stmt -> bindParam(":estado", $datos["estado"], PDO::PARAM_INT);		
 
 		if ($stmt->execute()) {
@@ -123,6 +185,26 @@ PARA GUARDAR LOS DATOS AL EDITAR EL RESTAURANTE EN EL MODAL
 		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
 
 		$stmt -> bindParam(":id", $datos, PDO::PARAM_INT);
+
+		if ($stmt->execute()) {
+			return "OK";
+		}else {
+			return "ERROR";
+		}
+
+		$stmt->close();
+
+		$stmt = null;
+	}
+	/*=============================================
+	 PARA ELIMINAR TODOS LOS RESTAURANTES CUANDO SE BORRA UN HOTEL
+	=============================================*/
+	static public function mdlEliminarRestaurantes($tablaRestaurantes, $datos){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tablaRestaurantes WHERE idHotel = :idHotel");
+
+		$stmt->bindParam(":idHotel", $datos, PDO::PARAM_INT);
+	
 
 		if ($stmt->execute()) {
 			return "OK";
