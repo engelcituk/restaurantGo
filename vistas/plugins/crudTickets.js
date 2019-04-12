@@ -28,6 +28,7 @@ $("#idioma").change(function(){
                     $("#btnNuevoTicket").attr("disabled",true);   
                 }else {
                     $("#columnaIdioma").after('<div class="alert alert-success"><strong>Nota: </strong> Nombre disponible para crear Ticket</div>');                    
+                    $("#btnNuevoTicket").removeAttr("disabled");
                 }
             }
         })
@@ -52,8 +53,7 @@ $("#pieDePagina").change(function(){
     }else
         {
           swal ( "Oops","No dejes el area de texto vacio", "error")
-          $("#idioma").val("");
-          $("#btnNuevoTicket").attr("disabled",true);           
+          $("#idioma").val("");                     
     }     
 })
 
