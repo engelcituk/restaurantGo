@@ -13,15 +13,15 @@ class ControladorReportes{
 		foreach ($respuesta as $fila => $elemento){
         	echo '<li class="lstHotelReport" nombreHotel="'.$elemento["nombre"].'" idHotelRep="'.$elemento["id"].'"><a href="#">'.$elemento["nombre"].'</a></li>';
         }       
-	}
+	} 
 	/*=============================================
 	FUNCION PARA MOSTRAR LA LISTA DE RESERVAS
 	=============================================*/
-	static public function ctrMostrarListaReservas($valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3){
+	static public function ctrMostrarListaReservas($valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3,$valorCampoTabla4){
 
 		$tabla = "reservas";
 		 
-		$respuesta = ReporteReservas::mdlListaReporteReservas($tabla,$valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3);
+		$respuesta = ReporteReservas::mdlListaReporteReservas($tabla,$valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3, $valorCampoTabla4);
 		
 		return $respuesta;
 	}
@@ -38,6 +38,7 @@ class ControladorReportes{
 		$nombreRestaurante = $nameRestaurante=="Todos" ? "Todos los restaurantes" : $nameRestaurante;
 		$valorDeMiCampo2=$_GET["fechaInicio"];		
 		$valorDeMiCampo3=$_GET["fechaFinal"];
+		$valorDeMiCampo4 = $_GET["orden"];
 				
 		/*=============================================
 		CREAMOS EL ARCHIVO EXCEL
@@ -65,7 +66,6 @@ class ControladorReportes{
 			 <table border='0'>
 				
 				<strong style='text-align:center;'>&nbsp&nbsp</strong>				
-				
 				<tr>
 					<td></td>
 					<td style='font-weight:bold; border:1px solid #030303; background-color:#4db6ac'>Numero</td> 
@@ -78,7 +78,7 @@ class ControladorReportes{
 					<td style='font-weight:bold; border:1px solid #030303; background-color:#4db6ac'>Usuario</td>									
 					<td style='font-weight:bold; border:1px solid #030303; background-color:#4db6ac'>Observaciones</td>
 				</tr>");
-				$reservas = ReporteReservas::mdlDescargarReporteExcel($tabla,$valorDeMiCampo,$valorDeMiCampo2,$valorDeMiCampo3);
+				$reservas = ReporteReservas::mdlDescargarReporteExcel($tabla,$valorDeMiCampo,$valorDeMiCampo2,$valorDeMiCampo3, $valorDeMiCampo4);
 
 				$contador = 1;
 				foreach ($reservas as $fila => $elemento){

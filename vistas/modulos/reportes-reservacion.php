@@ -22,15 +22,6 @@ if ($_SESSION["REPORTES"] == 1) {
       <!-- Default box -->
       <div class="box box-info">
         <div class="box-header with-border">
-
-          <!-- <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                        title="Collapse">
-                  <i class="fa fa-minus"></i></button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-                  <i class="fa fa-times"></i></button>
-              </div> -->
-
           <div class="row">
             <?php
             if (isset($_GET["nomRest"])) {
@@ -80,7 +71,7 @@ if ($_SESSION["REPORTES"] == 1) {
                   </div>
                 </div>
                 <div class="col-md-3 col-xs-12">
-                  <span><strong>Restaurantes</strong></span><br><br>
+                  <span><strong>Restaurantes y ordenar por</strong></span><br><br>
                   <div class="input-group">
                     <div class="input-group-addon"><i class="fas fa-utensils"></i></div>
                     <!-- traigo los restaurantes de acuerdo al id del hotel -->
@@ -97,6 +88,23 @@ if ($_SESSION["REPORTES"] == 1) {
                     }
                     echo '</select>';
                     ?>
+                  </div>
+                  <div class="input-group">
+                    <div class="input-group-addon"><i class="fas fa-sort-amount-up"></i></div>
+                    <select class="form-control" id="ordenFiltroDatos">
+                      <option value="fechaDeLaReserva ASC">Fecha Reserva ASC</option>
+                      <option value="fechaDeLaReserva DESC">Fecha Reserva DESC</option>
+                      <option value="habitacion ASC">No. Hab ASC</option>
+                      <option value="habitacion DESC">No. Hab DESC</option>
+                      <option value="apellido ASC">Apellido ASC</option>
+                      <option value="apellido DESC">Apellido DESC</option>
+                      <option value="nombreRestaurante ASC">Restaurante ASC</option>
+                      <option value="nombreRestaurante DESC">Restaurante DESC</option>
+                      <option value="hora ASC">Hora ASC</option>
+                      <option value="hora DESC">Hora DESC</option>
+                      <option value="usuario ASC">Usuario ASC</option>
+                      <option value="usuario DESC">Usuario DESC</option>
+                    </select>
                   </div>
                 </div>
 
@@ -127,6 +135,7 @@ if ($_SESSION["REPORTES"] == 1) {
                     <input type="date" class="form-control" id="fechaReporteFin" name="fechaReporte" value="<?php echo $fechaFinalCampo; ?>">
                   </div>
 
+
                 </div>
                 <div class="col-md-3 col-xs-6">
                   <span><strong>Ver/descargar reporte</strong></span><br><br>
@@ -149,14 +158,16 @@ if ($_SESSION["REPORTES"] == 1) {
                       $nombreRestaurante = $_GET["nomRest"];
                       $fechaInformeInicio = $_GET["fechaInicio"];
                       $fechaInformefinal = $_GET["fechaFinal"];
+                      $ordenamiento = $_GET["orden"];
                     } else {
                       $idRestauranteInforme = "";
                       $nombreRestaurante = "";
                       $fechaInformeInicio = "";
                       $fechaInformefinal = "";
+                      $ordenamiento = "";
                     }
                     ?>
-                    <a href="vistas/modulos/descargar-excel.php?reporte=reporte&idRest=<?php echo $idRestauranteInforme ?>&fechaInicio=<?php echo $fechaInformeInicio ?>&fechaFinal=<?php echo $fechaInformefinal ?>&nomRest=<?php echo $nombreRestaurante ?>" id="btnReporteExcel" class="btn btn-success <?php echo  $estadoBoton; ?>"><i class="fas fa-file-excel"></i> EXCEL</a>
+                    <a href="vistas/modulos/descargar-excel.php?reporte=reporte&idRest=<?php echo $idRestauranteInforme ?>&fechaInicio=<?php echo $fechaInformeInicio ?>&fechaFinal=<?php echo $fechaInformefinal ?>&nomRest=<?php echo $nombreRestaurante ?>&orden=<?php echo $ordenamiento ?>" id="btnReporteExcel" class="btn btn-success <?php echo  $estadoBoton; ?>"><i class="fas fa-file-excel"></i> EXCEL</a>
                   </div>
                   <div id="botonesReportePdfExcel" class=" <?php echo  $mostrarBotonesPdfExcel; ?>"></div>
                 </div>
@@ -179,7 +190,7 @@ if ($_SESSION["REPORTES"] == 1) {
                     <th>Pax</th>
                     <th>Hora</th>
                     <th>NombreTicket</th>
-                    <th>usuario</th>
+                    <th>Usuario</th>
                     <th>Comentarios</th>
 
                     <th></th>
@@ -192,18 +203,21 @@ if ($_SESSION["REPORTES"] == 1) {
                     $valorCampoTabla = 0;
                     $valorCampoTabla2 = $_GET["fechaInicio"];
                     $valorCampoTabla3 = $_GET["fechaFinal"];
+                    $valorCampoTabla4 = $_GET["orden"];
                   } elseif (isset($_GET["idRest"]) && isset($_GET["fechaInicio"]) && isset($_GET["fechaFinal"])) {
                     $valorCampoTabla = $_GET["idRest"];
                     $valorCampoTabla2 = $_GET["fechaInicio"];
                     $valorCampoTabla3 = $_GET["fechaFinal"];
+                    $valorCampoTabla4 = $_GET["orden"];
                   } else {
                     $valorCampoTabla = 0;
                     $valorCampoTabla2 = null;
                     $valorCampoTabla3 = null;
+                    $valorCampoTabla4 = "fechaDeLaReserva ASC";
                   }
 
 
-                  $respuesta = ControladorReportes::ctrMostrarListaReservas($valorCampoTabla, $valorCampoTabla2, $valorCampoTabla3);
+                  $respuesta = ControladorReportes::ctrMostrarListaReservas($valorCampoTabla, $valorCampoTabla2, $valorCampoTabla3, $valorCampoTabla4);
                   $contador = 1;
                   foreach ($respuesta as $fila => $elemento) {
                     $cortarCadenaHora = substr($elemento["hora"], 0, 8);

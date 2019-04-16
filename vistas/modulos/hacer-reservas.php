@@ -66,14 +66,14 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                 </div>
                             </div>
                             <div class="col-md-3 col-xs-12">
-                                <span><strong>Numero de habítacion</strong></span><br><br>
+                                <span><strong>Numero de habitación</strong></span><br><br>
                                 <div class="input-group">
                                     <div class="input-group-addon"><i class="fas fa-sort-numeric-up"></i></div>
                                     <input type="text" class="form-control" name="campoBuscaHabitacion" id="campoBuscaHabitacion" required>
                                 </div>
                             </div>
                             <div class="col-md-3 col-xs-12">
-                                <span><strong>Buscar datos habitacion</strong></span><br><br>
+                                <span><strong>Buscar datos habitación</strong></span><br><br>
                                 <a href="#" class="btn btn-success buscarReserva" id="btnBuscarReserva"><i class="fa fa-search"></i> Buscar</a>
                             </div>
                             <div class="col-md-3 col-xs-12 hidden">
@@ -174,21 +174,19 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     <span><strong>Horario:</strong></span><br>
                                     <div class="input-group" id="horarioReserva">
                                         <div class="input-group-addon"><i class="fas fa-clock"></i></div>
-                                        <select class="form-control" id="sel1">
-                                            <option> </option>
-                                        </select>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-xs-6">
                                     <span><strong>Pax:</strong></span><br>
-                                    <div class="input-group" id="horarioReserva">
+                                    <div class="input-group" >
                                         <div class="input-group-addon"><i class="fas fa-users"></i></div>
                                         <input type="number" class="form-control" id="numeroDePax" name="numeroDePax" required>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-xs-6">
                                     <span><strong>Encabezado/pie ticket:</strong></span><br>
-                                    <div class="input-group" id="horarioReserva">
+                                    <div class="input-group" >
                                         <div class="input-group-addon"><i class="fas fa-language"></i></div>
                                         <select class="form-control" name="ticketElige" id="ticketElige" required>
                                             <option value=""></option>

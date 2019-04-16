@@ -17,10 +17,17 @@ $("#lstRestaurantes").change(function(){
     if (idRestaurante != ''){       
         $("#idRestauranteVar").val(idRestaurante);
         $("#campoBuscaHabitacion").removeAttr("readonly");
-        $("#btnBuscarReserva").attr("disabled",true);
+        // $("#btnBuscarReserva").attr("disabled",true);
         $("#idHotel2").val(idHotel); 
         $("#idRestaurante2").val(idRestaurante);
 		$("#campoNombreRestaurante").val(nombreRestaurante);
+		var idHotel = localStorage.getItem("idHotelLST");
+		var idRestaurante = localStorage.getItem("idRestauranteLST");
+		var nombreRestaurante = localStorage.getItem("nombreRestauranteLST");
+
+		console.log("idHotel", idHotel);
+		console.log("idRestaurante", idRestaurante);
+		console.log("nombreRestaurante", nombreRestaurante);
 
 		var horaActual=obtenerHoraActual();	
 		var fechaHoy = obtenerFechaHoy();
@@ -28,22 +35,25 @@ $("#lstRestaurantes").change(function(){
 
 		if(horaCierreRestaurante=="SIN HORARIO"){			
 			// enviarFecha(fechaHoy);
-			console.log("fechaHoy",fechaHoy);
+			// console.log("fechaHoy",fechaHoy);
 			localStorage.setItem("fechaMinimoLS", fechaHoy);			
 		}else{				
 			if(horaCierreRestaurante >= horaActual){
 				// enviarFecha(fechaHoy);
-				console.log("fechaHoy",fechaHoy);
+				// console.log("fechaHoy",fechaHoy);
 				localStorage.setItem("fechaMinimoLS", fechaHoy);
 			}else{
 				// enviarFecha(fechaManana);
-				console.log("fechaManana", fechaManana);
+				// console.log("fechaManana", fechaManana);
 				localStorage.setItem("fechaMinimoLS", fechaManana);					
 			}
 		}
+		
+		// $("#horarioReserva").append(listaHorarios);		
+		$("#horarioReserva").html("<div class='input-group-addon'><i class='fas fa-clock'></i></div><select class='form-control' id='sel1'><option> </option></select>");
     }
     else
-         {
+    {
           swal ( "Oops","Elija un restaurante", "error")
           $("#idRestauranteVar").val("");
           $("#campoBuscaHabitacion").val("");
@@ -51,7 +61,13 @@ $("#lstRestaurantes").change(function(){
           $("#btnBuscarReserva").attr("disabled",true);
           $("#idHotel2").val(idHotel);
 	      $("#idRestaurante2").val(idRestaurante);
-	      $("#campoNombreRestaurante").val(nombreRestaurante);            
+		  $("#campoNombreRestaurante").val(nombreRestaurante);  		   
+		 	localStorage.removeItem("idHotelLST");
+			localStorage.removeItem("idRestauranteLST");
+			localStorage.removeItem("nombreRestauranteLST");
+		
+		
+		         
     }              
 })
  /*======================================
@@ -166,7 +182,7 @@ $("#fechaReserva").change(function(){
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){ //obtengo una respuesta tipo json
-		console.log("respuesta",respuesta);									
+		// console.log("respuesta",respuesta);									
 			var numMaxRsvHuesped = respuesta["numeroMaxDeReservas"];
 			var nochesEstancia = respuesta["nochesEstancia"];
 			var nochesEstanciaFalse = " No se encontró una configuración para las noches de estancia";
@@ -225,9 +241,7 @@ $("#fechaReserva").change(function(){
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){ //obtengo una respuesta tipo json					
-			 console.log("respuesta",respuesta);
-			 
-
+			//  console.log("respuesta",respuesta);			 
 			listaHorarios = "<div class='input-group-addon'><i class='fas fa-clock'></i></div><select class='form-control horarioReserva' name='horarioReserva' id='horarioReserva' required><option value=''></option>"
 				for (i =0;  i<respuesta.length; i++) {
 					var cortarCadenaHora = respuesta[i][4];

@@ -20,6 +20,12 @@ $("#lstRestaurantesReportes").change(function(){
 	}
 })
  /*===============FIN=================*/
+$("#ordenFiltroDatos").change(function () {	
+	var ordenFiltro = $("option:selected", this).val(); //obtengo el value que tengo en la lista		
+	localStorage.setItem("ordenFiltroLS", ordenFiltro);	
+	
+})
+ /*===============FIN=================*/
  /*==============================================
 	CAPTURAR LA FECHA DE REPORTE, muestro botón de generar reporte	
  ===================================*/
@@ -53,8 +59,8 @@ $("#fechaReporteFin").change(function(){
 				idRestaurante = 0;
 				nombreRestaurante="Todos";
 			}
-			window.location="index.php?ruta=reportes-reservacion&idRest="+idRestaurante+"&nomRest="+nombreRestaurante+"&fechaInicio="+inicio+"&fechaFinal="+final;
-			
+			var valorOrnenamiento =obtenerOrdenFiltro();
+			window.location = "index.php?ruta=reportes-reservacion&idRest="+idRestaurante+"&nomRest="+nombreRestaurante+"&fechaInicio="+inicio+"&fechaFinal="+final+"&orden="+valorOrnenamiento;						
 		}else{
 			swal ( "Oops","La fecha de inicio "+inicio+" es mayor que la fecha final "+final, "error");
 		}
@@ -63,19 +69,30 @@ $("#fechaReporteFin").change(function(){
 	}	
 })
  /*===============FIN=================*/
+ function obtenerOrdenFiltro(){
+	 var valorFiltro = "fechaDeLaReserva ASC";
+
+	 if (localStorage.getItem("ordenFiltroLS") === null) {
+		 localStorage.setItem("ordenFiltroLS", valorFiltro);	
+	 }else{
+		 var valorFiltro = localStorage.getItem("ordenFiltroLS");
+	 }
+	 return valorFiltro;
+ }
 /*======================================
 =      genera PDF            =
 ======================================*/
  $(document).on("click", "#btnReporte", function(){ 
  	var idRestaurante = localStorage.getItem("idRestauranteLS");
-  var nombreRestaurante = localStorage.getItem("NomRestauranteLS");
+  	var nombreRestaurante = localStorage.getItem("NomRestauranteLS");
 	var fechaInformeInicio = localStorage.getItem("fechaInicioReporteLS");
 	var fechaInformeFinal = localStorage.getItem("fechaFinalReporteLS");
+	var ordenFiltro = localStorage.getItem("ordenFiltroLS");
 
 	if (idRestaurante == null) {
 		idRestaurante=0;
 	} 
-	window.open("extensiones/tcpdf/pdf/listaReservas.php?idRest="+idRestaurante+"&fechaInicio="+fechaInformeInicio+"&fechaFinal="+fechaInformeFinal+"&nomRest="+nombreRestaurante, "_blank");
+	 window.open("extensiones/tcpdf/pdf/listaReservas.php?idRest=" + idRestaurante + "&fechaInicio=" + fechaInformeInicio + "&fechaFinal=" + fechaInformeFinal + "&nomRest=" + nombreRestaurante + "&orden=" + ordenFiltro, "_blank");
   	 
 })
 /*=====  FIN DE genera PDF  ======*/

@@ -10,6 +10,7 @@ public $idRestaurantePdf;
 public $fechaInformePdfInicio;
 public $fechaInformePdfFinal;
 public $nomRestaurantePdf;
+public $ordenConsultaPdf;
 public function imprimirListaReservas(){
 
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -36,6 +37,7 @@ $valorCampoTabla = $this->idRestaurantePdf; // el valorCampoTabla del id. por ej
 //traigo los resultados de acuerdo al id hotel que recibo
 $valorCampoTabla2 = $this->fechaInformePdfInicio;
 $valorCampoTabla3 = $this->fechaInformePdfFinal;
+$valorCampoTabla4 = $this->ordenConsultaPdf;
 
 /*formateo de fechas*/
 $fechaInicio=$valorCampoTabla2;
@@ -73,7 +75,7 @@ EOF;
 $pdf->writeHTML($bloque2, false, false, false, false, '');
 
 // ---------------------------------------------------------
-$respuesta = ControladorReportes::ctrMostrarListaReservas($valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3);
+$respuesta = ControladorReportes::ctrMostrarListaReservas($valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3, $valorCampoTabla4);
 
 $contador = 1;
 foreach ($respuesta  as $key => $elemento) {
@@ -124,5 +126,6 @@ $listaReservas -> idRestaurantePdf = $_GET["idRest"];
 $listaReservas -> fechaInformePdfInicio = $_GET["fechaInicio"];
 $listaReservas -> fechaInformePdfFinal = $_GET["fechaFinal"];
 $listaReservas -> nomRestaurantePdf = $_GET["nomRest"];
+$listaReservas -> ordenConsultaPdf = $_GET["orden"];
 $listaReservas -> imprimirListaReservas();
 ?>
