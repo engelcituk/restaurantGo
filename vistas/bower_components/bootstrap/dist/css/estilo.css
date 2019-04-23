@@ -73,14 +73,23 @@ body{
 .nombreCompletoClienteExterno{
   text-transform:uppercase;
 }
-
-
+ 
 .colorTickets{
   background: #80cbc4;
   color: #000000;
   font-weight: bold;
 }
-
+#tblReservasReporte {
+  table-layout: fixed;
+  width: 100% !important;
+}
+#tblReservasReporte td,
+#tblReservasReporte th{
+  width: auto !important;
+  white-space: normal;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
 #observaciones{
   border:1px solid #999999;
   width:100%;

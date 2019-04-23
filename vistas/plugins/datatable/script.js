@@ -156,7 +156,8 @@ $('#tablaReservasReservix').DataTable({
   $("#tablaReservasReservix_wrapper > .dt-buttons").appendTo("#btnDocsListaDatatable");
 });
 $(document).ready(function() {
-  $('#tblReservasReporte').DataTable({  
+  $('#tblReservasReporte').DataTable({ 
+    responsive: true, 
     dom: 'Blfrtip',
           buttons: [
             {
@@ -326,7 +327,7 @@ $('#tblCrudImpresoras').DataTable({
       "oAria": {
         "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
         "sSortDescending": ": Activar para ordenar la columna de manera descendente"
-      }      
+      }       
   }
            
 });
