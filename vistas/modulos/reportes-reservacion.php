@@ -92,16 +92,16 @@ if ($_SESSION["REPORTES"] == 1) {
                   <div class="input-group">
                     <div class="input-group-addon"><i class="fas fa-sort-amount-up"></i></div>
                     <select class="form-control" id="ordenFiltroDatos">
-                      <option value="fechaDeLaReserva ASC">Fecha Reserva ASC</option>
-                      <option value="fechaDeLaReserva DESC">Fecha Reserva DESC</option>
+                      <option value="fechaDeLaReserva ASC, hora ASC">Fecha Reserva ASC</option>
+                      <option value="fechaDeLaReserva DESC, hora ASC">Fecha Reserva DESC</option>
                       <option value="habitacion ASC">No. Hab ASC</option>
                       <option value="habitacion DESC">No. Hab DESC</option>
                       <option value="apellido ASC">Apellido ASC</option>
                       <option value="apellido DESC">Apellido DESC</option>
                       <option value="nombreRestaurante ASC">Restaurante ASC</option>
                       <option value="nombreRestaurante DESC">Restaurante DESC</option>
-                      <option value="hora ASC">Hora ASC</option>
-                      <option value="hora DESC">Hora DESC</option>
+                      <option value="fechaDeLaReserva ASC, hora ASC">Hora ASC</option>
+                      <option value="fechaDeLaReserva ASC, hora DESC">Hora DESC</option>
                       <option value="usuario ASC">Usuario ASC</option>
                       <option value="usuario DESC">Usuario DESC</option>
                     </select>

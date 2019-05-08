@@ -25,19 +25,19 @@ class ReporteReservas {
 		date_default_timezone_set('UTC');
 		$hoy = date("Y-m-d");		
 		
-			if($valorCampoTabla != 0){
+			if($valorCampoTabla != 0){ 
 				
 				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idRestaurante = :idRestaurante AND fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal ORDER BY  $valorCampoTabla4");
 				$stmt->bindParam(":idRestaurante",$valorCampoTabla, PDO::PARAM_INT);
 				$stmt->bindParam(":fechaInicio",$valorCampoTabla2, PDO::PARAM_STR);
 				$stmt->bindParam(":fechaFinal",$valorCampoTabla3, PDO::PARAM_STR);
 				
-				$stmt -> execute();
+				$stmt -> execute(); 
 
 				return $stmt -> fetchAll();
 			}elseif ($valorCampoTabla == 0 && isset($valorCampoTabla2) && isset($valorCampoTabla3)){
 				
-				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal $valorCampoTabla4");
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal  ORDER BY $valorCampoTabla4");
 
 				$stmt->bindParam(":fechaInicio",$valorCampoTabla2, PDO::PARAM_STR);
 				$stmt->bindParam(":fechaFinal",$valorCampoTabla3, PDO::PARAM_STR);
