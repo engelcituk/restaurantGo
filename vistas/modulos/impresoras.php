@@ -129,7 +129,7 @@
                         echo '<td>
                               <a href="#" class="btn btn-success editImpresora" data-toggle="modal" data-target="#editImpresora" nombreHotel="'.$elemento["nombreHotel"].'" idImpresora="'.$elemento["idImpresora"].'"><i class="fa fa-edit"></i> </a>
                               
-                              <button class="btn btn-danger eliminarImpresora" idImpresora="'.$elemento["idImpresora"].'" disabled><i class="fa fa-trash "></i></button>               
+                              <button class="btn btn-danger eliminarImpresora hidden" idImpresora="'.$elemento["idImpresora"].'" disabled><i class="fa fa-trash "></i></button>               
                         </td>
 
                         <td></td>

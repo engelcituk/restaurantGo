@@ -144,7 +144,7 @@ if ($_SESSION["REPORTES"] == 1) {
                     $estadoBoton = "";
                     $mostrarBotones = "";
                     $mostrarBotonesPdfExcel = "hidden";
-                  } else {
+                  } else { 
                     $estadoBoton = "hidden";
                     $mostrarBotones = "hidden";
                     $mostrarBotonesPdfExcel = "";

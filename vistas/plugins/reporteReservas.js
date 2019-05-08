@@ -67,11 +67,11 @@ $("#fechaReporteFin").change(function(){
 	} else {		
 		swal ( "Oops","No tiene fecha de inicio", "error");
 	}	
-})
+}) 
  /*===============FIN=================*/
  function obtenerOrdenFiltro(){
-	 var valorFiltro = "fechaDeLaReserva ASC";
-
+	 var valorFiltro = "fechaDeLaReserva ASC, hora ASC";
+	 
 	 if (localStorage.getItem("ordenFiltroLS") === null) {
 		 localStorage.setItem("ordenFiltroLS", valorFiltro);	
 	 }else{
