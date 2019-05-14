@@ -4,7 +4,7 @@ class Conexion{
 
 	public static function conectar(){
 
-		$iPservidor ="172.16.1.47";
+		$iPservidor ="localhost";
 		$baseDeDatos="RestaurantGo";		
 		$usuario="sa";
 		$password="P1nch3C0ch1pu3rc0";
