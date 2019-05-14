@@ -197,11 +197,12 @@ PARA GUARDAR LOS DATOS AL EDITAR LA IMPRESORA DENTRO DEL MODAL
 =============================================*/
 	static public function mdlEditarImpresora($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET direccionIP =:direccionIp, nombreImpresora= :nombreImpresora WHERE id =:idImpresora");
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET direccionIP =:direccionIp, nombreImpresora= :nombreImpresora, termica= :termica WHERE id =:idImpresora");
 
 		$stmt -> bindParam(":idImpresora", $datos["idImpresora"], PDO::PARAM_INT);
 		$stmt -> bindParam(":direccionIp", $datos["direccionIp"], PDO::PARAM_STR);
-		$stmt -> bindParam(":nombreImpresora", $datos["nombreImpresora"], PDO::PARAM_STR);				
+		$stmt -> bindParam(":nombreImpresora", $datos["nombreImpresora"], PDO::PARAM_STR);
+		$stmt -> bindParam(":termica", $datos["termica"], PDO::PARAM_INT);				
 
 		if ($stmt->execute()) {
 			

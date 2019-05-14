@@ -80,10 +80,11 @@ $(document).on("click", ".eliminarReserva", function(){
  	var nombreRestaurante = $("#nombreRestauranteTicket").val();
  	var reservaHotel = $("#reservaHotel").val();
  	var reservaTicketIdioma = $("#reservaTicket").val();
- 	var ipImpresora = $("#impresoras").val(); //obtengo la ipImpresora.. La ip.. valores que tengo en los value mi lista de opciones
-	console.log("ipImpresora",ipImpresora);
+	var ipImpresora = $("#impresoras").val(); //obtengo la ipImpresora.. La ip.. valores que tengo en los value mi lista de opciones
+	var esTermica = $("#esTermicaImpresora").val();
+	//  console.log("esTermica", esTermica);
  
- 	var enviarDatosTicket = new FormData();
+ 	var enviarDatosTicket = new FormData(); 
 	 	enviarDatosTicket.append("fechaDeLaReserva",reservaFecha);
 	 	enviarDatosTicket.append("HoraDelaReserva",reservaHora);
 	 	enviarDatosTicket.append("apellidoDeLaReserva",reservaApellido);
@@ -93,7 +94,8 @@ $(document).on("click", ".eliminarReserva", function(){
 	 	enviarDatosTicket.append("restauranteDelaReserva",nombreRestaurante);
 	 	enviarDatosTicket.append("IdentificadorDelaReserva",reservaHotel);
 	 	enviarDatosTicket.append("ticketIdiomaDelaReserva",reservaTicketIdioma);
-	 	enviarDatosTicket.append("ticketIPdeLaImpresora",ipImpresora);
+		enviarDatosTicket.append("ticketIPdeLaImpresora",ipImpresora);
+	  enviarDatosTicket.append("esTermica", esTermica);
 
 	 	$.ajax({
 				url:"extensiones/ticket.php", //enviamos a este archivo los datos para que lo procese
@@ -110,7 +112,11 @@ $(document).on("click", ".eliminarReserva", function(){
 	})
 });
 /*=====  FIN DE ENVIAR LOS DATOS DEL TICKET A IMPRIMIR  ======*/
-
+//para obtener el numero de las impresoras si son termicas o no y ponerlos en un campo oculto
+$("#impresoras").change(function () {
+	var siEsTermica = $("option:selected", this).attr("termica");
+	$("#esTermicaImpresora").val(siEsTermica);
+})
 
 /*==============================================
 	CAPTURAR valor idRestaurante Y LO MANDO POR GET PARA 

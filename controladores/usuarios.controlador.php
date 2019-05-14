@@ -18,6 +18,7 @@ class ControladorUsuarios{
 				$item = "nombreDeUsuario";
 				$valor = $_POST["ingNombreDeUsuario"];
 				$impresorasIP = $_POST["impresoras"];
+				$esTermica = $_POST["esTermica"];
 				
 				//debo hacer que no haya registros con el mismo mail
 				$respuesta = ModeloUsuarios::mdlIngresoUsuarios($tabla, $item, $valor);
@@ -69,6 +70,7 @@ class ControladorUsuarios{
 						$_SESSION["nombre"] = $respuesta["nombre"];
 						$_SESSION["nombreDeUsuario"] = $respuesta["nombreDeUsuario"];
 						$_SESSION["ipImpresora"]=$impresorasIP;
+						$_SESSION["esTermica"] = $esTermica;
 						$_SESSION["nombreHotel"]= $hotelRespuesta["nombre"];
 						$_SESSION["idHotel"]= $hotelRespuesta["id"];
 						$_SESSION["SUBMENU LATERAL"]=1; 
@@ -429,6 +431,7 @@ class ControladorUsuarios{
 	}
 	
 }
+
 
 
 

@@ -79,10 +79,11 @@ $("#eligeAccesoHotel").change(function(){
 				// console.log("respuesta",respuesta);
 				listaImpresoras = "<select class='form-control' required>"
 					for (i =0;  i<respuesta.length; i++) {
-						listaImpresoras+= "<option value="+respuesta[i][2]+">"+respuesta[i][3]+"</option>";
+						listaImpresoras += "<option termica=" + respuesta[i][5]+" value="+respuesta[i][2]+">"+respuesta[i][3]+"</option>";
 					}
 				listaImpresoras+="</select>";
 				$("#listaImpresoras").html(listaImpresoras);							
+				$("#esTermica").val(respuesta[0][5]);
 			}
 		})
     }else
@@ -90,6 +91,12 @@ $("#eligeAccesoHotel").change(function(){
     	console.log("Esto es indefinido");
     	$("#listaImpresoras").html(" ");
     }              
+})
+
+//para obtener el numero de las impresoras si son termicas o no y ponerlos en un campo oculto
+$("#listaImpresoras").change(function () {
+	var siEsTermica = $("option:selected", this).attr("termica");
+	$("#esTermica").val(siEsTermica);
 })
 /*======================================
 = SE TRAE todos los datos del usuario

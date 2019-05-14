@@ -24,9 +24,9 @@ class ControladorImpresoras{
 		$respuesta = ModeloImpresoras::mdlListaDeImpresoras($tabla);
 
 		foreach ($respuesta as $row => $item){
-			echo 
-			' 
-			<option value="'.$item["direccionIP"].'">'.$item["nombreImpresora"].'</option>         
+			echo
+				' 
+			<option termica="' . $item["termica"] . '" value="'.$item["direccionIP"].'">'.$item["nombreImpresora"].'</option>         
 			';
 		}
 	}
@@ -146,7 +146,8 @@ class ControladorImpresoras{
 								
 			$datos = array("idImpresora" =>$_POST["idImpresoraEdit"],
 						   "direccionIp" =>$_POST["nuevaDireccionIP"],
-						   "nombreImpresora" =>strtoupper($_POST["nuevoNomImpresora"]));
+						   "nombreImpresora" =>strtoupper($_POST["nuevoNomImpresora"]),
+						   "termica" => $_POST["termicaEditar"]);
 
 			$respuesta = ModeloImpresoras::mdlEditarImpresora($tabla, $datos);
 				

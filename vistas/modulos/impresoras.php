@@ -24,12 +24,12 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
           <!-- <h3 class="box-title">Title</h3> -->
 
           <!-- <div class="box-tools pull-right">
-                                      <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                                              title="Collapse">
-                                        <i class="fa fa-minus"></i></button>
-                                      <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-                                        <i class="fa fa-times"></i></button>
-                                    </div> -->
+                                                              <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                                                      title="Collapse">
+                                                                <i class="fa fa-minus"></i></button>
+                                                              <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                                                                <i class="fa fa-times"></i></button>
+                                                            </div> -->
           <div class="row">
             <?php
             if (isset($_GET["nomHotel"])) {
@@ -158,8 +158,8 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
   </div>
 
   <!-- =============================================
-                            MODAL PARA REGISTRAR UNA NUEVA IMPRESORA
-                            =============================================-->
+                                                    MODAL PARA REGISTRAR UNA NUEVA IMPRESORA
+                                                    =============================================-->
   <div id="nuevaImpresora" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -244,16 +244,16 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
           </div>
         </div>
         <!-- <div class="modal-footer">
-                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div> -->
+                                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div> -->
       </div>
 
     </div>
   </div>
   <!--===== MODAL PARA REGISTRAR UNA NUEVA IMPRESORA======-->
   <!-- =============================================
-                            MODAL PARA EDITAR UNA IMPRESORA
-                            =============================================-->
+                                                    MODAL PARA EDITAR UNA IMPRESORA
+                                                    =============================================-->
   <div id="editImpresora" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <!-- Modal content-->
@@ -307,12 +307,21 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
                 </div>
                 <div class="col-md-6 col-xs-12">
                   <label for="usr">Térmica</label>
-                  <!-- <div class="input-group"> -->
-                  <div class="radio">
-                    <label><input id="radioTermicaSi" type="radio" name="termicaEditar" value="1">Sí</label>
-                    <label><input id="radioTermica" type="radio" name="termicaEditar" value="0">No</label>
+                  <div class="input-group">
+                    <label id="printTermica"></label>
                   </div>
-                  <!-- </div> -->
+                </div>
+                <div class="col-md-6 col-xs-12">
+                  <label for="usr">Cambiar si es térmica</label>
+                  <div class="input-group">
+                    <div class="input-group-addon"><i class="fas fa-network-wired"></i></div>
+                    <select class="form-control" name="termicaEditar" required>
+                      <option id="respuestaTermica"></option>
+                      <option value="1">Si</option>
+                      <option value="0">No</option>
+
+                    </select>
+                  </div>
                 </div>
               </div><br><span id="rowEditarImpresora"></span>
               <div class="row">
@@ -338,8 +347,8 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
           </div>
         </div>
         <!-- <div class="modal-footer">
-                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    </div> -->
+                                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                            </div> -->
       </div>
 
     </div>

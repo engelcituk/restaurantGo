@@ -8,14 +8,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
             <!-- imprimo el nombre del hotel -->
             <h1> <?php echo $_SESSION["nombreHotel"] ?></h1>
             <?php
-            // $hotel = $_SESSION["hotelSQLSRV"];
-            // $empresa = $_SESSION["empresaSQLSRV"];
-            // $dbo = "dbo.";
-            // $simbolodolar = '$';
-            
-            // $cadena = str_replace(' ', '', $dbo . $empresa . $simbolodolar);
-            // echo $hotel . " " . $empresa;
-            // echo 'hola'.$cadena.'var';
+           
 
             ?>
             <ol class="breadcrumb">
@@ -246,8 +239,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                                                                                                                      Footer
-                                                                                                                    </div> -->
+                                                                                                                                      Footer
+                                                                                                                                    </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -314,7 +307,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                         <input type="text" class="form-control" id="reservaPax" readonly>
                                     </div>
                                 </div>
-                             
+
                             </div><br>
                             <div class="row">
                                 <div class="col-md-6 col-xs-6">
@@ -331,6 +324,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                         <input type="text" class="form-control" id="reservaTicket" readonly>
                                     </div>
                                 </div>
+                                <input type="text" class="form-control hidden" name="esTermicaImpresora" id="esTermicaImpresora" value="<?php echo  $_SESSION["esTermica"] ?>" readonly>
                             </div><br>
                             <div class="row">
                                 <div class="alert alert-success alert-dismissible">
@@ -346,7 +340,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     <div class="form-group">
                                         <select class="form-control" id="impresoras" name="impresoras" required>
                                             <?php
-                                            echo '<option value="' . $_SESSION["ipImpresora"] . '">PREDETERMINADA</option>';
+                                            echo '<option termica="' . $_SESSION["esTermica"] . '"value="' . $_SESSION["ipImpresora"] . '">PREDETERMINADA</option>';
                                             $listaImpresoras = new ControladorImpresoras();
                                             $listaImpresoras->ctrListaDeImpresoras();
                                             ?>
@@ -365,8 +359,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
     </div>
 
     <!-- =============================================
-                                                                                                              MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
-                                                                                                              =============================================-->
+                                                                                                                              MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
+                                                                                                                              =============================================-->
     <div id="rsvExternos" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -524,8 +518,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                                                                                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                                                            </div> -->
+                                                                                                                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                                                                            </div> -->
             </div>
 
         </div>

@@ -21,6 +21,7 @@ class AjaxTickets{
 	public $IdentificadorDelaReserva;
 	public $ticketIdiomaDelaReserva;
 	public $ticketIPdeLaImpresora;
+	public $esTermica;
 
 	public function generaTicket(){
 
@@ -35,7 +36,8 @@ class AjaxTickets{
 	$identificadorDelaReservaTicket = $this->IdentificadorDelaReserva;
 	$idiomaDelaReservaTicket = $this->ticketIdiomaDelaReserva;
 	// IP DE LA IMPRESORA QUE TRAIGO PARA MANDARLO A ESTA
-	$ipImpresoraParaTicket = $this->ticketIPdeLaImpresora;// ip de la impresora
+	$ipImpresoraParaTicket = $this->ticketIPdeLaImpresora; // ip de la impresora
+	$siEsTermica = $this->esTermica;// si la impresora es termica
 
 	date_default_timezone_set('America/Cancun');
 	$fechaGeneracionTicket = date("Y-m-d H:i:s");
@@ -53,15 +55,16 @@ class AjaxTickets{
 				//ip IMPRESORA TRAIDA DESDE LA VARIABLE $ipImpresoraParaTicket
 				/* 172.16.0.207 ip de la impresora que ocupé para pruebas,
 				cambiar la variable parametro $ipImpresoraParaTicket por una ip fija para pruebas si es
-				necesaria */
+				necesaria */ 
 			    $conectarImpresora = new NetworkPrintConnector( $ipImpresoraParaTicket, 9100);
 			    $saltoLogo="";
 			    $impresora = new Printer($conectarImpresora);
 				$logo = EscposImage::load("logo.png", false);
-
-				$impresora -> setJustification(Printer::JUSTIFY_CENTER);
-				$impresora->bitImage($logo);
-				$impresora->text($saltoLogo."\n\n");
+				$impresora -> setJustification(Printer::JUSTIFY_CENTER);					
+				if ($siEsTermica == 1) {
+					$impresora->bitImage($logo);
+					$impresora->text($saltoLogo."\n\n");
+				}				
 			    $impresora->text("   ".$encabezadoConsulta. "\n\n");
 			    $impresora->text("   Restaurante: " .$restauranteDelaReservaTicket. "\n\n");
 			    $impresora->text("   Habitación: " .$habitacionDelaReservaTicket. "\n");
@@ -100,7 +103,9 @@ if(isset($_POST["fechaDeLaReserva"])){ //SI POST VIENE CON INFORMACION
 	$ticket -> IdentificadorDelaReserva = $_POST["IdentificadorDelaReserva"];
 	$ticket -> ticketIdiomaDelaReserva = $_POST["ticketIdiomaDelaReserva"];
 	$ticket -> ticketIPdeLaImpresora = $_POST["ticketIPdeLaImpresora"];
+	$ticket -> esTermica = $_POST["esTermica"];
 	$ticket -> generaTicket(); //ejecuto la funcion
 }
+
 
 
