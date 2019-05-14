@@ -6,7 +6,18 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <!-- imprimo el nombre del hotel -->
-            <h1> <?php echo $_SESSION["nombreHotel"]; ?></h1>
+            <h1> <?php echo $_SESSION["nombreHotel"] ?></h1>
+            <?php
+            // $hotel = $_SESSION["hotelSQLSRV"];
+            // $empresa = $_SESSION["empresaSQLSRV"];
+            // $dbo = "dbo.";
+            // $simbolodolar = '$';
+            
+            // $cadena = str_replace(' ', '', $dbo . $empresa . $simbolodolar);
+            // echo $hotel . " " . $empresa;
+            // echo 'hola'.$cadena.'var';
+
+            ?>
             <ol class="breadcrumb">
                 <li><a href="inicio"><i class="fa fa-dashboard"></i> <?php echo $_SESSION["nombreHotel"]; ?></a></li>
                 <li id="nombreRestaurante" class="active">Restaurante</li>
@@ -174,19 +185,19 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     <span><strong>Horario:</strong></span><br>
                                     <div class="input-group" id="horarioReserva">
                                         <div class="input-group-addon"><i class="fas fa-clock"></i></div>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-xs-6">
                                     <span><strong>Pax:</strong></span><br>
-                                    <div class="input-group" >
+                                    <div class="input-group">
                                         <div class="input-group-addon"><i class="fas fa-users"></i></div>
                                         <input type="number" class="form-control" id="numeroDePax" name="numeroDePax" required>
                                     </div>
                                 </div>
                                 <div class="col-md-3 col-xs-6">
                                     <span><strong>Encabezado/pie ticket:</strong></span><br>
-                                    <div class="input-group" >
+                                    <div class="input-group">
                                         <div class="input-group-addon"><i class="fas fa-language"></i></div>
                                         <select class="form-control" name="ticketElige" id="ticketElige" required>
                                             <option value=""></option>
@@ -235,8 +246,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                                      Footer
-                                    </div> -->
+                                                                                                                      Footer
+                                                                                                                    </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -303,13 +314,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                         <input type="text" class="form-control" id="reservaPax" readonly>
                                     </div>
                                 </div>
-                                <!-- <div class="col-md-4 col-xs-4">
-                                                      <span><strong>Mesa</strong></span>
-                                                        <div class="input-group">
-                                                        <div class="input-group-addon"><i class="fas fa-table"></i></div>
-                                                        <input type="text" class="form-control" id="reservaMesa" readonly>
-                                                      </div>
-                                                    </div> -->
+                             
                             </div><br>
                             <div class="row">
                                 <div class="col-md-6 col-xs-6">
@@ -360,8 +365,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
     </div>
 
     <!-- =============================================
-                              MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
-                              =============================================-->
+                                                                                                              MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
+                                                                                                              =============================================-->
     <div id="rsvExternos" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -519,8 +524,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                            </div> -->
+                                                                                                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                                                            </div> -->
             </div>
 
         </div>

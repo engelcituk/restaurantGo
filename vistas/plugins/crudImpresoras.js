@@ -227,12 +227,16 @@ $("#regNombreImpresora").change(function(){
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){ //obtengo una respuesta tipo json						
-			// console.log("respuesta",respuesta);	
+			console.log("respuesta",respuesta);
+			var checkedSi = (respuesta["termica"] == 1) ? "checked" : "";	
+			var checkedNo = (respuesta["termica"] == 0) ? "checked" : "";	
 			localStorage.setItem("nuevaDireccionIPLS", respuesta["direccionIP"]);							
 			$("#ipImpresoraSpan").html(respuesta["direccionIP"]);
 			$("#nuevaDireccionIP").val(respuesta["direccionIP"]);
 			$("#nombreImpresoraSpan").html(respuesta["nombreImpresora"]);			
 			$("#nuevoNomImpresora").val(respuesta["nombreImpresora"]);			
+			$("#radioTermicaSi").prop(checkedSi, true);
+			$("#radioTermicaNo").prop(checkedNo, true);
 		}					
 	})
 

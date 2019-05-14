@@ -88,7 +88,8 @@ class ControladorImpresoras{
 			$datos = array("idHotel" =>$_POST["idHotelImpresora"],
 						   "direccionIp" =>$_POST["regIpImpresora"],
 						   "nombreImpresora" =>mb_strtoupper($_POST["regNombreImpresora"],'UTF-8'),   
-						   "estado" =>$estado);
+						   "estado" =>$estado,
+						   "termica" => $_POST["termica"]);
 
 			$respuesta = ModeloImpresoras::mdlRegistrarImpresora($tabla, $datos);
 			

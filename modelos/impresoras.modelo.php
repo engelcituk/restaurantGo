@@ -55,7 +55,7 @@ class ModeloImpresoras{
 			 }else
 				{
 				//uso de joins para traer los datos
-				$stmt = Conexion::conectar()->prepare("SELECT tabla2.nombre AS nombreHotel,tabla1.id AS idImpresora, tabla1.direccionIP AS ipImpresora,tabla1.nombreImpresora AS nombreImpresora, tabla1.estado AS estadoImpresora FROM ticketimpresoras as tabla1 INNER JOIN hoteles as tabla2 ON tabla1.idHotel=tabla2.id");
+				$stmt = Conexion::conectar()->prepare( "SELECT tabla2.nombre AS nombreHotel,tabla1.id AS idImpresora, tabla1.direccionIP AS ipImpresora,tabla1.nombreImpresora AS nombreImpresora, tabla1.termica AS termica, tabla1.estado AS estadoImpresora FROM ticketimpresoras as tabla1 INNER JOIN hoteles as tabla2 ON tabla1.idHotel=tabla2.id");
 
 				$stmt -> execute();
 
@@ -150,12 +150,13 @@ class ModeloImpresoras{
 
 		$connection = Conexion::conectar();
 
-		$stmt= $connection->prepare("INSERT INTO $tabla (idHotel, direccionIP, nombreImpresora, estado) VALUES (:idHotel, :direccionIp, :nombreImpresora, :estado)");
+		$stmt= $connection->prepare("INSERT INTO $tabla (idHotel, direccionIP, nombreImpresora, estado, termica) VALUES (:idHotel, :direccionIp, :nombreImpresora, :estado, :termica)");
 
 		$stmt -> bindParam(":idHotel", $datos["idHotel"], PDO::PARAM_INT);
 		$stmt -> bindParam(":direccionIp", $datos["direccionIp"], PDO::PARAM_STR);
 		$stmt -> bindParam(":nombreImpresora", $datos["nombreImpresora"], PDO::PARAM_STR);
 		$stmt -> bindParam(":estado", $datos["estado"], PDO::PARAM_INT);
+		$stmt -> bindParam(":termica", $datos["termica"], PDO::PARAM_INT);
 		
 		if ($stmt->execute()) {	
 

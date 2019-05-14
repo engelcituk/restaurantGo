@@ -9,8 +9,6 @@
 		var idRestaurante = localStorage.getItem("idRestauranteLST");
 		var nombreRestaurante = localStorage.getItem("nombreRestauranteLST");
 		
-
-
   	if (numHabitacion != '') {
 			$("#idHotel2").val(idHotel); 
       $("#idRestaurante2").val(idRestaurante);
@@ -28,13 +26,12 @@
 			dataType:"json", //los datos son de tipo json
 			success:function(respuesta){ //obtengo una respuesta tipo json
 				if (respuesta) { //si obtengo resultados muestro datos
-					console.log("respuestaFechaSalida",respuesta.FechaSalida);
+					// console.log("respuesta", respuesta);
 					var fecha = respuesta.FechaSalida;
 					fechaMinima = localStorage.getItem("fechaMinimoLS");
 					fechaMaxima = fecha.substring(0,10);//corto resto de cadena que sobra para la fecha MAxima
-					console.log("fechaMinimaLS",fechaMinima);
-
-					// $("#numHabitacion").val(respuesta["Habitacion"])//le cargo en esos campos los resultados				
+					// console.log("fechaMinimaLS",fechaMinima);
+					$("#numHabitacion").val(respuesta["Habitacion"])//le cargo en esos campos los resultados				
 					$("#fechaReserva").attr({ "min": fechaMinima, "max": fechaMaxima });
 					$("#fechaMaximaRSV").val(fechaMaxima);
 					$('#datosHuesped').removeClass("hidden");

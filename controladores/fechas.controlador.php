@@ -6,14 +6,14 @@ class ControladorFechas{
     Para obtener la fecha de hoy 
     en formato año-mes-dia
 	=============================================*/
-	public function ctrObtnerFechaHoy(){
+	public static function ctrObtnerFechaHoy(){
 
         date_default_timezone_set('UTC');
         $respuestaFechaHoy = date("Y-m-d");
         
         return $respuestaFechaHoy;
     }
-    public function ctrObtnerFechaHoyDMY(){
+    public static function ctrObtnerFechaHoyDMY(){
 
         date_default_timezone_set('UTC');
         $respuestaFechaHoyDMY = date("d-m-Y");

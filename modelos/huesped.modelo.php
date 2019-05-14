@@ -1,29 +1,83 @@
-<?php 
+<?php
 require_once "conectorSQLServer.php";
 
 class ModeloHuesped{
 	/*=============================================
 	CONSULTA A LA TABLA ReservasReservix de SQLServer
 	=============================================*/
-	static public function mdlMostrarListasHuesped($tabla, $item, $valor){
-		//$tabla ReservasReservix, $item=Habitacion $valor=numero de Habitacion.. si recibo busquedas por habitacion
-		if($item != null){
-			//si id no vienen vacio ejecuto esto (id=7 por ejemplo)
-			$stmt = ConexionSqlServer::conectarSqlServer()->prepare("SELECT * FROM $tabla WHERE $item = :$item AND Estado=1");
-
-			$stmt -> bindParam(":".$item, $valor, PDO::PARAM_STR);
+	static public function mdlMostrarListasHuesped($tabla, $valorCampo, $ocupantes, $hotel){		
+		//valorCampo=Habitacion .. si recibo busquedas por habitacion
+		if($valorCampo != null){			
+			$stmt = ConexionSqlServer::conectarSqlServer()->prepare("
+			SELECT  
+				Rvas.Reserva,
+				Rvas.Noches,
+				COUNT(ocup.Reserva) AS Ocupantes,
+				Rvas.Habitacion,
+				Rvas.Apellido,
+				Rvas.Estado,
+				Rvas.FechaEntrada,
+				Rvas.FechaSalida,
+				Rvas.Hotel
+			FROM $tabla 
+				 	AS Rvas INNER JOIN
+				 $ocupantes 
+					AS ocup 
+					ON Rvas.Reserva = ocup.Reserva
+			WHERE Rvas.Estado in (1) AND Habitacion=:habitacion AND Rvas.Hotel=:hotel
+			GROUP BY 
+				Rvas.Reserva,
+				Rvas.Noches,
+				Rvas.Habitacion,
+				Rvas.Estado,
+				Rvas.FechaEntrada,
+				Rvas.FechaSalida,
+				Rvas.Apellido,
+				Rvas.Hotel
+		");
+			
+			$stmt->bindParam(":habitacion", $valorCampo, PDO::PARAM_STR);
+			$stmt->bindParam(":hotel", $hotel, PDO::PARAM_STR);
+			
 			$stmt -> execute();
 			return $stmt -> fetch();
 
 		}else{
 			//de lo contrario si id viene vacio hago consulta de todo la tabla
-			$stmt = ConexionSqlServer::conectarSqlServer()->prepare("SELECT * FROM $tabla WHERE Estado=1");
+			$stmt = ConexionSqlServer::conectarSqlServer()->prepare("
+				SELECT  
+					Rvas.Reserva, 
+					Rvas.Noches, 
+					COUNT(ocup.Reserva) AS Ocupantes,
+					Rvas.Habitacion, 
+					Rvas.Apellido,
+					Rvas.Estado, 
+					Rvas.FechaEntrada, 
+					Rvas.FechaSalida, 
+					Rvas.Hotel
+				FROM   $tabla 
+							AS Rvas INNER JOIN  
+						$ocupantes 
+							AS ocup 
+						ON Rvas.Reserva = ocup.Reserva
+				WHERE Rvas.Estado in (1) 
+				GROUP BY 
+					Rvas.Reserva,
+					Rvas.Noches, 
+					Rvas.Habitacion,
+					Rvas.Estado, 
+					Rvas.FechaEntrada, 
+					Rvas.FechaSalida,
+					Rvas.Apellido,
+					Rvas.Hotel
+		");
+
 			$stmt -> execute();
 			return $stmt -> fetchAll(PDO::FETCH_BOTH);
 
 		}
-
-		$stmt -> close();
+		
+		$stmt -> close(); 
 		$stmt = null;
 	}
 }

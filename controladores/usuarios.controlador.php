@@ -71,7 +71,7 @@ class ControladorUsuarios{
 						$_SESSION["ipImpresora"]=$impresorasIP;
 						$_SESSION["nombreHotel"]= $hotelRespuesta["nombre"];
 						$_SESSION["idHotel"]= $hotelRespuesta["id"];
-						$_SESSION["SUBMENU LATERAL"]=1;
+						$_SESSION["SUBMENU LATERAL"]=1; 
 
 						/*Para generar las variables de sesion para usar el conector adecuado*/
 						$item = "idHotel";//el campo de la tabla
@@ -82,6 +82,9 @@ class ControladorUsuarios{
 		        $_SESSION["bdSQLSRV"] = $respuesta["baseDeDatos"];
 		        $_SESSION["usuarioSQLSRV"] = $respuesta["usuario"];
 						$_SESSION["passwordSQLSRV"] = $respuesta["password"];
+						$_SESSION["hotelSQLSRV"] = $respuesta["hotel"];
+						$_SESSION["empresaSQLSRV"] = $respuesta["empresa"];						
+
 						$_SESSION["VER-MENU-CONFIGURACION"]=1;
 						$_SESSION["ICONO BANDERA"]=1; //para mostrar la bandera que despliega el lateral de estadisticas
 		        /*fin variables de sesion para usar el conector adecuado*/						
