@@ -24,7 +24,7 @@ CARGAR LA LISTA DE RESTAURANTES DE ACUERDO AL HOTEL SELECCIONADO DESDE EL SELECT
 			listaRestaurante = "<select class='form-control' required><option value=''>Elige Restaurante</option>"
 				for (i =0;  i<respuesta.length; i++) {
 					listaRestaurante+= "<option nr="+respuesta[i][2]+" idRestaurante="+respuesta[i][0]+" value="+respuesta[i][0]+">"+respuesta[i][2]+"</option>";
-				}
+				} 
 			listaRestaurante+="</select>";
 			 $("#lstSeatingRestaurante").html(listaRestaurante);												
 		}
@@ -224,8 +224,7 @@ $("#lstSeatingRestaurante").change(function(){ //lstSeatingRestaurante es lista 
 	var idRestaurante = $("#lstSeatingRestaurante").val();
 	var nombreRestaurante = $("option:selected",this).text(); //obtengo el texto que tengo en la lista	
 	console.log("idRestaurante",idRestaurante);
-	
-	
+		
 		nombreHotelLS=localStorage.getItem("nombreHotelLS");
 		window.location="index.php?ruta=configuracion-seatings&idRestaurante="+idRestaurante+"&nomHotel="+nombreHotelLS+"&nomRest="+nombreRestaurante;
 		$("#migaHotelSeating").html(nombreHotelLS);

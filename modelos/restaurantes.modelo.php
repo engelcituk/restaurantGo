@@ -78,6 +78,43 @@ class ModeloRestaurantes{
 	/*=============================================
 	FUNCION PARA CONSULTAR LA LISTA DE RESTAURANTES POR idHotel O TODA LA LISTA 
 	=============================================*/
+	static public function mdlMostrarRestsHotelTrabajo($tabla, $datos)
+	{
+		
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idHotel = :idHotel");
+
+		$stmt->bindParam(":idHotel", $datos, PDO::PARAM_INT);
+
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+		
+		$stmt->close();
+
+		$stmt = null;
+		
+	}
+	static public function mdlEliminarRestaurantes2($tablaRestaurantes, $datos)
+	{
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tablaRestaurantes WHERE idHotel = :idHotel");
+
+		$stmt->bindParam(":idHotel", $datos, PDO::PARAM_INT);
+
+
+		if ($stmt->execute()) {
+			return "OK";
+		} else {
+			return "ERROR";
+		}
+
+		$stmt->close();
+
+		$stmt = null;
+	}
+	/*=============================================
+	FUNCION PARA CONSULTAR LA LISTA DE RESTAURANTES POR idHotel O TODA LA LISTA 
+	=============================================*/
 	static public function mdlMostrarListaRestaurantesActivos($tabla, $campoTabla, $valorCampoTabla)
 	{
 		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $campoTabla = :$campoTabla AND estado=1");

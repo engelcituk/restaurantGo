@@ -35,7 +35,7 @@ class ModeloSeatings{
 
 		$stmt -> close();
 
-		$stmt = null;
+		$stmt = null; 
 
 	}
 	/*=============================================
@@ -56,7 +56,7 @@ class ModeloSeatings{
 			 }else
 				{
 				//uso de joins para traer los datos
-				$stmt = Conexion::conectar()->prepare("SELECT seatings.id AS idSeating, seatings.estado AS estadoSeating, hoteles.nombre AS nomHotel,restaurantes.nombre AS nomRestaurante,diassemana.dia AS diaSemana, seatings.horaSeating AS hora,seatings.paxMaximo AS pm,seatings.reservasMaximas AS rm FROM $tabla  INNER JOIN diassemana ON seatings.idDiaSemana=diassemana.id INNER JOIN restaurantes ON seatings.idRestaurante=restaurantes.id INNER JOIN hoteles ON seatings.idHotel=hoteles.id");
+				$stmt = Conexion::conectar()->prepare("SELECT seatings.id AS idSeating,  seatings.idHotel AS hotelID, seatings.estado AS estadoSeating, hoteles.nombre AS nomHotel,restaurantes.nombre AS nomRestaurante,diassemana.dia AS diaSemana, seatings.horaSeating AS hora,seatings.paxMaximo AS pm,seatings.reservasMaximas AS rm FROM $tabla  INNER JOIN diassemana ON seatings.idDiaSemana=diassemana.id INNER JOIN restaurantes ON seatings.idRestaurante=restaurantes.id INNER JOIN hoteles ON seatings.idHotel=hoteles.id WHERE seatings.idHotel= $hotel");
 
 				$stmt -> execute();
 

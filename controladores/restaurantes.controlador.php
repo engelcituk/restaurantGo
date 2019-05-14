@@ -29,6 +29,18 @@ class ControladorRestaurantes{
 	/*=============================================
 	FUNCION PARA MOSTRAR LA LISTA DE RESTAURANTES:solicitud Ajax
 	=============================================*/
+	static public function ctrMostrarRestsHotelTrabajo($datos)
+	{
+
+		$tabla = "restaurantes";
+
+		$respuesta = ModeloRestaurantes:: mdlMostrarRestsHotelTrabajo($tabla, $datos);
+
+		return $respuesta;
+	}
+	/*=============================================
+	FUNCION PARA MOSTRAR LA LISTA DE RESTAURANTES:solicitud Ajax
+	=============================================*/
 	static public function ctrMostrarListaRestaurantesActivos($campoTabla, $valorCampoTabla)
 	{
 		$tabla = "restaurantes";

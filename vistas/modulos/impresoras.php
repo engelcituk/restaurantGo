@@ -310,7 +310,7 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
                   <!-- <div class="input-group"> -->
                   <div class="radio">
                     <label><input id="radioTermicaSi" type="radio" name="termicaEditar" value="1">Sí</label>
-                    <label><input id="radioTermicaNo" type="radio" name="termicaEditar" value="0">No</label>
+                    <label><input id="radioTermica" type="radio" name="termicaEditar" value="0">No</label>
                   </div>
                   <!-- </div> -->
                 </div>

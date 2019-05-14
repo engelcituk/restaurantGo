@@ -1,5 +1,5 @@
 <?php
-
+ 
 class ControladorSeatings{
 	/*=============================================
 	TRAIGO LISTA DE HOTELES--Para ocupar en mi lista select
@@ -14,7 +14,7 @@ class ControladorSeatings{
 	}
 
 	/*=============================================
-	TRAIGO TODA LA LISTA DE SEATINGS ocupado en el modulo
+	TRAIGO TODA LA LISTA DE SEATINGS ocupado en el modulo 
 	configuracion-seatings
 	=============================================*/
 	static public function ctrMostrarListaSeatings($campoTabla, $valorCampoTabla){
