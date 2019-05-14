@@ -8,7 +8,8 @@ class ModeloSeatings{
 	=============================================*/
 	static public function mdlTraerListaDeHoteles($tabla){
 		
-		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE estado=1");
+		$hotel = $_SESSION["idHotel"];
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE estado=1 and id= $hotel ");
 
 		$stmt -> execute();
 
@@ -41,8 +42,9 @@ class ModeloSeatings{
 	TRAIGO LISTA DE SEATINGS
 	=============================================*/
 	static public function mdlMostrarListaSeatings($tabla,$campoTabla, $valorCampoTabla){
-	
-		$stmt = Conexion::conectar()->prepare("SELECT seatings.id AS idSeating, seatings.estado AS estadoSeating, hoteles.nombre AS nomHotel,restaurantes.nombre AS nomRestaurante,diassemana.dia AS diaSemana, seatings.horaSeating AS hora,seatings.paxMaximo AS pm,seatings.reservasMaximas AS rm FROM $tabla  INNER JOIN diassemana ON seatings.idDiaSemana=diassemana.id INNER JOIN restaurantes ON seatings.idRestaurante=restaurantes.id INNER JOIN hoteles ON seatings.idHotel=hoteles.id WHERE $campoTabla = :$campoTabla");
+		$hotel = $_SESSION["idHotel"];
+		$stmt = Conexion::conectar()->prepare("SELECT seatings.id AS idSeating, seatings.estado AS estadoSeating, hoteles.nombre AS nomHotel,restaurantes.nombre AS nomRestaurante,diassemana.dia AS diaSemana, seatings.horaSeating AS hora,seatings.paxMaximo AS pm,seatings.reservasMaximas AS rm FROM $tabla  INNER JOIN diassemana ON seatings.idDiaSemana=diassemana.id INNER JOIN restaurantes ON seatings.idRestaurante=restaurantes.id INNER JOIN hoteles ON seatings.idHotel=hoteles.id 
+		WHERE $campoTabla = :$campoTabla and hoteles.id = $hotel" );
 
 			//si traigo el id de un restaurante ejecuto la consulta con el where con el id
 			if($valorCampoTabla != null){

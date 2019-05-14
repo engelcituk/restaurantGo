@@ -64,7 +64,7 @@ class ModeloRestaurantes{
 			 else
 				{
 
-				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE estado=1");
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
 
 				$stmt -> execute();
 
