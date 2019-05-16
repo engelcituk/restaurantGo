@@ -81,24 +81,9 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
 
                     <!-- <h3 class="box-title">Title</h3> -->
                     <div class="box-tools pull-right">
-                        <!--  <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                                title="Collapse">
-                          <i class="fa fa-minus"></i></button> -->
-                        <!-- <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-                          <i class="fa fa-times"></i></button> -->
                     </div>
                 </div>
                 <div class="box-body">
-                    <!-- Start creating your amazing application! -->
-                    <!-- Tabla de reservas -->
-                    <!-- List group -->
-
-
-                    <!-- Bootstrap Switch Primary -->
-
-
-
-
                     <div id="restaurantes" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <div>
                             <table id="tablaRestaurantes" class="table table-striped dt-responsive nowrap">
@@ -106,7 +91,8 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                                     <tr>
                                         <th>No.</th>
                                         <th>Nombre</th>
-                                        <th>Especialidad</th>
+                                        <!-- <th>Especialidad</th> -->
+                                        <th>MaximoPaxDia</th>
                                         <th>Estado</th>
                                         <th>Herramientas</th>
                                         <th></th>
@@ -120,19 +106,19 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                                         $campoTabla = "idHotel";
                                         $valorCampoTabla = $_GET["idHotel"];
                                     } else {
-                                       
-                                        $campoTabla= null;
-                                         $valorCampoTabla= null;
+
+                                        $campoTabla = null;
+                                        $valorCampoTabla = null;
                                     }
 
                                     $respuesta = ControladorRestaurantes::ctrMostrarListaRestaurantes($campoTabla, $valorCampoTabla);
                                     $contador = 1;
                                     foreach ($respuesta as $fila => $elemento) {
                                         echo '
-                    <tr id="' . $elemento["id"] . '">
-                        <td>' . $contador . '</td>
-                        <td>' . $elemento["nombre"] . '</td>
-                        <td>' . $elemento["especialidad"] . '</td>';
+                                        <tr id="' . $elemento["id"] . '">
+                                            <td>' . $contador . '</td>
+                                            <td>' . $elemento["nombre"] . '</td>                        
+                                            <td>' . $elemento["id"] . '</td>';
 
                                         if ($elemento["estado"] != 0) {
 
@@ -161,8 +147,8 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                      Footer
-                    </div> -->
+                                                      Footer
+                                                    </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -227,13 +213,13 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                                         <div class="input-group-addon"><i class="fas fa-clock"></i></div>
                                         <input type="text" class="form-control hidden" id="horarioCierre" />
                                         <input type="text" class="form-control" id="sinHorario" name="horarioCierre" value="SIN HORARIO" required readonly />
-                                        <!-- <select class="form-control" name="horarioCierreCatalogo" id="horarioCierreCatalogo" readonly required>
-                                          <option value="SIN HORARIO">SIN HORARIO</option>
-                                          <?php
-                                            // $catalogoDeHorarios = new ControladorSeatings();
-                                            // $catalogoDeHorarios->ctrTraerCatalogoHorario();
-                                            ?>                                    
-                                      </select>                 -->
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Límite de pax por dia</strong><br>
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fas fa-sort-numeric-up"></i></div>
+                                        <input type="number" class="form-control" id="paxMaximoDia" name="paxMaximoDia" required />
                                     </div>
                                 </div>
                             </div>
@@ -251,7 +237,7 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                                     <!-- CREO UNA INSTANCIA PARA LLAMAR AL CONTROLADOR DEL REGISTRO DEL USUARIO -->
                                     <?php
                                     $registro = new ControladorRestaurantes();
-                                    $registro->ctrRegistroRestaurante();
+                                    $registro->ctrRegistroRestaurante(); 
                                     ?>
                                     <button type="submit" id="btnRegistrarRest" class="btn btn-primary btn-block btn-flat"><i class="fas fa-share-square"></i> Registrar</button>
 
@@ -263,16 +249,16 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                          <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fas fa-sign-in-alt"></i>Close</button>
-                        </div> -->
+                                                          <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fas fa-sign-in-alt"></i>Close</button>
+                                                        </div> -->
             </div>
 
         </div>
     </div>
     <!-- fIN DE MODAL PARA REGISTRO DE UN NUEVO USUARIO -->
     <!-- =============================================
-              MODAL PARA EDITAR AL HOTEL
-              =============================================-->
+                                              MODAL PARA EDITAR AL HOTEL
+                                              =============================================-->
     <div id="editRestaurante" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
@@ -283,9 +269,7 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                     <h4 class="modal-title"><i class="fas fa-edit"></i> Editar restaurante</h4>
                 </div>
                 <div class="modal-body">
-                    <!--==========================================
-                          =   FORMULARIO PARA EDITAR EL HOTEL          =
-                          =============================================-->
+                    <!--======= FORMULARIO PARA EDITAR EL HOTEL==================-->
                     <div class="register-box-body">
                         <!-- formulario -->
                         <form method="post">
@@ -323,6 +307,13 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                                         <input type="text" class="form-control hidden" id="horarioCierreEdit" />
                                         <input type="text" class="form-control" id="noModificarHorarioEdit" name="horarioCierreEdit" readonly required />
                                         <input type="text" class="form-control hidden" id="sinHorarioCierreNuevo" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <strong>Límite de pax por dia</strong><br>
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fas fa-sort-numeric-up"></i></div>
+                                        <input type="number" class="form-control" id="paxMaximoDiaEditar" name="paxMaximoDiaEditar" required />
                                     </div>
                                 </div>
                             </div>
@@ -363,8 +354,8 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                      </div> -->
+                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                      </div> -->
             </div>
 
         </div>

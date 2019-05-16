@@ -10,7 +10,7 @@
 		var nombreRestaurante = localStorage.getItem("nombreRestauranteLST");
 		
   	if (numHabitacion != '') {
-			$("#idHotel2").val(idHotel); 
+			$("#idHotel2").val(idHotel);  
       $("#idRestaurante2").val(idRestaurante);
 			$("#campoNombreRestaurante").val(nombreRestaurante);             
       //Objeto formdata para transmitir los datos obtenidos

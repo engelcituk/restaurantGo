@@ -8,7 +8,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
             <!-- imprimo el nombre del hotel -->
             <h1> <?php echo $_SESSION["nombreHotel"] ?></h1>
             <?php
-           
+
 
             ?>
             <ol class="breadcrumb">
@@ -53,16 +53,15 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     if (isset($_GET["nomRest"])) {
                                         $nombreRestaurante = $_GET["nomRest"];
                                     } else {
-                                        $nombreRestaurante = "";
+                                        $nombreRestaurante = ""; 
                                     }
-
                                     $campoTabla = "idHotel";
                                     $valorCampoTabla = $_SESSION["idHotel"];
                                     $respuesta = ControladorRestaurantes::ctrMostrarListaRestaurantesActivos($campoTabla, $valorCampoTabla);
                                     echo '<select class="form-control" id="lstRestaurantes" required><option value="' . $nombreRestaurante . '">' . $nombreRestaurante . '</option>';
                                     foreach ($respuesta as $fila => $elemento) {
                                         echo '                              
-                        <option horaCierre="' . $elemento["horaCierre"] . '" idRestaurante="' . $elemento["id"] . '" value="' . $elemento["id"] . '">' . $elemento["nombre"] . '</option>                            
+                                            <option paxMaximoDia="'.$elemento["paxMaximoDia"].'" horaCierre="' . $elemento["horaCierre"] . '" idRestaurante="' . $elemento["id"] . '" value="' . $elemento["id"] . '">' . $elemento["nombre"] . '</option>                            
                               ';
                                     }
                                     echo '</select>';
@@ -239,8 +238,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                                                                                                                                      Footer
-                                                                                                                                    </div> -->
+                                                                                                                                                  Footer
+                                                                                                                                                </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -359,8 +358,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
     </div>
 
     <!-- =============================================
-                                                                                                                              MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
-                                                                                                                              =============================================-->
+                                                                                                                                          MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
+                                                                                                                                          =============================================-->
     <div id="rsvExternos" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -518,8 +517,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                                                                                                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                                                                            </div> -->
+                                                                                                                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                                                                                        </div> -->
             </div>
 
         </div>

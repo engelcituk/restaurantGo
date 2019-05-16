@@ -49,6 +49,7 @@ $("#hotelElige").change( function(){ // al cambiar el foco se ejecuta ajax
 			var horaCierre= respuesta["horaCierre"];
 			$("#horaCierreResult").val(horaCierre);
 			$("#noModificarHorarioEdit").val(horaCierre);
+			$("#paxMaximoDiaEditar").val(respuesta["paxMaximoDia"]);
 			localStorage.setItem("horaCierreEditLS", horaCierre);		
 			
 		}
@@ -144,7 +145,7 @@ $(document).on("click", ".btnActivarRstrnt", function(){
 
  
  /*======================================
-= con este cargo el id del hotel a registrar
+= con este cargo el id del hotel a registrar 
 ======================================*/
 $("#hotelElige2").change( function(){ // al cambiar el foco se ejecuta ajax 
 	var idHotelPdf = $(this).val();
@@ -235,12 +236,38 @@ $('input[type=radio][name=horaCierreRadioEdit]').change(function() {
 	}
 });
 
-// $("#horarioCierreEdit").change(function(){	
-// 	var horaSeleccionada = $("option:selected",this).val();	
-// 	if(horaSeleccionada != "SIN HORARIO"){
-// 		$("#radioSIEdit").prop("checked", true);
-// 	}else{		
-// 		$("#horarioCierreEdit").attr("readonly",true);
-// 		$("#radioNOEdit").prop("checked", true);
-// 	}
-// })
+/*para no permitir otros caracteres que no sean numeros en el campo paxMaximoDia de  Registrar Nuevo Restaurante*/
+$(document).on("input", "#paxMaximoDia", function () {
+	this.value = this.value.replace(/[^0-9]/g, '');
+})
+/**para validar que se ingresen numeros que cumplen las condiciones 
+= PARA VALIDAR QUE EN EL CAMPO paxMaximoDia SOLO SE INGRESEN NUMEROS
+======================================*/
+$("#paxMaximoDia").change(function () {
+	var paxMaximoDia = $("#paxMaximoDia").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+	if (soloDigitos > 0 && paxMaximoDia != '') {
+		console.log("todo ok");
+	} else {		
+		$("#paxMaximoDia").val("");
+		swal("Oops", "Ingrese un valor válido", "error")
+	}
+})
+
+/*para no permitir otros caracteres que no sean numeros en el campo paxMaximoDia de  Editar Restaurante*/
+$(document).on("input", "#paxMaximoDiaEditar", function () {
+	this.value = this.value.replace(/[^0-9]/g, '');
+})
+/**para validar que se ingresen numeros que cumplen las condiciones 
+= PARA VALIDAR QUE EN EL CAMPO paxMaximoDiaEditar SOLO SE INGRESEN NUMEROS
+======================================*/
+$("#paxMaximoDiaEditar").change(function () {
+	var paxMaximoDiaEditar = $("#paxMaximoDiaEditar").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+	if (soloDigitos > 0 && paxMaximoDiaEditar != '') {
+		console.log("todo ok");
+	} else {
+		$("#paxMaximoDiaEditar").val("");
+		swal("Oops", "Ingrese un valor válido", "error")
+	}
+})

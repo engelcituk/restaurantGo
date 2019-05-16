@@ -316,7 +316,7 @@ $("#catalogoHorarios").change(function(){
 		  swal ( "Oops","Elija un horario", "error");		  
 		  $("#campoPaxModal").addClass("hidden");
 		  $("#campoPaxRSV").addClass("hidden");
-	}		
+	}		 
 })
 
 

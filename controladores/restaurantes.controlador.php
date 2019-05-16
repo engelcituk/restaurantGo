@@ -73,6 +73,7 @@ class ControladorRestaurantes{
 						   "nombre" =>$_POST["regRestaurante"],
 						   "especialidad" =>$_POST["regEspecialidad"],						   
 						   "horarioCierre" =>$_POST["horarioCierre"],
+				           "paxMaximoDia" => $_POST["paxMaximoDia"],
 						   "estado" =>$estado);
 
 			$respuesta = ModeloRestaurantes::mdlRegistroRestaurante($tabla, $datos);
@@ -129,6 +130,7 @@ class ControladorRestaurantes{
 						   "nombre" =>$_POST["editarNombre"],
 						   "especialidad" =>$_POST["editarEspecialidad"],
 						   "horarioCierreEdit" =>$_POST["horarioCierreEdit"],
+						   "paxMaximoDiaEditar" => $_POST["paxMaximoDiaEditar"],
 						   "estado" =>$_POST["estadoRestaurante"]);
 
 				//LLAMO AL MODELO QUE HACE EL UPDATE

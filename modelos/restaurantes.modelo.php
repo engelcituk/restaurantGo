@@ -8,12 +8,13 @@ class ModeloRestaurantes{
 	=============================================*/
 	static public function mdlRegistroRestaurante($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (idHotel, nombre, especialidad, horaCierre, estado) VALUES (:idHotel, :nombre, :especialidad, :horarioCierre, :estado)");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (idHotel, nombre, especialidad, paxMaximoDia, horaCierre, estado) VALUES (:idHotel, :nombre, :especialidad, :paxMaximoDia, :horarioCierre, :estado)");
 
 		$stmt -> bindParam(":idHotel", $datos["idHotel"], PDO::PARAM_INT);
 		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
 		$stmt -> bindParam(":especialidad", $datos["especialidad"], PDO::PARAM_STR);		
 		$stmt -> bindParam(":horarioCierre", $datos["horarioCierre"], PDO::PARAM_STR);
+		$stmt -> bindParam( ":paxMaximoDia", $datos[ "paxMaximoDia"], PDO::PARAM_INT);
 		$stmt -> bindParam(":estado", $datos["estado"], PDO::PARAM_INT);
 	
 		if ($stmt->execute()) {
@@ -194,12 +195,13 @@ PARA GUARDAR LOS DATOS AL EDITAR EL RESTAURANTE EN EL MODAL
 =============================================*/
 	static public function mdlEditarRestaurante($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre =:nombre, especialidad= :especialidad, horaCierre= :horarioCierreEdit, estado =:estado WHERE id =:id");
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre =:nombre, especialidad= :especialidad, paxMaximoDia=:paxMaximoDia, horaCierre= :horarioCierre, estado =:estado WHERE id =:id");
 
 		$stmt -> bindParam(":id", $datos["id"], PDO::PARAM_INT);
 		$stmt -> bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
 		$stmt -> bindParam(":especialidad", $datos["especialidad"], PDO::PARAM_STR);
-		$stmt -> bindParam( ":horarioCierreEdit", $datos[ "horarioCierreEdit"], PDO::PARAM_STR);
+		$stmt -> bindParam(":horarioCierre", $datos[ "horarioCierreEdit"], PDO::PARAM_STR);
+		$stmt -> bindParam(":paxMaximoDia", $datos[ "paxMaximoDiaEditar"], PDO::PARAM_INT);
 		$stmt -> bindParam(":estado", $datos["estado"], PDO::PARAM_INT);		
 
 		if ($stmt->execute()) {

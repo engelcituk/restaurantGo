@@ -8,11 +8,13 @@ $("#lstRestaurantes").change(function(){
     var idRestaurante= $("#lstRestaurantes option:selected").val();
 	var nombreRestaurante= $("#lstRestaurantes option:selected").text();
 	var horaCierreRestaurante = $("option:selected",this).attr("horaCierre");
+	var paxMaximoDia = $("option:selected", this).attr("paxMaximoDia");
     //guardo en localstorage el id del hotel y restaurante, nombre restaurante
     localStorage.setItem("idHotelLST", idHotel);
     localStorage.setItem("idRestauranteLST", idRestaurante);
 	localStorage.setItem("nombreRestauranteLST", nombreRestaurante);
 	localStorage.setItem("horaCierreRestauranteLST", horaCierreRestaurante);
+	localStorage.setItem("paxMaximoDiaLST", paxMaximoDia);
 
     if (idRestaurante != ''){       
         $("#idRestauranteVar").val(idRestaurante);
@@ -47,8 +49,7 @@ $("#lstRestaurantes").change(function(){
 				// console.log("fechaManana", fechaManana);
 				localStorage.setItem("fechaMinimoLS", fechaManana);					
 			}
-		}
-		
+		}		
 		// $("#horarioReserva").append(listaHorarios);		
 		$("#horarioReserva").html("<div class='input-group-addon'><i class='fas fa-clock'></i></div><select class='form-control' id='sel1'><option> </option></select>");
     }
@@ -65,9 +66,9 @@ $("#lstRestaurantes").change(function(){
 		 	localStorage.removeItem("idHotelLST");
 			localStorage.removeItem("idRestauranteLST");
 			localStorage.removeItem("nombreRestauranteLST");
-		
-		
-		         
+			localStorage.removeItem("fechaMinimoLS");
+			localStorage.removeItem("horaCierreRestauranteLST");		
+			localStorage.removeItem("paxMaximoDiaLST");			         
     }              
 })
  /*======================================
@@ -500,7 +501,7 @@ $("#numeroDePax").change(function(){
     }
     else
          {
-		  swal ( "Oops","Escriba un valor superior a cero y menor de 100", "error");
+		  swal ( "Oops","Escriba un valor superior a cero", "error");
 		  $("#numeroDePax").val(numeroOcupantesPax);
 		  $("#btnGuardarReserva").attr("disabled",true);                    
     }	
@@ -509,12 +510,20 @@ $(document).on("click", "#btnGuardarReserva", function(){
 	var paxHuesped = parseInt($("#numeroDePax").val());
 	var numDePaxMaxima = parseInt(localStorage.getItem("paxMaximoLST"));
 	var totalPaxAcumulados = parseInt(localStorage.getItem("sumaPaxLST"));
+	var paxMaxDiaRestaurante = parseInt(localStorage.getItem("paxMaximoDiaLST"));
+	var restaurante = localStorage.getItem("nombreRestauranteLST");
+	
 	var paxAcumuladosMasPaxHuesped = parseInt(totalPaxAcumulados + paxHuesped);
+	var paxAcumuladosDiaMasPaxHuesped = parseInt(paxMaxDiaRestaurante + paxHuesped);
 
-	if(paxAcumuladosMasPaxHuesped > numDePaxMaxima){		
-		swal ( "Oops","Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");
+	if (paxAcumuladosMasPaxHuesped > numDePaxMaxima){		
+		swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora"+paxMaxDiaRestaurante, "error");
+		return false;	
+	}
+	if (paxAcumuladosDiaMasPaxHuesped > paxMaxDiaRestaurante) {
+		swal("Oops", "La capacidad por día del restaurante "+restaurante+" es de "+ paxMaxDiaRestaurante+" pax. El número de pax que indica mas lo acumulado supera este limite" , "error");
 		return false;
-	}	
+	}
 })
 /*los meses y dias me retorna sin los ceros cuando son menores a 10
 FUNCION PARA AGREGAR LOS CEROS*/
