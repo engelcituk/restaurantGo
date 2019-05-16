@@ -226,9 +226,9 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                             <input type="number" class="form-control hidden" id="numReservasMax" name="numReservasMax" readonly>
                             <input type="number" class="form-control hidden" id="numDePaxMaxima" name="numDePaxMaxima" readonly>
                             <input type="number" class="form-control hidden" id="totalReservasHechas" name="totalReservasHechas" readonly>
-                            <input type="number" class="form-control" id="totalPaxAcumulados" name="totalPaxAcumulados" readonly>
-                            <input type="number" class="form-control" id="numDePaxMaximaRestaurante" name="paxLimiteRestaurante" readonly>
-                            <input type="number" class="form-control" id="numDePaxDiaRestaurante" name="numDePaxDiaRestaurante" readonly>
+                            <input type="number" class="form-control hidden" id="totalPaxAcumulados" name="totalPaxAcumulados" readonly>
+                            <input type="number" class="form-control hidden" id="numDePaxMaximaRestaurante" name="paxLimiteRestaurante" readonly>
+                            <input type="number" class="form-control hidden" id="numDePaxDiaRestaurante" name="numDePaxDiaRestaurante" readonly>
                             <!-- campos de tipo  para traer los pax reservas maximos -->
                             <?php
                             $reservar = new ControladorReservas();

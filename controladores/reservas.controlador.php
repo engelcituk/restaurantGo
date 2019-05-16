@@ -212,7 +212,7 @@ class ControladorReservas{
 					$rsvRestauranteTicket= $datos["nombreRestaurante"];
 					$rsvIdiomaTicket= $datos["ticket"];
 
-			if ( $paxTotDeLaRsv > $paxLimiteRestaurante && $numDePaxMaxima !=  $sinLimites) {
+			if ( $paxTotDeLaRsv > $numDePaxMaxima && $numDePaxMaxima !=  $sinLimites) {
 				echo '
 					<script>
 					event.preventDefault();
