@@ -53,7 +53,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     if (isset($_GET["nomRest"])) {
                                         $nombreRestaurante = $_GET["nomRest"];
                                     } else {
-                                        $nombreRestaurante = ""; 
+                                        $nombreRestaurante = "";
                                     }
                                     $campoTabla = "idHotel";
                                     $valorCampoTabla = $_SESSION["idHotel"];
@@ -61,7 +61,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     echo '<select class="form-control" id="lstRestaurantes" required><option value="' . $nombreRestaurante . '">' . $nombreRestaurante . '</option>';
                                     foreach ($respuesta as $fila => $elemento) {
                                         echo '                              
-                                            <option paxMaximoDia="'.$elemento["paxMaximoDia"].'" horaCierre="' . $elemento["horaCierre"] . '" idRestaurante="' . $elemento["id"] . '" value="' . $elemento["id"] . '">' . $elemento["nombre"] . '</option>                            
+                                            <option paxMaximoDia="' . $elemento["paxMaximoDia"] . '" horaCierre="' . $elemento["horaCierre"] . '" idRestaurante="' . $elemento["id"] . '" value="' . $elemento["id"] . '">' . $elemento["nombre"] . '</option>                            
                               ';
                                     }
                                     echo '</select>';
@@ -226,7 +226,9 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                             <input type="number" class="form-control hidden" id="numReservasMax" name="numReservasMax" readonly>
                             <input type="number" class="form-control hidden" id="numDePaxMaxima" name="numDePaxMaxima" readonly>
                             <input type="number" class="form-control hidden" id="totalReservasHechas" name="totalReservasHechas" readonly>
-                            <input type="number" class="form-control hidden" id="totalPaxAcumulados" name="totalPaxAcumulados" readonly>
+                            <input type="number" class="form-control" id="totalPaxAcumulados" name="totalPaxAcumulados" readonly>
+                            <input type="number" class="form-control" id="numDePaxMaximaRestaurante" name="paxLimiteRestaurante" readonly>
+                            <input type="number" class="form-control" id="numDePaxDiaRestaurante" name="numDePaxDiaRestaurante" readonly>
                             <!-- campos de tipo  para traer los pax reservas maximos -->
                             <?php
                             $reservar = new ControladorReservas();
@@ -238,8 +240,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                                                                                                                                                  Footer
-                                                                                                                                                </div> -->
+                                                                                                                                                                  Footer
+                                                                                                                                                                </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -358,8 +360,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
     </div>
 
     <!-- =============================================
-                                                                                                                                          MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
-                                                                                                                                          =============================================-->
+                                                                                                                                                          MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
+                                                                                                                                                          =============================================-->
     <div id="rsvExternos" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -517,8 +519,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                                                                                                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                                                                                        </div> -->
+                                                                                                                                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                                                                                                        </div> -->
             </div>
 
         </div>

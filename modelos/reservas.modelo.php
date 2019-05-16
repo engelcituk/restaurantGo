@@ -297,7 +297,26 @@ class ModeloReservas{
 
 		$stmt = null;
 	}
+	/*=============================================
+	PARA VERIFICAR QUE EL HUESPED PUEDA HACER RESERVA: solicitud 
+	=============================================*/
+	static public function mdlContarReservasYPaxAcumuladosDia($tabla, $valorDeMiCampo, $valorDeMiCampo2)
+	{
 
+		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) as totalReservas, SUM(pax) as sumaPax FROM $tabla WHERE idRestaurante=:id AND fechaDeLaReserva=:fechaDelaReserva");
+
+		$stmt->bindParam(":id", $valorDeMiCampo2, PDO::PARAM_INT);
+		$stmt->bindParam(":fechaDelaReserva", $valorDeMiCampo, PDO::PARAM_STR);
+	
+
+		$stmt->execute();
+
+		return $stmt->fetch();
+
+		$stmt->close();
+
+		$stmt = null;
+	}
 	/*=============================================
 	 PARA ELIMINAR UNA RESERVA DESDE EL sweetalert
 	=============================================*/

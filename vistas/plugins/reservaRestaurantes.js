@@ -26,10 +26,7 @@ $("#lstRestaurantes").change(function(){
 		var idHotel = localStorage.getItem("idHotelLST");
 		var idRestaurante = localStorage.getItem("idRestauranteLST");
 		var nombreRestaurante = localStorage.getItem("nombreRestauranteLST");
-
-		console.log("idHotel", idHotel);
-		console.log("idRestaurante", idRestaurante);
-		console.log("nombreRestaurante", nombreRestaurante);
+		
 
 		var horaActual=obtenerHoraActual();	
 		var fechaHoy = obtenerFechaHoy();
@@ -226,8 +223,10 @@ $("#fechaReserva").change(function(){
 	var idHotel = localStorage.getItem("idHotelLST");
 	var idRestaurante = localStorage.getItem("idRestauranteLST");
 	var numOcupantes =$("#ocupantes").val();
+	var paxMaximoRestaurante = localStorage.getItem("paxMaximoDiaLST");
 	localStorage.setItem("numeroOcupantesPaxLS", numOcupantes);
-
+	localStorage.setItem("fechaReservaLTS", fechaReservaObtenida);
+	$("#numDePaxMaximaRestaurante").val("");
     var datos = new FormData();
 	datos.append("fechaReservaObtenida",fechaReservaObtenida);
 	datos.append("idHotelCampo",idHotel);
@@ -249,7 +248,7 @@ $("#fechaReserva").change(function(){
 					var inicio = 0;
 					var fin = 8;
 					var subCadenaHora=cortarCadenaHora.substring(inicio,fin);
-					listaHorarios+= "<option horaSeating="+respuesta[i][4]+" paxMaximo="+respuesta[i][5]+" reservaMaximas="+respuesta[i][6]+"  value="+respuesta[i][4]+">"+subCadenaHora+"</option>";
+					listaHorarios += "<option horaSeating=" + respuesta[i][4] + " paxMaxRestaurante=" + paxMaximoRestaurante+" paxMaximo="+respuesta[i][5]+" reservaMaximas="+respuesta[i][6]+"  value="+respuesta[i][4]+">"+subCadenaHora+"</option>";
 				}
 			listaHorarios+="</select>";
 			$("#horarioReserva").html(listaHorarios);
@@ -271,6 +270,7 @@ $("#horarioReserva").change(function(){
 	//los enviaré a campos ocultos
 	var paxMaximo = $("option:selected",this).attr("paxMaximo"); 
 	var reservaMaximas = $("option:selected",this).attr("reservaMaximas");
+	var paxMaximoRestaurante = $("option:selected", this).attr("paxMaxRestaurante");
 	// console.log("paxMaximo",paxMaximo);
 	// console.log("reservaMaximas",reservaMaximas);
 	if (valueHorario != '') {
@@ -291,9 +291,10 @@ $("#horarioReserva").change(function(){
 
 					$("#numReservasMax").val(reservaMaximas);
 					$("#numDePaxMaxima").val(paxMaximo);
+					$("#numDePaxMaximaRestaurante").val(paxMaximoRestaurante);
 										
 					$.notify({							
-						message: '<i class="fas fa-clock"></i><strong> Nota 2:</strong> Para este día y hora se puede cubrir un limite de '+paxMaximo+' pax..' 
+						message: '<i class="fas fa-clock"></i><strong> Nota 2:</strong> Para este día el restaurante tiene capacidad para ' + paxMaximoRestaurante+' pax , para la hora tiene un limite de '+paxMaximo+' pax..' 
 						},{
 						// settings
 						type: 'info',
@@ -305,7 +306,8 @@ $("#horarioReserva").change(function(){
 	}
 	else
 		 {
-		  swal ( "Oops","Elija un horario por favor", "error")		
+		  swal ( "Oops","Elija un horario por favor", "error");
+		  $("#numDePaxMaximaRestaurante").val("");	
 	}	
 })
  /*===============FIN=================*/
@@ -333,7 +335,7 @@ $("#horarioReserva").change(function(){
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){
-			// console.log("respuestaF",respuesta);
+			console.log("respuestaF",respuesta);
 			var totalReservas = respuesta[0];
 			var sumaPax = respuesta[1];			
 
@@ -410,6 +412,7 @@ $("#horarioReserva").change(function(){
  TRAIGO LA CANTIDA DE RESERVAS QUE HA HECHO EL HUESPED            =
  ==================================================================*/
   $("#ticketElige").change(function(){
+	  obtenerPaxAcumuladosDia();
   	//traigo el identificador de la reserva del hotel y max de reservas que el huesped puede hacer
   	var identificadorReservaHotel = $("#reserva").val();
   	var ticketIdioma = $("option:selected",this).text();
@@ -487,14 +490,15 @@ $(document).on("input", "#numeroDePax", function(){
 	this.value = this.value.replace(/[^0-9]/g,'');
 })
 $("#numeroDePax").change(function(){
+	obtenerPaxAcumuladosDia();
 	var paxHuesped = parseInt($("#numeroDePax").val());
 	var numDePaxMaxima = parseInt(localStorage.getItem("paxMaximoLST"));
 	var totalPaxAcumulados = parseInt(localStorage.getItem("sumaPaxLST"));
 	var paxAcumuladosMasPaxHuesped = parseInt(totalPaxAcumulados + paxHuesped);
 	var numeroOcupantesPax = localStorage.getItem("numeroOcupantesPaxLS");//para rellenar el campo de pax por si pone un valor fuera del rango aceptado
 	if (paxHuesped != '' && paxHuesped > 0 && paxHuesped < 100) {    			
-		if(paxAcumuladosMasPaxHuesped> numDePaxMaxima){
-			swal ( "Oops","Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");
+		if(paxAcumuladosMasPaxHuesped> numDePaxMaxima){						
+			swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");
 			$("#numeroDePax").val(numeroOcupantesPax);
 			$("#btnGuardarReserva").attr("disabled",true); 
 		}
@@ -507,23 +511,29 @@ $("#numeroDePax").change(function(){
     }	
 })	
 $(document).on("click", "#btnGuardarReserva", function(){
+	obtenerPaxAcumuladosDia();
 	var paxHuesped = parseInt($("#numeroDePax").val());
+	var paxAcumuladoDia = parseInt($("#numDePaxDiaRestaurante").val());
+	var numDePaxMaximaRestaurante = parseInt($("#numDePaxMaximaRestaurante").val());
+	
 	var numDePaxMaxima = parseInt(localStorage.getItem("paxMaximoLST"));
 	var totalPaxAcumulados = parseInt(localStorage.getItem("sumaPaxLST"));
-	var paxMaxDiaRestaurante = parseInt(localStorage.getItem("paxMaximoDiaLST"));
-	var restaurante = localStorage.getItem("nombreRestauranteLST");
-	
+		
 	var paxAcumuladosMasPaxHuesped = parseInt(totalPaxAcumulados + paxHuesped);
-	var paxAcumuladosDiaMasPaxHuesped = parseInt(paxMaxDiaRestaurante + paxHuesped);
-
+	var paxAcumuladosDiaMasPaxHuesped = parseInt(paxAcumuladoDia + paxHuesped);	
+		
 	if (paxAcumuladosMasPaxHuesped > numDePaxMaxima){		
-		swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora"+paxMaxDiaRestaurante, "error");
+		swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");
+		
 		return false;	
-	}
-	if (paxAcumuladosDiaMasPaxHuesped > paxMaxDiaRestaurante) {
-		swal("Oops", "La capacidad por día del restaurante "+restaurante+" es de "+ paxMaxDiaRestaurante+" pax. El número de pax que indica mas lo acumulado supera este limite" , "error");
+	} else if (paxAcumuladosDiaMasPaxHuesped > numDePaxMaximaRestaurante) {
+		swal("Oops", "Los pax acumulados del día más la que indica su reserva supera el limite para este dia", "error");
+
 		return false;
-	}
+	}else {
+		return true;
+	}	
+	
 })
 /*los meses y dias me retorna sin los ceros cuando son menores a 10
 FUNCION PARA AGREGAR LOS CEROS*/
@@ -571,6 +581,47 @@ function obtenerFechaManana(){
 
 	return fechaManana;	
 }
+function obtenerPaxAcumuladosDia() {
+	var fecha = localStorage.getItem("fechaReservaLTS");
+	var idRestaurante = localStorage.getItem("idRestauranteLST");	
+	var datos = new FormData();
+	datos.append("fechaDeLaReservaDia", fecha);
+	datos.append("idRestauranteSeatingDia", idRestaurante);
+
+	$.ajax({
+		url: "ajax/reservasRestaurantes.ajax.php",
+		method: "POST", //el envio es por POST
+		data: datos, //datos es la instancia de ajax por el que se envia idHotel
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json", //los datos son de tipo json
+		success: function (respuesta) { //obtengo una respuesta tipo json                               
+			// console.log("respuesta", respuesta);
+			// console.log("respuestaPaxRest", respuesta["sumaPax"]);			
+			if (respuesta["sumaPax"]==null){
+				sumaPaxDia =0;				
+			}else{
+				sumaPaxDia = respuesta["sumaPax"];								
+			}
+			$("#numDePaxDiaRestaurante").val(sumaPaxDia); 
+		}
+	})	
+}
+// function mostrarSumapaxDia(sumaPax){
+	
+// 	var sumaPaxtotalDia = parseInt(sumaPax);
+// 	var numDePaxMaximaRestaurante = parseInt($("#numDePaxMaximaRestaurante").val());
+// 	var numeroPAxHuesped = parseInt($("#numeroDePax").val());
+// 	var totalPAxHuespedMasAcumulado = sumaPaxtotalDia + numeroPAxHuesped;
+	
+// 	if (totalPAxHuespedMasAcumulado > numDePaxMaximaRestaurante){
+
+// 		swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para este dia"+totalPAxHuespedMasAcumulado, "error");
+
+// 		return false;
+// 	}	
+// }
 //Esta es para 
 $("#fechaRsvFiltro").change(function () {
 	var fechaSeleccionada = $("#fechaRsvFiltro").val();	

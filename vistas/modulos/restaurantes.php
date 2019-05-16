@@ -118,7 +118,7 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                                         <tr id="' . $elemento["id"] . '">
                                             <td>' . $contador . '</td>
                                             <td>' . $elemento["nombre"] . '</td>                        
-                                            <td>' . $elemento["id"] . '</td>';
+                                            <td>' . $elemento["paxMaximoDia"] . '</td>';
 
                                         if ($elemento["estado"] != 0) {
 
@@ -147,8 +147,8 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                                                      Footer
-                                                    </div> -->
+                                                          Footer
+                                                        </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -237,7 +237,7 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                                     <!-- CREO UNA INSTANCIA PARA LLAMAR AL CONTROLADOR DEL REGISTRO DEL USUARIO -->
                                     <?php
                                     $registro = new ControladorRestaurantes();
-                                    $registro->ctrRegistroRestaurante(); 
+                                    $registro->ctrRegistroRestaurante();
                                     ?>
                                     <button type="submit" id="btnRegistrarRest" class="btn btn-primary btn-block btn-flat"><i class="fas fa-share-square"></i> Registrar</button>
 
@@ -249,16 +249,16 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                                          <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fas fa-sign-in-alt"></i>Close</button>
-                                                        </div> -->
+                                                              <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fas fa-sign-in-alt"></i>Close</button>
+                                                            </div> -->
             </div>
 
         </div>
     </div>
     <!-- fIN DE MODAL PARA REGISTRO DE UN NUEVO USUARIO -->
     <!-- =============================================
-                                              MODAL PARA EDITAR AL HOTEL
-                                              =============================================-->
+                                                  MODAL PARA EDITAR AL HOTEL
+                                                  =============================================-->
     <div id="editRestaurante" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
@@ -354,8 +354,8 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                      </div> -->
+                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                          </div> -->
             </div>
 
         </div>

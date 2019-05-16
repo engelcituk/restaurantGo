@@ -175,6 +175,7 @@ class ControladorReservas{
 		$totalReservasHechas=$_POST["totalReservasHechas"];
 		$totalPaxAcumulados=$_POST["totalPaxAcumulados"];		
 		$numeroDePax = $_POST["numeroDePax"];
+		$paxLimiteRestaurante = $_POST["paxLimiteRestaurante"]; 
 		$valorReservaPorHacer= 1;
 
 		$paxTotDeLaRsv=$totalPaxAcumulados+$numeroDePax;
@@ -202,7 +203,7 @@ class ControladorReservas{
 					);
 			
 					$rsvFechaTicket= $datos["fechaReserva"];
-					$rsvHoraTicket= $datos["horario"];
+					$rsvHoraTicket= $datos["horario"]; 
 					$rsvIdentificadorTicket= $datos["reservaIdentificador"];
 					$rsvApellidoTicket= $datos["apellido"];
 					$rsvHabitacionTicket= $datos["habitacion"];
@@ -211,7 +212,7 @@ class ControladorReservas{
 					$rsvRestauranteTicket= $datos["nombreRestaurante"];
 					$rsvIdiomaTicket= $datos["ticket"];
 
-			if ($paxTotDeLaRsv > $numDePaxMaxima && $numDePaxMaxima !=  $sinLimites) {
+			if ( $paxTotDeLaRsv > $paxLimiteRestaurante && $numDePaxMaxima !=  $sinLimites) {
 				echo '
 					<script>
 					event.preventDefault();
@@ -224,7 +225,7 @@ class ControladorReservas{
 								},
 							function(isConfirm){
 								if(isConfirm){
-									swal("Deleted!", "Your imaginary file has been archived.", "success");
+									return false;
 								}
 						});					
 					</script>';

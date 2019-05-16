@@ -73,8 +73,7 @@
                             <div id="restauranteSidebar' . $contador . '" class="collapse">                        
                             Pax acumulados: ' . $sumaPax . '<br>
                             Total de Reservas: ' . $totalReservas . '<br>
-                            CapacidadPaxDía: ' . $elemento["paxMaximoDia"] . '<br>
-                            TotalPaxSeatings: ' . $paxTotalesDiaSeatings . ' <br>
+                            CapacidadPaxDía: ' . $elemento["paxMaximoDia"] . '<br>                            
                             <span class="label label-' . $colorPercet . ' pull-right">' . $cutPercentCeros . ' %</span>
                               <br>
                               <div class="progress progress-xxs">

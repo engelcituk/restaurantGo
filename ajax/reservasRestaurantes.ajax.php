@@ -98,7 +98,7 @@ PARA TRAER EL NUMERO DE SEATING QUE YA HAY DE FECHA/HORA X dadas
 	public $fechaDeLaReserva;
 	public $horaDelSeating;
 	public $idRestauranteSeating;
-	public function contarReservasYPaxAcumulados(){
+	public function contarReservasYPaxAcumulados(){ 
 
 		$tabla ="reservas";
 		
@@ -111,6 +111,24 @@ PARA TRAER EL NUMERO DE SEATING QUE YA HAY DE FECHA/HORA X dadas
 		
 		echo json_encode($respuesta);
 
+	}
+	/*======================================
+PARA TRAER EL NUMERO DE SEATING QUE YA HAY DE FECHA/ X dadas
+======================================*/
+	public $fechaDeLaReservaDia;	
+	public $idRestauranteSeatingDia;
+	public function contarReservasYPaxAcumuladosDia()
+	{
+
+		$tabla = "reservas";
+
+		$valorDeMiCampo = $this->fechaDeLaReservaDia;		
+		$valorDeMiCampo2 = $this->idRestauranteSeatingDia;
+
+
+		$respuesta = ModeloReservas::mdlContarReservasYPaxAcumuladosDia($tabla, $valorDeMiCampo, $valorDeMiCampo2);
+
+		echo json_encode($respuesta);
 	}
 }
 /*==============================SECTION DE OBJETOS==================================*/
@@ -173,5 +191,15 @@ if(isset($_POST["fechaDeLaReserva"])){
 	$contarRsvSumPax -> horaDelSeating = $_POST["horaDelSeating"];
 	$contarRsvSumPax -> idRestauranteSeating = $_POST["idRestauranteSeating"];
 	$contarRsvSumPax -> contarReservasYPaxAcumulados();
+}
+/*======================================
+=   OBJETO-->contarReservasYPaxAcumuladosDia   =
+======================================*/
+if (isset($_POST[ "fechaDeLaReservaDia"])) {
+
+	$contarRsvSumPax = new AjaxReservasRestaurantes();
+	$contarRsvSumPax->fechaDeLaReservaDia = $_POST["fechaDeLaReservaDia"]; //variable toma el valor por POST	
+	$contarRsvSumPax->idRestauranteSeatingDia = $_POST["idRestauranteSeatingDia"];
+	$contarRsvSumPax->contarReservasYPaxAcumuladosDia();
 }
 /*==============================FIN DE SECTION LISTA DE OBJETOS==================================*/
