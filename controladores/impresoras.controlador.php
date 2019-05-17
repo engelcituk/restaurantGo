@@ -31,7 +31,7 @@ class ControladorImpresoras{
 		}
 	}
 
-	/*=============================================
+	/*============================================= 
 	TRAIGO TODA LA LISTA DE impresoras OCUPADO EN EL MODULO
 	impresoras---para cargar en el datatable
 	=============================================*/

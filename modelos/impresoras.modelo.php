@@ -44,7 +44,7 @@ class ModeloImpresoras{
 	=============================================*/
 	static public function mdlMostrarListaCompletaImpresoras($tabla,$campoTabla,$valorCampoTabla){
 	
-		$stmt = Conexion::conectar()->prepare("SELECT tabla2.nombre AS nombreHotel,tabla1.id AS idImpresora, tabla1.direccionIP AS ipImpresora,tabla1.nombreImpresora AS nombreImpresora, tabla1.estado AS estadoImpresora FROM ticketimpresoras as tabla1 INNER JOIN hoteles as tabla2 ON tabla1.idHotel=tabla2.id WHERE $campoTabla = :$campoTabla");
+		$stmt = Conexion::conectar()->prepare("SELECT tabla2.nombre AS nombreHotel,tabla1.id AS idImpresora, tabla1.direccionIP AS ipImpresora,tabla1.nombreImpresora AS nombreImpresora,  tabla1.termica AS termica, tabla1.estado AS estadoImpresora FROM ticketimpresoras as tabla1 INNER JOIN hoteles as tabla2 ON tabla1.idHotel=tabla2.id WHERE $campoTabla = :$campoTabla");
 		//si traigo el id de un hotel ejecuto la consulta con el where con el id
 			if($valorCampoTabla != null){
 

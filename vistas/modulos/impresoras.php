@@ -24,12 +24,12 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
           <!-- <h3 class="box-title">Title</h3> -->
 
           <!-- <div class="box-tools pull-right">
-                                                              <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
-                                                                      title="Collapse">
-                                                                <i class="fa fa-minus"></i></button>
-                                                              <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-                                                                <i class="fa fa-times"></i></button>
-                                                            </div> -->
+                                                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                                                        title="Collapse">
+                                                                  <i class="fa fa-minus"></i></button>
+                                                                <button type="button" class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
+                                                                  <i class="fa fa-times"></i></button>
+                                                              </div> -->
           <div class="row">
             <?php
             if (isset($_GET["nomHotel"])) {
@@ -111,7 +111,7 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
 
                   $respuesta = ControladorImpresoras::ctrMostrarListaCompletaImpresoras($campoTabla, $valorCampoTabla);
                   $contador = 1;
-
+                  // echo  var_dump($respuesta);
                   foreach ($respuesta as $fila => $elemento) {
                     $termica = ($elemento["termica"] == 1) ? "btn btn-success" : "btn btn-warning";
                     $siNo = ($elemento["termica"] == 1) ? "SI" : "NO";
@@ -158,8 +158,8 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
   </div>
 
   <!-- =============================================
-                                                    MODAL PARA REGISTRAR UNA NUEVA IMPRESORA
-                                                    =============================================-->
+                                                      MODAL PARA REGISTRAR UNA NUEVA IMPRESORA
+                                                      =============================================-->
   <div id="nuevaImpresora" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -244,16 +244,16 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
           </div>
         </div>
         <!-- <div class="modal-footer">
-                                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            </div> -->
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                              </div> -->
       </div>
 
     </div>
   </div>
   <!--===== MODAL PARA REGISTRAR UNA NUEVA IMPRESORA======-->
   <!-- =============================================
-                                                    MODAL PARA EDITAR UNA IMPRESORA
-                                                    =============================================-->
+                                                      MODAL PARA EDITAR UNA IMPRESORA
+                                                      =============================================-->
   <div id="editImpresora" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <!-- Modal content-->
@@ -347,8 +347,8 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
           </div>
         </div>
         <!-- <div class="modal-footer">
-                                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            </div> -->
+                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                              </div> -->
       </div>
 
     </div>
