@@ -5,12 +5,14 @@ class ControladorImpresoras{
 	TRAIGO LISTA DE HOTELES--Para ocupar en mi lista select
 	=============================================*/
 	public function ctrListaDeHotelesSelect(){
-		$tabla = "hoteles";
+		
+		$tabla = "permisoshotel";
+		$valorDeMiCampo = $_SESSION["id"]; //EL id del usuario
 
-		$respuesta = ModeloImpresoras::mdlTraerListaDeHoteles($tabla);
+		$respuesta = ModeloUsuarioPermisos::mdlMostraPermisosHotelUsuario($tabla, $valorDeMiCampo);
 
 		foreach ($respuesta as $fila => $elemento){
-        	echo '<option idhotelLstPrinter='.$elemento["id"].'>'.$elemento["nombre"].'</option>';
+        	echo '<option idhotelLstPrinter='.$elemento["idHotel"].'>'.$elemento["nombrePermisoHotel"].'</option>';
         }
 	} 
 
@@ -41,7 +43,7 @@ class ControladorImpresoras{
 		
 		$respuesta = ModeloImpresoras::mdlMostrarListaCompletaImpresoras($tabla,$campoTabla,$valorCampoTabla);
 		
-		return $respuesta;		
+		return $respuesta;	 	
 	}
 	/*=============================================
 	FUNCION PARA ELIMINAR LA IMPRESORA

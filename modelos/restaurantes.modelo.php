@@ -51,6 +51,11 @@ class ModeloRestaurantes{
 	=============================================*/
 	static public function mdlMostrarListaRestaurantes($tabla, $campoTabla, $valorCampoTabla){
 
+		$listaIdHotelesUsuario = new ControladorRestaurantes();
+		$idHoteles = $listaIdHotelesUsuario->ctrListaUsuarioArrayIdHoteles();
+		$arrayIdHoteles = $idHoteles;
+		$borroUltimaComaArray = substr($arrayIdHoteles, 0, -1)."";
+		$CadenaConsultaFinal = $borroUltimaComaArray . ")"; //resulta en un array así->  (2,3,4,5 )
 
 		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $campoTabla = :$campoTabla");
 			if($campoTabla != null){
@@ -65,7 +70,7 @@ class ModeloRestaurantes{
 			 else
 				{
 
-				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idHotel IN $CadenaConsultaFinal");
 
 				$stmt -> execute();
 

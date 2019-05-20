@@ -34,7 +34,7 @@ class ModeloImpresoras{
 
 		$stmt -> close();
 
-		$stmt = null;
+		$stmt = null; 
 
 	}
 
@@ -43,6 +43,11 @@ class ModeloImpresoras{
 
 	=============================================*/
 	static public function mdlMostrarListaCompletaImpresoras($tabla,$campoTabla,$valorCampoTabla){
+		$listaIdHotelesUsuario = new ControladorRestaurantes();
+		$idHoteles = $listaIdHotelesUsuario->ctrListaUsuarioArrayIdHoteles();
+		$arrayIdHoteles = $idHoteles;
+		$borroUltimaComaArray = substr($arrayIdHoteles, 0, -1) . "";
+		$CadenaConsultaFinal = $borroUltimaComaArray . ")"; //resulta en un array así->  (2,3,4,5 )
 	
 		$stmt = Conexion::conectar()->prepare("SELECT tabla2.nombre AS nombreHotel,tabla1.id AS idImpresora, tabla1.direccionIP AS ipImpresora,tabla1.nombreImpresora AS nombreImpresora,  tabla1.termica AS termica, tabla1.estado AS estadoImpresora FROM ticketimpresoras as tabla1 INNER JOIN hoteles as tabla2 ON tabla1.idHotel=tabla2.id WHERE $campoTabla = :$campoTabla");
 		//si traigo el id de un hotel ejecuto la consulta con el where con el id
@@ -55,9 +60,9 @@ class ModeloImpresoras{
 			 }else
 				{
 				//uso de joins para traer los datos
-				$stmt = Conexion::conectar()->prepare( "SELECT tabla2.nombre AS nombreHotel,tabla1.id AS idImpresora, tabla1.direccionIP AS ipImpresora,tabla1.nombreImpresora AS nombreImpresora, tabla1.termica AS termica, tabla1.estado AS estadoImpresora FROM ticketimpresoras as tabla1 INNER JOIN hoteles as tabla2 ON tabla1.idHotel=tabla2.id");
-
-				$stmt -> execute();
+				$stmt = Conexion::conectar()->prepare( "SELECT tabla2.nombre AS nombreHotel,tabla1.id AS idImpresora, tabla1.direccionIP AS ipImpresora,tabla1.nombreImpresora AS nombreImpresora, tabla1.termica AS termica, tabla1.estado AS estadoImpresora FROM ticketimpresoras as tabla1 INNER JOIN hoteles as tabla2 ON tabla1.idHotel=tabla2.id WHERE tabla1.idHotel IN $CadenaConsultaFinal");
+			
+			$stmt -> execute();
 
 				return $stmt -> fetchAll();
 

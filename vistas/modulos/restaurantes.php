@@ -6,7 +6,10 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <h1>
-                Restaurantes <?php echo $_SESSION["id"] ?>
+                Restaurantes <?php
+                                
+
+                                ?>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="inicio"><i class="fa fa-dashboard"></i> Configuración</a></li>
@@ -147,8 +150,8 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                                                                                      Footer
-                                                                                    </div> -->
+                                                                                                                                  Footer
+                                                                                                                                </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -249,16 +252,16 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                                                                          <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fas fa-sign-in-alt"></i>Close</button>
-                                                                                        </div> -->
+                                                                                                                                      <button type="button" class="btn btn-default" data-dismiss="modal"> <i class="fas fa-sign-in-alt"></i>Close</button>
+                                                                                                                                    </div> -->
             </div>
 
         </div>
     </div>
     <!-- fIN DE MODAL PARA REGISTRO DE UN NUEVO USUARIO -->
     <!-- =============================================
-                                                                              MODAL PARA EDITAR AL HOTEL
-                                                                              =============================================-->
+                                                                                                                          MODAL PARA EDITAR AL HOTEL
+                                                                                                                          =============================================-->
     <div id="editRestaurante" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
@@ -354,8 +357,8 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                      </div> -->
+                                                                                                                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                                                                  </div> -->
             </div>
 
         </div>

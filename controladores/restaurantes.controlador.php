@@ -29,7 +29,25 @@ class ControladorRestaurantes{
 		foreach ($respuesta as $fila => $elemento) {
 			echo '<li class="listaHotel listaHotelPdf" nombreHotel="' . $elemento["nombrePermisoHotel"] . '" idHotelPdf="' . $elemento["idHotel"] . '" idHotel="' . $elemento["idHotel"] . '"><a href="#">' . $elemento["nombrePermisoHotel"] . '</a></li>';
 		}
-		//  
+	  
+	}
+	/*=============================================
+	TRAIGO LA LISTA DE HOTELES Al que tiene acceso el usuario que ha iniciado sesion
+	=============================================*/
+	public function ctrListaUsuarioArrayIdHoteles()
+	{
+
+		$tabla = "permisoshotel";
+		$valorDeMiCampo = $_SESSION["id"];
+
+		$respuesta = ModeloUsuarioPermisos::mdlMostraPermisosHotelUsuario($tabla, $valorDeMiCampo);
+		$cadena = '(';
+		foreach ($respuesta as $fila => $elemento) {
+			$cadena.= $elemento["idHotel"].',';
+		}
+		// $cadena .=')';
+
+		return $cadena;
 	}
 	/*=============================================
 	TRAIGO LA LISTA DE HOTELES Al que tiene acceso el usuario que ha iniciado sesion

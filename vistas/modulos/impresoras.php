@@ -68,7 +68,7 @@ if ($_SESSION["C-IMPRESORAS"] == 1) {
               </div>
 
               <div class="col-md-4 col-xs-12">
-                <?php
+                <?php 
                 if (isset($_GET["idHotel"])) {
                   $estadoBoton = "";
                 } else {
