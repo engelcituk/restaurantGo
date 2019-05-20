@@ -35,13 +35,14 @@ class ModeloUsuarioPermisos{
 
 		return $stmt -> fetchAll();
 
-		$stmt -> close();
+		$stmt -> close(); 
 
 		$stmt = null;
 	}
 	/*=============================================
-	OBTENGO los permisos del usuario, que solicito desde ajax (id)
-	permisos de acceso a hoteles
+	OBTENGO los permisos del usuario, que solicito desde ajax (idusuario)
+	permisos de acceso a hoteles.. mustro todos los hoteles
+	en donde se tenga permisos lo marco con un check
 	=============================================*/
 	static public function mdlMostrarUserPermisosHotel($tabla,$valorDeMiCampo){		
 	//consulto en base al id recibido
@@ -54,6 +55,27 @@ class ModeloUsuarioPermisos{
 		return $stmt -> fetchAll();
 
 		$stmt -> close();
+
+		$stmt = null;
+	}
+
+	/*=============================================
+	OBTENGO la lista de hoteles al que el usuario tenga acceso
+	en este caso solo se enlista los hoteles que el usuario tiene 
+	asignados
+	=============================================*/
+	static public function mdlMostraPermisosHotelUsuario($tabla, $valorDeMiCampo)
+	{
+		//consulto en base al id recibido
+		$stmt = Conexion::conectar()->prepare("SELECT t0.idHotel, t0.nombrePermisoHotel, t1.idPermisoHotel, t1.idUsuario FROM $tabla t0 LEFT JOIN usuario_permisos_hotel t1 ON t0.idHotel=t1.idPermisoHotel AND t1.idUsuario=:idUsuario WHERE t1.idUsuario=$valorDeMiCampo");
+
+		$stmt->bindParam(":idUsuario", $valorDeMiCampo, PDO::PARAM_INT);
+
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+
+		$stmt->close();
 
 		$stmt = null;
 	}

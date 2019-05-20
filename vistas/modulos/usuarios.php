@@ -244,7 +244,7 @@
                        </div>
                     </div>                   
                     <br>
-                    <strong>Editar accesos  hotel</strong><hr>
+                    <strong>Editar accesos  hotel</strong><hr> 
                     <div id="listaChecksPermisosHotel">
                       
                     </div><br>

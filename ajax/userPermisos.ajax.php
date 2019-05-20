@@ -19,7 +19,7 @@ class AjaxUserPermisos{
 	 echo json_encode($respuesta); 
 	 //no comentar echo json_encode()
 	}
-/*=====  FIN DE OBTENER lista de UserPermisos  ======*/
+/*=====  FIN DE OBTENER lista de UserPermisos  ======*/ 
 
 /*======================================
 =OBTENER lista de UserPermisoshotel=

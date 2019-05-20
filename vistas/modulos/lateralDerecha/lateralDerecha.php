@@ -27,7 +27,7 @@
           $valorDeMiCampo = $_SESSION["idHotel"];
           $valorDeMiCampo2 = $elemento["id"]; /*es el id del restaurante*/
           $valorDeMiCampo3 = $hoy;
-          /*traigo los pax y total reservas juntados en el día de acuerdo al restaurane, de la tabla reservas*/
+          /*traigo los pax y total reservas juntados en el día de acuerdo al restaurante, de la tabla reservas*/
           $respuestaCount = ControladorEstadisticas::ctrContarPaxAcumulados($valorDeMiCampo, $valorDeMiCampo2, $valorDeMiCampo3);
 
           //convierto el día de hoy a un valor numerico.
@@ -70,8 +70,8 @@
                       <a href="#restauranteSidebar' . $contador . '" style="text-decoration:none;color:white;" data-toggle="collapse"><i class="menu-icon fas fa-hotel bg-green"></i>
                       <div class="menu-info">
                             <h4 class="control-sidebar-subheading"><strong>' . $elemento["nombre"] . '</strong></h4>
-                            <div id="restauranteSidebar' . $contador . '" class="collapse">                        
-                            Pax acumulados: ' . $sumaPax . '<br>
+                            Pax acumulados: ' . $sumaPax . '<br><br>
+                            <div id="restauranteSidebar' . $contador . '" class="collapse">                                                    
                             Total de Reservas: ' . $totalReservas . '<br>
                             CapacidadPaxDía: ' . $elemento["paxMaximoDia"] . '<br>                            
                             <span class="label label-' . $colorPercet . ' pull-right">' . $cutPercentCeros . ' %</span>
@@ -111,14 +111,29 @@
           $miFecha = $hoy;
           $diaResultado = $dias[date('N', strtotime($miFecha))]; /* tranformo el valor del dia en un valor numerico*/
           $idRestaurante = $elemento["id"];
-          echo '<li>
-                    <a href="#restauranteSidebar2' . $contador2 . '" style="text-decoration:none;color:white;" data-toggle="collapse"><i class="menu-icon fas fa-hotel bg-green"></i>
-                      <div class="menu-info">
-                            <h4 class="control-sidebar-subheading"><strong>' . $elemento["nombre"] . '</strong><br><br></h4>
-                            <div id="restauranteSidebar2' . $contador2 . '" class="collapse">'; /*corto el cho aqui para generar una subconsulta */
+
           $valorDeMiCampo = $_SESSION["idHotel"]; /*idHotel*/
           $valorDeMiCampo2 = $idRestaurante; /*id del restaurante*/
           $valorDeMiCampo3 = $diaResultado; /*id del dia de la semana*/
+          $fechaConsulta = $miFecha;
+
+          /*traigo los pax y total reservas juntados en el día de acuerdo al restaurante, de la tabla reservas*/
+          $respuestaCount = ControladorEstadisticas::ctrContarPaxAcumulados($valorDeMiCampo, $valorDeMiCampo2, $fechaConsulta);
+          /**$respuestaCount lo guardo en otra variable */
+          $sumaPax = $respuestaCount["sumaPax"];
+          if ($sumaPax == null) {
+            $sumaPax = 0;
+          } else {
+            $sumaPax = $sumaPax;
+          }
+
+          echo '<li>
+                    <a href="#restauranteSidebar2' . $contador2 . '" style="text-decoration:none;color:white;" data-toggle="collapse"><i class="menu-icon fas fa-hotel bg-green"></i>
+                      <div class="menu-info">
+                            <h4 class="control-sidebar-subheading"><strong>' . $elemento["nombre"] . '</strong><br></h4>
+                            PaxAcumuladosDía: ' . $sumaPax . '<br><br>
+                            <div id="restauranteSidebar2' . $contador2 . '" class="collapse">'; /*corto el cho aqui para generar una subconsulta */
+
           /*Traigo los horarios del restaurante*/
           $respuestaSeatingDia = ControladorEstadisticas::ctrMostrarSeatingDelDia($valorDeMiCampo, $valorDeMiCampo2, $valorDeMiCampo3);
 
@@ -191,15 +206,29 @@
           $miFechaObtenida = $hoy;
           $diaResultado = $dias[date('N', strtotime($miFechaObtenida))]; /* tranformo el valor del dia en un valor numerico*/
           $idRestaurante = $elemento["id"];
-          echo '<li>
-        <a href="#restauranteSidebar3' . $contador3 . '" style="text-decoration:none;color:white;" data-toggle="collapse"><i class="menu-icon fas fa-hotel bg-green"></i>
-            <div class="menu-info">
-                <h4 class="control-sidebar-subheading"><strong>' . $elemento["nombre"] . '</strong><br><br></h4>
-                <div id="restauranteSidebar3' . $contador3 . '" class="collapse">'; /*corto el cho aqui para generar una subconsulta */
+
           $valorDeMiCampo = $_SESSION["idHotel"]; /*idHotel*/
           $valorDeMiCampo2 = $idRestaurante; /*id del restaurante*/
           $valorDeMiCampo3 = $diaResultado; /*id del dia de la semana*/
+          $fechaConsulta = $miFechaObtenida;
           /*Traigo los horarios del restaurante*/
+
+          /*traigo los pax y total reservas juntados en el día de acuerdo al restaurante, de la tabla reservas*/
+          $respuestaCount = ControladorEstadisticas::ctrContarPaxAcumulados($valorDeMiCampo, $valorDeMiCampo2, $fechaConsulta);
+          /**$respuestaCount lo guardo en otra variable */
+          $sumaPax = $respuestaCount["sumaPax"];
+          if ($sumaPax == null) {
+            $sumaPax = 0;
+          } else {
+            $sumaPax = $sumaPax;
+          }
+          echo '<li>
+                  <a href="#restauranteSidebar3' . $contador3 . '" style="text-decoration:none;color:white;" data-toggle="collapse"><i class="menu-icon fas fa-hotel bg-green"></i>
+                    <div class="menu-info">
+                    <h4 class="control-sidebar-subheading"><strong>' . $elemento["nombre"] . '</strong><br></h4>
+                    PaxAcumuladosDía: ' . $sumaPax . '<br><br>
+                <div id="restauranteSidebar3' . $contador3 . '" class="collapse">'; /*corto el cho aqui para generar una subconsulta */
+
           $respuestaSeatingDia = ControladorEstadisticas::ctrMostrarSeatingDelDia($valorDeMiCampo, $valorDeMiCampo2, $valorDeMiCampo3);
 
           foreach ($respuestaSeatingDia as $filaSeating => $elementoSeating) {
@@ -222,7 +251,7 @@
               $sumaPaxHora = $sumaPaxHora;
             }
             $paxDisponible = $paxMaximo - $sumaPaxHora;
-            echo '<strong>Hora: ' . $hora . ' Cupo: ' . $paxMaximo . '</strong> PaxAcumulados: ' . $sumaPaxHora . '<br> Total de Reservas: ' . $sumaRsvHora . '<br>Pax Disponibles: ' . $paxDisponible . ' <br><br>';
+            echo '<strong>Hora: ' . $hora . ' Cupo: ' . $paxMaximo . '</strong> PaxAcumuladosHora: ' . $sumaPaxHora . '<br> Total de Reservas: ' . $sumaRsvHora . '<br>Pax Disponibles: ' . $paxDisponible . ' <br><br>';
           }
           echo '      </div>                
                         </div>

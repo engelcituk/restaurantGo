@@ -2,7 +2,7 @@
 class ControladorRestaurantes{
 
 	/*=============================================
-	TRAIGO LA LISTA DE HOTELES 
+	TRAIGO LA LISTA DE HOTELES General
 	=============================================*/
 	public function ctrMostrarListaHoteles(){
 
@@ -14,7 +14,44 @@ class ControladorRestaurantes{
         	echo '<li class="listaHotel listaHotelPdf" nombreHotel="'.$elemento["nombre"].'" idHotelPdf="'.$elemento["id"].'" idHotel="'.$elemento["id"].'"><a href="#">'.$elemento["nombre"].'</a></li>';
         }
         //  
-	}  
+	}
+	/*=============================================
+	TRAIGO LA LISTA DE HOTELES Al que tiene acceso el usuario que ha iniciado sesion
+	=============================================*/
+	public function ctrListaHotelesUsuario()
+	{
+
+		$tabla = "permisoshotel";
+		$valorDeMiCampo = $_SESSION["id"];
+		
+		$respuesta = ModeloUsuarioPermisos::mdlMostraPermisosHotelUsuario($tabla, $valorDeMiCampo);
+
+		foreach ($respuesta as $fila => $elemento) {
+			echo '<li class="listaHotel listaHotelPdf" nombreHotel="' . $elemento["nombrePermisoHotel"] . '" idHotelPdf="' . $elemento["idHotel"] . '" idHotel="' . $elemento["idHotel"] . '"><a href="#">' . $elemento["nombrePermisoHotel"] . '</a></li>';
+		}
+		//  
+	}
+	/*=============================================
+	TRAIGO LA LISTA DE HOTELES Al que tiene acceso el usuario que ha iniciado sesion
+	=============================================*/
+	public function ctrListaHotelesUsuarioSelectOption()
+	{
+
+		$tabla = "permisoshotel";
+		$valorDeMiCampo = $_SESSION["id"];
+
+		$respuesta = ModeloUsuarioPermisos::mdlMostraPermisosHotelUsuario($tabla, $valorDeMiCampo);
+
+		foreach ($respuesta as $row => $item) {
+			echo
+				'
+			<option nombreHotel="' . $item["nombrePermisoHotel"] . '" value="' . $item["idHotel"] . '">' . $item["nombrePermisoHotel"] . '</option>
+
+			';
+		}
+		//  
+	}
+
 	/*=============================================
 	FUNCION PARA MOSTRAR LA LISTA DE RESTAURANTES:solicitud Ajax
 	=============================================*/

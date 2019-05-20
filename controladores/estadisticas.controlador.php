@@ -13,7 +13,7 @@ class ControladorEstadisticas{
 		return $respuesta;		
 	}
 	/*=============================================
-	CONTAR PAX ACUMULADOS
+	CONTAR PAX ACUMULADOS 
 	=============================================*/
 	static public function ctrContarPaxAcumulados($valorDeMiCampo,$valorDeMiCampo2,$valorDeMiCampo3){
 
