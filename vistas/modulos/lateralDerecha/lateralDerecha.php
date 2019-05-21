@@ -11,7 +11,18 @@
 
     <!-- Home tab content -->
     <div class="tab-pane active" id="control-sidebar-home-tab">
-      <h4 class="control-sidebar-heading"><strong>Reservas todo el día</strong> </h4>
+      <h4 class="control-sidebar-heading"><strong>Reservas todo el día</strong> <a href="hacer-reservas" class="btn btn-warning btn-sm"><i class="fas fa-undo"></i></a></h4>
+      <?php
+      date_default_timezone_set('UTC');
+      $hoy = date("Y-m-d");
+      $fechaActual = date("Y-m-d");
+      if (isset($_GET["fechaSeleccionadaDia"])) {
+        $fechaDiaMinimo = $_GET["fechaSeleccionadaDia"];
+      } else {
+        $fechaDiaMinimo =  $hoy;
+      }
+      ?>
+      <input type="date" class="form-control" min="<?php echo $fechaActual; ?>" id="fechaRsvFiltroDia" value="<?php echo $fechaDiaMinimo; ?>">
       <ul class="control-sidebar-menu">
         <?php
         $item = "idHotel";
@@ -23,7 +34,7 @@
         foreach ($respuesta as $fila => $elemento) {
 
           date_default_timezone_set('UTC');
-          $hoy = date("Y-m-d");
+          $hoy = $fechaDiaMinimo;
           $valorDeMiCampo = $_SESSION["idHotel"];
           $valorDeMiCampo2 = $elemento["id"]; /*es el id del restaurante*/
           $valorDeMiCampo3 = $hoy;
@@ -175,6 +186,7 @@
       <?php
       date_default_timezone_set('UTC');
       $fechaMinimo = date("Y-m-d");
+      $fechaActual = date("Y-m-d");
       date_default_timezone_set('UTC');
       // $hoy = date("Y-m-d");
       if (isset($_GET["fechaSeleccionada"])) {
@@ -187,7 +199,7 @@
       ?>
       <!-- <div class="input-group"> -->
       <!-- <div class="input-group-addon"><i class="fas fa-calendar-alt"></i></div> -->
-      <input type="date" class="form-control" min="<?php echo  $fechaMinimo; ?>" id="fechaRsvFiltro" name="fechaRsvFiltro" value="<?php echo  $fechaMinimo; ?>">
+      <input type="date" class="form-control" min="<?php echo  $fechaActual; ?>" id="fechaRsvFiltro" name="fechaRsvFiltro" value="<?php echo  $fechaMinimo; ?>">
       <!-- </div> -->
       <input type="number" class="form-control hidden" id="idHotelLateral" name="idHotelLateral" value="<?php echo  $_SESSION["idHotel"];; ?>" readonly>
       <ul class="control-sidebar-menu">

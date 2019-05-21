@@ -623,6 +623,17 @@ function obtenerPaxAcumuladosDia() {
 // 	}	
 // }
 //Esta es para 
+$("#fechaRsvFiltroDia").change(function () {
+	var fechaSeleccionada = $("#fechaRsvFiltroDia").val();
+	if (fechaSeleccionada != '') {
+		console.log("fechaSeleccionada", fechaSeleccionada);
+		window.location = "index.php?ruta=hacer-reservas&fechaSeleccionadaDia=" + fechaSeleccionada;
+	}
+	else {
+		swal("Oops", "Elija un fecha por favor", "error")
+	}
+})
+
 $("#fechaRsvFiltro").change(function () {
 	var fechaSeleccionada = $("#fechaRsvFiltro").val();	
 	if (fechaSeleccionada != '') {
