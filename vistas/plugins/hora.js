@@ -23,7 +23,7 @@ $(document).ready(function () {
         template: 'modal',
         appendWidgetTo: 'body',
         showSeconds: true,
-        showMeridian: false,
+        showMeridian: false, 
         defaultTime: false
     });
 });

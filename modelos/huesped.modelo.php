@@ -60,7 +60,7 @@ class ModeloHuesped{
 						$ocupantes 
 							AS ocup 
 						ON Rvas.Reserva = ocup.Reserva
-				WHERE Rvas.Estado in (1) 
+				WHERE Rvas.Estado in (1) AND Rvas.Hotel=:hotel
 				GROUP BY 
 					Rvas.Reserva,
 					Rvas.Noches, 
@@ -71,7 +71,7 @@ class ModeloHuesped{
 					Rvas.Apellido,
 					Rvas.Hotel
 		");
-
+			$stmt->bindParam(":hotel", $hotel, PDO::PARAM_STR);
 			$stmt -> execute();
 			return $stmt -> fetchAll(PDO::FETCH_BOTH);
 
