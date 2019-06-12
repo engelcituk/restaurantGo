@@ -3,7 +3,7 @@ session_start();
 require __DIR__ . '/posTicket/autoload.php'; //Nota: si renombraste" cambia el nombre en esta línea
 require_once "../modelos/tickets.modelo.php";
 
-use Mike42\Escpos\EscposImage;
+use Mike42\Escpos\EscposImage; 
 use Mike42\Escpos\Printer;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 

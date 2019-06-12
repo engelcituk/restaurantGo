@@ -260,7 +260,7 @@ $("#fechaReserva").change(function(){
 /*=====  END OF PARA CAPTURAR LA FECHA ELEGIDA  ======*/
 
 /*==============================================
-	PARA TRAER LAS MESAS DISPONIBLES y mostrar mensaje() reservas/pax que se pueden hace)
+	PARA mostrar mensaje() reservas/pax que se pueden hace)
  ===================================*/
 $("#horarioReserva").change(function(){
 	$(".alert").remove();
@@ -510,25 +510,31 @@ $("#numeroDePax").change(function(){
 		  $("#btnGuardarReserva").attr("disabled",true);                    
     }	
 })	
+
 $(document).on("click", "#btnGuardarReserva", function(){
 	obtenerPaxAcumuladosDia();
 	var paxHuesped = parseInt($("#numeroDePax").val());
 	var paxAcumuladoDia = parseInt($("#numDePaxDiaRestaurante").val());
 	var numDePaxMaximaRestaurante = parseInt($("#numDePaxMaximaRestaurante").val());
-	
+	var numDeRSVMaximaRestaurante = parseInt(localStorage.getItem("reservaMaximasLST"));
+
 	var numDePaxMaxima = parseInt(localStorage.getItem("paxMaximoLST"));
 	var totalPaxAcumulados = parseInt(localStorage.getItem("sumaPaxLST"));
+	var totalRSVAcumulados = parseInt(localStorage.getItem("totalReservasLST"));
+	var valorRSVHuesped=1;
 		
 	var paxAcumuladosMasPaxHuesped = parseInt(totalPaxAcumulados + paxHuesped);
-	var paxAcumuladosDiaMasPaxHuesped = parseInt(paxAcumuladoDia + paxHuesped);	
+	var paxAcumuladosDiaMasPaxHuesped = parseInt(paxAcumuladoDia + paxHuesped);
+	var rsvAcumuladosMasRsvHuesped = parseInt(totalRSVAcumulados + valorRSVHuesped);
 		
 	if (paxAcumuladosMasPaxHuesped > numDePaxMaxima){		
-		swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");
-		
+		swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");	
 		return false;	
 	} else if (paxAcumuladosDiaMasPaxHuesped > numDePaxMaximaRestaurante) {
 		swal("Oops", "Los pax acumulados del día más la que indica su reserva supera el limite para este dia", "error");
-
+		return false;
+	} else if (rsvAcumuladosMasRsvHuesped > numDeRSVMaximaRestaurante){
+		swal("Oops", "Las reservas acumuladas para esta hora de este día supera el limite establecido para este seating", "error");
 		return false;
 	}else {
 		return true;

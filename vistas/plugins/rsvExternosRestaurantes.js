@@ -39,7 +39,7 @@ $("#lstRestaurantesExt").change(function(){
 /*verifica si tiene horario de cierre*/
 function verificaSiHayHoraCierre(horaCierre) {
 	horaCierreRestaurante = horaCierre;
-	var fechaHoy = obtenerFechaHoy();
+	var fechaHoy = obtenerFechaHoy(); 
 
 	if (horaCierreRestaurante == "SIN HORARIO") {
 		$.notify({
