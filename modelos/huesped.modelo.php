@@ -29,7 +29,7 @@ class ModeloHuesped{
 				Rvas.Reserva,
 				Rvas.Noches,
 				Rvas.Habitacion,
-				Rvas.Estado,
+				Rvas.Estado, 
 				Rvas.FechaEntrada,
 				Rvas.FechaSalida,
 				Rvas.Apellido,

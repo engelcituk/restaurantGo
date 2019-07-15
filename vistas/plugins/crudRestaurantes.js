@@ -143,7 +143,7 @@ $(document).on("click", ".btnActivarRstrnt", function(){
 })
  /*===============FIN=================*/
 
- 
+   
  /*======================================
 = con este cargo el id del hotel a registrar 
 ======================================*/
@@ -156,7 +156,7 @@ $("#hotelElige2").change( function(){ // al cambiar el foco se ejecuta ajax
 		window.open("extensiones/tcpdf/pdf/listaRestaurantes.php", "_blank");	
 		// console.log();
 	}
-})
+}) 
 /*=====  con este cargo el id del hotel a registrar ======*/
 
 //trabajo con los radios button para los horarios de cierre  de los restaurantes AL REGISTRAR O NO HORARIOS DE CIERRE
@@ -270,4 +270,84 @@ $("#paxMaximoDiaEditar").change(function () {
 		$("#paxMaximoDiaEditar").val("");
 		swal("Oops", "Ingrese un valor válido", "error")
 	}
-})
+});
+/*======================================
+=            EDITAR RESTAURANTE            =
+======================================*/
+$(document).on("click", ".cierreRestaurante", function () {
+	// ^--cuando se le da clic a la clase (editRestaurante) obtengo el atributo id
+	var idRestaurante = $(this).attr("idRstrnt");
+	var nombreRestaurante = $(this).attr("nRestaurante");
+	$("#cierresRestaurante tbody").empty();//limpio la tabla para cargale lo que traigo por ajax
+			
+	var datos = new FormData();
+	datos.append("idRestauranteCierre", idRestaurante);	
+	$.ajax({
+		url: "ajax/restaurantes.ajax.php", //enviamos a este archivo el id para que lo procese
+		method: "POST", //el envio es por POST
+		data: datos, //datos es la instancia de ajax 
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json", //los datos son de tipo json
+		success: function (respuesta) { //obtengo una respuesta tipo json						
+			var longitud = Object.keys(respuesta).length;			
+			if (longitud>0){
+				console.log("si tiene respuesta exitossa", longitud);				 
+				for (i = 0; i < longitud; i++) {
+					var idFecha = respuesta[i]["id"];
+					var fechaInicio = respuesta[i]["fechaInicio"];
+					var fechafinal = respuesta[i]["fechaFin"];
+					itemFechaCierre = "<tr><td>" + nombreRestaurante + "</td><td>" + fechaInicio + "</td><td>" + fechafinal + "</td><td><button type='button' class='btn btn-danger btnRemoveFecha' onclick='borrarFecha("+idFecha+")'><i class='fa fa-trash'></i></button></td></tr>";
+					$("#cierresRestaurante tbody").append(itemFechaCierre); 
+				}
+			}else{
+				itemFechaCierre = "<tr><td colspan='4'>Este restaurante no tiene fechas de cierre a mostrar</td></tr>";
+				$("#cierresRestaurante tbody").append(itemFechaCierre);
+			}
+		}
+	})
+	
+});
+/*=====  FIN DE EDITAR restaurante  ======*/
+$(document).ready(function () {
+	
+	var i = 1;
+	$('#add').click(function () {
+		i++;
+		$('#fechaDinamica').append('<tr id="row' + i + '" class="dynamic-added"><td><input type="date" name="fechaInicio[]" class="form-control" /></td><td><input type="date" name="fechaFinal[]" class="form-control" /></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove"><i class="fa fa-trash "></i></button></td><td><button type="button" name="save" id="'+i+'" class="btn btn-primary btn_save"><i class="fas fa-save"></i></button></td></tr>');
+	});
+	//removel fila tabla
+	$(document).on('click', '.btn_remove', function () {
+		var button_id = $(this).attr("id");
+		$('#row' + button_id + '').remove();
+	});
+});
+//borrar fechas de cierre
+function borrarFecha(idFecha){			
+	swal({
+		title: "Are you sure?",
+		text: "You will not be able to recover this imaginary file!",
+		type: "warning",
+		showCancelButton: true,
+		confirmButtonColor: "#DD6B55",
+		confirmButtonText: "Yes, delete it!",
+		closeOnConfirm: false
+	}, function (isConfirm) {
+		if (!isConfirm) return;
+		$.ajax({
+			url: "restaurantes",
+			type: "POST",
+			data: {
+				idFecha: idFecha
+			},
+			dataType: "html",
+			success: function (respuesta) {
+				swal("Done!", "It was succesfully deleted!", "success");
+			},
+			error: function (xhr, ajaxOptions, thrownError) {
+				swal("Error deleting!", "Please try again", "error");
+			}
+		});
+	});
+}

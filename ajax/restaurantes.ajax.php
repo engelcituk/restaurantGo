@@ -57,9 +57,26 @@ class AjaxRestaurantes{
 
 		$respuesta = ModeloRestaurantes::mdlActualizarEstadoRestaurante($tabla, $campo, $valorCampo, $campo2, $valorCampo2);
 	}
+	/*=====FIN  DE ACTIVAR UN RESTAURANTE  ======*/
+
+/*======================================
+= PARA OBTENER LAS FECHAS DE CIERRE DE UN RESTAURANTE   =
+======================================*/
+	public $idRestCierre;	
+	public function getInfoCierreRestaurante()
+	{
+
+		$tabla = "RestauranteCierres";		
+		$idRestaurante = $this->idRestCierre;
+
+		$respuesta = ModeloRestaurantes::mdlGetInfoCierreRestaurante($tabla, $idRestaurante);
+
+		echo json_encode($respuesta);
+	}
+/*=====FIN  DE ACTIVAR UN RESTAURANTE  ======*/
 }
 
-/*=====FIN  DE ACTIVAR UN RESTAURANTE  ======*/
+
 
 /*======================================
 =   OBJETO-->OBTENER hotel   =
@@ -84,10 +101,19 @@ if(isset($_POST["idRstrnt"])){
 ======================================*/
 if(isset($_POST["idRestaurante"])){
 
-	$activarHotel = new AjaxRestaurantes();
-	$activarHotel -> idRestaurante =$_POST["idRestaurante"];  
-	$activarHotel -> estadoRestaurante = $_POST["estadoRestaurante"];
-	$activarHotel -> ajaxActivarRestaurante(); 
+	$activarRest = new AjaxRestaurantes();
+	$activarRest -> idRestaurante =$_POST["idRestaurante"];  
+	$activarRest -> estadoRestaurante = $_POST["estadoRestaurante"];
+	$activarRest -> ajaxActivarRestaurante(); 
+}
+
+/*======================================
+=   OBJETO-->traer fecha cierres restaurante  =
+======================================*/
+if (isset($_POST["idRestauranteCierre"])) {
+	$cierreRest = new AjaxRestaurantes();
+	$cierreRest->idRestCierre = $_POST["idRestauranteCierre"];	
+	$cierreRest->getInfoCierreRestaurante();
 }
 
 

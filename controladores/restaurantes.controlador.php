@@ -212,7 +212,7 @@ class ControladorRestaurantes{
 		}		
 	}
 	/*=============================================
-	FUNCION PARA ELIMINAR EL HOTEL
+	FUNCION PARA ELIMINAR EL RESTAURANTE
 	=============================================*/
 	public function ctrBorrarRestaurante(){
  
@@ -250,6 +250,23 @@ class ControladorRestaurantes{
 							</script>';
 				}
 		}
+	}
+	/*=============================================
+	FUNCION PARA ELIMINAR EL RESTAURANTE
+	=============================================*/
+	public function ctrBorrarFechasCierre(){
+		$ok=false;		
+		if (isset($_POST["idFecha"])) {
+			$tabla = "RestauranteCierres";			
+			$datos = $_POST["idFecha"];			
+			//borro el restaurante
+			$respuesta = ModeloRestaurantes::mdlBorrarFechasCierre($tabla, $datos);
+
+			if ($respuesta == "OK") {
+				$ok=true;	
+			}
+		}
+		return $ok;
 	}
 		
 }

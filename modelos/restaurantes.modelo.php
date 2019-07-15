@@ -281,4 +281,40 @@ PARA GUARDAR LOS DATOS AL EDITAR EL RESTAURANTE EN EL MODAL
 		$stmt = null;
 
 	}
+
+	/*=============================================
+	 FUNCION PARA CONSULTAR LA LISTA DE FECHAS DE CIERRE DEL RESTAURANTE
+	 =============================================*/
+	static public function mdlGetInfoCierreRestaurante($tabla, $idRestaurante){
+
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idRestaurante=:idRestaurante");
+		$stmt->bindParam(":idRestaurante", $idRestaurante, PDO::PARAM_INT);
+
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+
+		$stmt->close();
+
+		$stmt = null;
+	}
+	/*=============================================
+	 PARA ELIMINAR una fecha de cierre de un restaurante
+	=============================================*/
+	static public function mdlBorrarFechasCierre($tabla, $datos){
+
+		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
+
+		$stmt->bindParam(":id", $datos, PDO::PARAM_INT);
+
+		if ($stmt->execute()) {
+			return "OK";
+		} else {
+			return "ERROR";
+		}
+
+		$stmt->close();
+
+		$stmt = null;
+	}
 }
