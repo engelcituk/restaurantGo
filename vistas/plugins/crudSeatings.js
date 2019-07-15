@@ -16,7 +16,7 @@ CARGAR LA LISTA DE RESTAURANTES DE ACUERDO AL HOTEL SELECCIONADO DESDE EL SELECT
 		method: "POST", //el envio es por POST
 		data: datos, //datos es la instancia de ajax por el que se envia idHotel
 		cache: false,
-		contentType: false,
+		contentType: false, 
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){ //obtengo una respuesta tipo json								

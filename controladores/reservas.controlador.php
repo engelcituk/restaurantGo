@@ -281,12 +281,12 @@ class ControladorReservas{
 
 		if (isset($_POST["nombreCompleto"])) {
 				
-			$numDePaxMaxima=$_POST["numDePaxmAximo"];						
-			$totalPaxAcumulados=$_POST["sumaPaxExternos"];
-			$sinLimites="sin limites";	
-			$numeroDePax = $_POST["paxExternos"];			
+			// $numDePaxMaxima=$_POST["numDePaxmAximo"];						
+			// $totalPaxAcumulados=$_POST["sumaPaxExternos"];
+			// $sinLimites="sin limites";	
+			// $numeroDePax = $_POST["paxExternos"];			
 	
-			$paxTotDeLaRsv=$totalPaxAcumulados+$numeroDePax;			
+			// $paxTotDeLaRsv=$totalPaxAcumulados+$numeroDePax;			
 	
 			$tabla = "reservas";
 			$estado=1;
@@ -318,23 +318,23 @@ class ControladorReservas{
 						$rsvRestauranteTicket= $datos["nombreRestaurante"];
 						$rsvIdiomaTicket= $datos["ticket"];
 	
-				if ($paxTotDeLaRsv > $numDePaxMaxima && $numDePaxMaxima !=  $sinLimites  ) {
-					echo '
-						<script>
-							swal({
-									title: "¡Error!",
-									text: "Se ha alcanzado el limite de pax que puede cubrir para esta hora",
-									type:"error",
-									confirmButtonText: "Cerrar",
-									closeOnConfirm: false
-									},
-								function(isConfirm){
-									if(isConfirm){
-										window.location="hacer-reservas"
-									}
-							});
-						</script>';
-				} else {				
+				// if ( $numDePaxMaxima !=  $sinLimites  ) {
+				// 	echo '
+				// 		<script>
+				// 			swal({
+				// 					title: "¡Error!",
+				// 					text: "Se ha alcanzado el limite de pax que puede cubrir para esta hora",
+				// 					type:"error",
+				// 					confirmButtonText: "Cerrar",
+				// 					closeOnConfirm: false
+				// 					},
+				// 				function(isConfirm){
+				// 					if(isConfirm){
+				// 						window.location="hacer-reservas"
+				// 					}
+				// 			});
+				// 		</script>';
+				// } else {				
 					$respuesta = ModeloReservas::mdlRegistrarReserva($tabla, $datos);
 	
 					if ($respuesta == "OK"){
@@ -357,7 +357,7 @@ class ControladorReservas{
 								   });
 							</script>';
 					}							
-				}			
+				// }			
 			}
 		}
 	/*=============================================

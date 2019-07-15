@@ -240,8 +240,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                                                                                                                                                                  Footer
-                                                                                                                                                                </div> -->
+                                                                                                                                                                              Footer
+                                                                                                                                                                            </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -360,8 +360,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
     </div>
 
     <!-- =============================================
-                                                                                                                                                          MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
-                                                                                                                                                          =============================================-->
+                                                                                                                                                                      MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
+                                                                                                                                                                      =============================================-->
     <div id="rsvExternos" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -372,7 +372,6 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                 <div class="modal-body">
                     <div class="register-box-body">
                         <form method="post">
-
                             <div class="row">
                                 <div class="col-md-6 col-xs-12 hidden">
                                     <label for="usr">Hotel</label>
@@ -405,7 +404,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                         echo '<select class="form-control" name="restauranteNombreExternos" id="lstRestaurantesExt" required><option value="Elija Restaurante">Elija Restaurante</option>';
                                         foreach ($respuesta as $fila => $elemento) {
                                             echo '                              
-                                            <option  horaCierre="' . $elemento["horaCierre"] . '" idRestauranteExternos="' . $elemento["id"] . '" value="' . $elemento["nombre"] . '">' . $elemento["nombre"] . '</option>                            
+                                            <option  horaCierre="' . $elemento["horaCierre"] . '" idRestauranteExternos="' . $elemento["id"] . '" paxMaximoDia="' . $elemento["paxMaximoDia"] . ' "value="' . $elemento["nombre"] . '">' . $elemento["nombre"] . '</option>                            
                                   ';
                                         }
                                         echo '</select>';
@@ -467,7 +466,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     <label for="usr">Encabezado/Pie Ticket:</label>
                                     <div class="input-group">
                                         <div class="input-group-addon"><i class="fas fa-language"></i></div>
-                                        <select class="form-control" name="ticketEligeExternos" id="ticketEligeExternos" required>
+                                        <select class="form-control" name="ticketEligeExternos" id="ticketEligeExternos" required onchange="getPaxAcumuladosDia()">
                                             <option value=""></option>
                                             <?php
                                             $listaTickets = new ControladorTicket();
@@ -492,7 +491,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                 </div>
                                 <div class="col-md-12 col-xs-12">
                                     <label for="usr">Observaciones</label>
-                                    <textarea class="form-control nombreCompletoClienteExterno" rows="3" id="observacionesExterno" name="observacionesExterno"></textarea>
+                                    <textarea class="form-control nombreCompletoClienteExterno" rows="3" id="observacionesExterno" name="observacionesExterno" onchange="getPaxAcumuladosDia()"></textarea>
                                 </div>
                             </div>
 
@@ -506,21 +505,22 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                 </div>
                                 <div class=" col-sm-offset-4 col-xs-4">
                                     <div class="checkbox icheck">
-                                        <button type="submit" id="btnClienteExternoGuardar" class="btn btn-success btn-block btn-flat"><i class="fas fa-save"></i> Reservar
+                                        <button id="btnClienteExternoGuardar" class="btn btn-success btn-block btn-flat"><i class="fas fa-save"></i> Reservar
                                         </button>
                                     </div>
                                 </div>
                             </div>
+                            <?php
+                            $registrarReservaExternos = new ControladorReservas();
+                            $registrarReservaExternos->ctrRealizarLaReservaExternos();
+                            ?>
                         </form>
-                        <?php
-                        $registrarReservaExternos = new ControladorReservas();
-                        $registrarReservaExternos->ctrRealizarLaReservaExternos();
-                        ?>
+
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                                                                                                                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                                                                                                        </div> -->
+                                                                                                                                                                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                                                                                                                    </div> -->
             </div>
 
         </div>

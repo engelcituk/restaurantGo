@@ -114,7 +114,7 @@ $("#fechaReservaExternos").change(function(){
 		method: "POST", //el envio es por POST
 		data: datos, //datos es la instancia de ajax por el que se envia fechaReservaObtenida
 		cache: false,
-		contentType: false,
+		contentType: false, 
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){ //obtengo una respuesta tipo json					
@@ -203,7 +203,7 @@ $("#horarioReservaExternos").change(function(){
 						z_index: 2000,
 						delay: 4000
 					});
-					setTimeout("location.href='hacer-reservas'", 5000);
+					// setTimeout("location.href='hacer-reservas'", 5000);
 				}else{
 					
 					$.notify({							
@@ -222,6 +222,80 @@ $("#horarioReservaExternos").change(function(){
 		swal ( "Oops","Elija un horario de la lista", "error");
 		$("#paxExternos").attr("readonly",true); 	                             
 	}              
+});
+function getPaxAcumuladosDia() {
+	var fecha = $("#fechaReservaExternos").val(); 
+	var idRestaurante = $("option:selected", "#lstRestaurantesExt").attr("idRestauranteExternos");
+	var paxMaximoDia = $("option:selected", "#lstRestaurantesExt").attr("paxMaximoDia");
+	var paxMaximoSeatingRstExt = $("option:selected", "#horarioReservaExternos").attr("paxMaximo"); 
+	var rsvMaximoSeatingRstExt = $("option:selected", "#horarioReservaExternos").attr("reservaMaximas"); 
+	var pax = $("#paxExternos").val(); 
+	// console.log("fecha: " + fecha + " idRestaurante: " + idRestaurante+" paxMAximoDia: "+paxMaximoDia+" pax: "+pax+" paxMaximoSeatingRstExt: "+paxMaximoSeatingRstExt);
+	if (fecha != "" && idRestaurante !=""){
+		var datos = new FormData();
+		datos.append("fechaDeLaReservaDia", fecha);
+		datos.append("idRestauranteSeatingDia", idRestaurante);
+		$.ajax({
+			url: "ajax/reservasRestaurantes.ajax.php",
+			method: "POST", //el envio es por POST
+			data: datos, //datos es la instancia de ajax por el que se envia idHotel
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json", //los datos son de tipo json
+			success: function (respuesta) { //obtengo una respuesta tipo json                               
+				console.log("respuesta", respuesta);
+				// console.log("respuestaPaxRest", respuesta["sumaPax"]);			
+				if (respuesta["sumaPax"] == null) {
+					sumaPaxDia = 0;
+				} else {
+					sumaPaxDia = respuesta["sumaPax"];
+				} 
+				localStorage.setItem("fechaReservaExt", fecha);
+				localStorage.setItem("idRestauranteExt", idRestaurante);
+				localStorage.setItem("paxMaximoDiaRstExt", paxMaximoDia);
+				localStorage.setItem("paxMaximoSeatingRstExt", paxMaximoSeatingRstExt);
+				localStorage.setItem("rsvMaximoSeatingRstExt", rsvMaximoSeatingRstExt);
+				localStorage.setItem("paxAcumuladoDiaRstExt", sumaPaxDia);
+				localStorage.setItem("paxExt", pax);				
+			}
+		})
+	} else{
+		swal("Oops", "Tiene que tener seleccionado un restaurante y fecha", "error");
+	}
+	
+}
+
+$(document).on("click", "#btnClienteExternoGuardar", function () {	
+	getPaxAcumuladosDia();
+	var paxHuesped = parseInt(localStorage.getItem("paxExt"));
+	var paxAcumuladoDia = parseInt(localStorage.getItem("paxAcumuladoDiaRstExt"));//por dia del restaurante
+	var paxMaximoDiaRstExt = parseInt(localStorage.getItem("paxMaximoDiaRstExt"));//por dia del restaurante
+	var numDePaxMaximaRestaurante = parseInt(localStorage.getItem("paxMaximoSeatingRstExt"));//por el seating
+	var numDeRSVMaximaRestaurante = parseInt(localStorage.getItem("rsvMaximoSeatingRstExt"));//por el seating
+
+	//var numDePaxMaxima = parseInt(localStorage.getItem("paxMaximoLST"));//por seating del restaurante
+	var totalPaxAcumulados = parseInt(localStorage.getItem("sumaPaxLST"));//por seating del restaurante
+	var totalRSVAcumulados = parseInt(localStorage.getItem("totalReservasLST"));
+	var valorRSVHuesped = 1;
+// localStorage.getItem("sumaPaxLST");
+	var paxAcumuladosMasPaxHuesped = parseInt(totalPaxAcumulados + paxHuesped);
+	var paxAcumuladosDiaMasPaxHuesped = parseInt(paxAcumuladoDia + paxHuesped);
+	var rsvAcumuladosMasRsvHuesped = parseInt(totalRSVAcumulados + valorRSVHuesped);
+
+	if (paxAcumuladosMasPaxHuesped > numDePaxMaximaRestaurante) {
+		swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");
+		return false;
+	} else if (paxAcumuladosDiaMasPaxHuesped > paxMaximoDiaRstExt) {
+		swal("Oops", "Los pax acumulados del día más la que indica su reserva supera el limite para este dia", "error");
+		return false;
+	} else if (rsvAcumuladosMasRsvHuesped > numDeRSVMaximaRestaurante) {
+		swal("Oops", "Las reservas acumuladas para esta hora de este día supera el limite establecido para este seating", "error");
+		return false;
+	} else {
+		return true;
+	}
+
 })
 /*======================================
 = CON ESTO NO PERMITO EL INGRESO DE ELEMENTOS
