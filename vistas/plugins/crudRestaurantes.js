@@ -94,11 +94,7 @@ $(document).on("click", ".btnActivarRstrnt", function(){
 	var idRstrt = $(this).attr("idRstrnt");
 	var estadoRstrt = $(this).attr("estadoRstrt");
 
-	console.log("idRestaurante",idRstrt);	
-	console.log("estadoRestaurante",estadoRstrt);
-
 	var datos = new FormData();
-
 	datos.append("idRestaurante", idRstrt);
 	datos.append("estadoRestaurante", estadoRstrt);
 
@@ -274,10 +270,10 @@ $("#paxMaximoDiaEditar").change(function () {
 /*======================================
 =            EDITAR RESTAURANTE            =
 ======================================*/
-$(document).on("click", ".cierreRestaurante", function () {
+function cierreRestaurante(idRestaurante){
 	// ^--cuando se le da clic a la clase (editRestaurante) obtengo el atributo id
-	var idRestaurante = $(this).attr("idRstrnt");
-	var nombreRestaurante = $(this).attr("nRestaurante");
+	// var idRestaurante = $(this).attr("idRstrnt");
+	// var nombreRestaurante = $(this).attr("nRestaurante");
 	$("#cierresRestaurante tbody").empty();//limpio la tabla para cargale lo que traigo por ajax
 			
 	var datos = new FormData();
@@ -293,45 +289,54 @@ $(document).on("click", ".cierreRestaurante", function () {
 		success: function (respuesta) { //obtengo una respuesta tipo json						
 			var longitud = Object.keys(respuesta).length;			
 			if (longitud>0){
-				console.log("si tiene respuesta exitossa", longitud);				 
+				// console.log("si tiene respuesta exitossa", longitud);				 
 				for (i = 0; i < longitud; i++) {
 					var idFecha = respuesta[i]["id"];
 					var fechaInicio = respuesta[i]["fechaInicio"];
 					var fechafinal = respuesta[i]["fechaFin"];
-					itemFechaCierre = "<tr><td>" + nombreRestaurante + "</td><td>" + fechaInicio + "</td><td>" + fechafinal + "</td><td><button type='button' class='btn btn-danger btnRemoveFecha' onclick='borrarFecha("+idFecha+")'><i class='fa fa-trash'></i></button></td></tr>";
-					$("#cierresRestaurante tbody").append(itemFechaCierre); 
+					itemFechaCierre = "<tr id='fila"+idFecha+"'><td>" + fechaInicio + "</td><td>" + fechafinal + "</td><td><button type='button' class='btn btn-danger btnRemoveFecha' onclick='borrarFecha("+idFecha+")'><i class='fa fa-trash'></i></button></td></tr>";
+					$("#cierresRestaurante tbody").append(itemFechaCierre);
+					$("#add").attr("idRestaurante", idRestaurante); 
 				}
 			}else{
 				itemFechaCierre = "<tr><td colspan='4'>Este restaurante no tiene fechas de cierre a mostrar</td></tr>";
 				$("#cierresRestaurante tbody").append(itemFechaCierre);
+				$("#add").attr("idRestaurante", idRestaurante);
 			}
 		}
 	})
 	
+}
+//limpio los tr dinamicos al ocultal modal
+$('#cierreRestaurante').on('hidden.bs.modal', function (e) {
+	$("#fechaDinamica tbody").empty();//limpio la tabla para cargale lo que traigo por ajax
 });
 /*=====  FIN DE EDITAR restaurante  ======*/
 $(document).ready(function () {
-	
-	var i = 1;
+	var i = 0;
 	$('#add').click(function () {
+		var fechaHoy = fechaActual();
+		var fechaSiguiente = fechaManiana();
+		var idRestaurante = $("#add").attr("idRestaurante");
 		i++;
-		$('#fechaDinamica').append('<tr id="row' + i + '" class="dynamic-added"><td><input type="date" name="fechaInicio[]" class="form-control" /></td><td><input type="date" name="fechaFinal[]" class="form-control" /></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove"><i class="fa fa-trash "></i></button></td><td><button type="button" name="save" id="'+i+'" class="btn btn-primary btn_save"><i class="fas fa-save"></i></button></td></tr>');
+		$('#fechaDinamica').append('<tr id="row' + i + '" class="dynamic-added"><td><input type="date" id="fechaInicio' + i + '" name="fechaInicio[]" min="' + fechaHoy + '" class="form-control" value="' + fechaHoy + '"/></td><td><input type="date" id="fechaFinal' + i + '" name="fechaFinal[]"  min="' + fechaHoy + '" class="form-control" value="' + fechaSiguiente + '"/></td><td><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove"><i class="fa fa-trash "></i></button></td><td><button type="button" name="save" id="' + i + '" class="btn btn-primary btn_save" onclick="validarFecha(' + idRestaurante+','+i+')"><i class="fas fa-save"></i></button></td></tr>');
 	});
-	//removel fila tabla
+	//remover fila tabla
 	$(document).on('click', '.btn_remove', function () {
 		var button_id = $(this).attr("id");
-		$('#row' + button_id + '').remove();
+		$('#row' + button_id).remove();
 	});
 });
 //borrar fechas de cierre
 function borrarFecha(idFecha){			
 	swal({
-		title: "Are you sure?",
-		text: "You will not be able to recover this imaginary file!",
+		title: "Estás seguro?",
+		text: "No podrás recuperar esta fecha",
 		type: "warning",
 		showCancelButton: true,
 		confirmButtonColor: "#DD6B55",
-		confirmButtonText: "Yes, delete it!",
+		confirmButtonText: "Sí, Borrar!",
+		cancelButtonText: "Cancelar",
 		closeOnConfirm: false
 	}, function (isConfirm) {
 		if (!isConfirm) return;
@@ -343,11 +348,104 @@ function borrarFecha(idFecha){
 			},
 			dataType: "html",
 			success: function (respuesta) {
-				swal("Done!", "It was succesfully deleted!", "success");
+				swal("Exito!", "Su dato ha sido borrado exitosamente!", "success");
+				$('#fila' + idFecha).remove();
 			},
 			error: function (xhr, ajaxOptions, thrownError) {
-				swal("Error deleting!", "Please try again", "error");
+				swal("Ocurrió un error!", "Por favor intente de nuevo", "error");
 			}
 		});
 	});
+}
+function validarFecha(idRestaurante,idFila){
+	var fechaInicio = $("#fechaInicio"+idFila).val();
+	var fechaFin = $("#fechaFinal" + idFila).val();
+	
+	if (fechaInicio != '' && fechaFin != '') {
+		if (fechaInicio <= fechaFin) {
+			// hago la operacion aquí 
+			var datos = new FormData();
+			datos.append("idRestCierreAdd", idRestaurante);
+			datos.append("fechaInicio", fechaInicio);
+			datos.append("fechaFin", fechaFin);
+
+			$.ajax({
+				url: "ajax/restaurantes.ajax.php", //enviamos a este archivo el id para que lo procese
+				method: "POST", //el envio es por POST
+				data: datos, //datos es la instancia de ajax 
+				cache: false,
+				contentType: false,
+				processData: false,
+				dataType: "json", //los datos son de tipo json
+				success: function (respuesta) { //obtengo una respuesta tipo json								
+					var longitud = Object.keys(respuesta).length;
+					if (longitud > 0) {						
+						swal("Oops", "Ya existen datos iguales a la ingresada", "error");
+						} else {
+						guardaFecha(idRestaurante, fechaInicio, fechaFin, idFila);
+					}
+				}
+			});
+
+		} else if (fechaInicio > fechaFin) {
+			swal("Oops", "La fecha de inicio "+ fechaInicio+" es mayor que la fecha final " + fechaFin, "error");
+		}
+	} else {
+		swal("Oops", "No dejes campos de fecha vacios", "error");
+	}
+}
+function guardaFecha(idRestaurante, fechaInicio, fechaFin, idFila){
+	// hago la operacion aquí 
+	var datos = new FormData();
+	datos.append("idRestCerrarAdd", idRestaurante);
+	datos.append("fechaInicioAdd", fechaInicio);
+	datos.append("fechaFinAdd", fechaFin);
+
+	$.ajax({
+		url: "ajax/restaurantes.ajax.php", //enviamos a este archivo el id para que lo procese
+		method: "POST", //el envio es por POST
+		data: datos, //datos es la instancia de ajax 
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json", //los datos son de tipo json
+		success: function (respuesta) { //obtengo una respuesta tipo json														
+			console.log("respuesta backend",respuesta);
+			if(respuesta=="OK"){
+				swal("Exito!", "Se ha registrado exitosamente la información!", "success");
+				$('#row'+ idFila).remove();
+				cierreRestaurante(idRestaurante);//ejecuto la funcion que pinta la tabla de fechas
+			}else{
+				swal("Oops", "Ocurrió un error con la operacion, por favor intente de nuevo", "error");
+			}
+		}
+	});
+}
+function fechaActual() {
+	var d = new Date();
+
+	var mes = d.getMonth() + 1;
+	var dia = d.getDate();
+
+	var salidaFecha = 
+	d.getFullYear() + '-' +
+	(('' + mes).length < 2 ? '0' : '') + mes + '-' +
+	(('' + dia).length < 2 ? '0' : '') + dia;
+
+	return salidaFecha;
+}
+function fechaManiana(){
+		
+	var tomorrow = new Date();
+	tomorrow.setDate(tomorrow.getDate() + 7);
+
+	var mes =tomorrow.getMonth() + 1;
+	var dia =tomorrow.getDate();
+
+	var salidaFecha =
+		tomorrow.getFullYear() + '-' +
+		(('' + mes).length < 2 ? '0' : '') + mes + '-' +
+		(('' + dia).length < 2 ? '0' : '') + dia;
+
+	return salidaFecha;
 }

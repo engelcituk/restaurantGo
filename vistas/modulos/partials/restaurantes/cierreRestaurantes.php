@@ -16,10 +16,10 @@
                             <input type="number" class="form-control hidden" id="idRestCierre" name="idRestCierre" readonly>
                         </div> -->
                         <div class="row">
+                            <strong>Fechas de cierre del restaurante</strong><br><br>
                             <table id="cierresRestaurante" class="table table-hover" cellspacing="0" width="100%" style="width:100%">
                                 <thead>
-                                    <tr class="info">
-                                        <th>Restaurante</th>
+                                    <tr class="info">                                       
                                         <th>Fecha Inicio</th>
                                         <th>Fecha Fin</th>
                                         <th>Eliminar</th>
@@ -32,12 +32,17 @@
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="fechaDinamica">
                                     <button type="button" name="addFecha" id="add" class="btn btn-success pull-right"><i class="fas fa-plus-square"></i> Agregar</button>
-                                    <tr>
-                                        <td><strong>Fecha Inicio</strong></td>
-                                        <td><strong>Fecha fin</strong></td>
-                                        <td><strong>Borrar</strong></td>
-                                        <td><strong>Guardar</strong></td>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                            <td><strong>Fecha Inicio</strong></td>
+                                            <td><strong>Fecha fin</strong></td>
+                                            <td><strong>Borrar</strong></td>
+                                            <td><strong>Guardar</strong></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -58,16 +63,16 @@
                             <!-- /.col -->
                         </div>
                     </form>
-                    
+
                     <?php
                     // AQUI VA LA INSTANCIA PARA LLAMAR AL CONTROLADOR DEL BORRADO DEL RESTAURANTE -->
                     $borrarFechasCierre = new ControladorRestaurantes();
                     $borrarFechasCierre->ctrBorrarFechasCierre();
                     // FIN LA INSTANCIA PARA LLAMAR AL CONTROLADOR DEL BORRADO DEL RESTAURANTE
                     ?>
-                   
 
-                    
+
+
                 </div>
             </div>
         </div>

@@ -47,7 +47,7 @@ class ModeloReservas{
 		return $stmt -> fetchAll();
 
 		$stmt -> close();
-
+ 
 		$stmt = null;
 	}
 /*=============================================
@@ -466,6 +466,24 @@ class ModeloReservas{
 
 		$stmt = null;
 
+	}
+	/*=============================================
+	CUENTO EL TOTAL DE FECHAS PARA HACER RESERVAS 
+	=============================================*/
+	static public function mdlrestauranteAbiertoVerificar($tabla,$datos){
+
+		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) AS totalFechas FROM $tabla WHERE idRestaurante=:idRestaurante AND :fecha between fechaInicio and fechaFin");
+
+		$stmt->bindParam(":idRestaurante", $datos["idRestaurante"], PDO::PARAM_INT);
+		$stmt->bindParam(":fecha", $datos["fecha"], PDO::PARAM_STR);
+		
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+
+		$stmt->close();
+
+		$stmt = null;
 	}
 	
 }

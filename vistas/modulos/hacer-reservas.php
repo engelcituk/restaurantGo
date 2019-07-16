@@ -168,9 +168,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                 <div class="col-md-3 col-xs-6">
                                     <span><strong>Fecha:</strong></span><br>
                                     <div class="input-group">
-
                                         <div class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></div>
-                                        <input type="date" class="form-control" id="fechaReserva" name="fechaReserva" required>
+                                        <input type="date" class="form-control" id="fechaReserva" name="fechaReserva" required onchange="restauranteAbierto()">
                                     </div>
                                 </div>
                                 <div class="col-md-2 col-xs-6">
@@ -240,8 +239,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                 </div>
                 <!-- /.box-body -->
                 <!-- <div class="box-footer">
-                                                                                                                                                                              Footer
-                                                                                                                                                                            </div> -->
+                                                                                                                                                                                  Footer
+                                                                                                                                                                                </div> -->
                 <!-- /.box-footer-->
             </div>
             <!-- /.box -->
@@ -360,8 +359,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
     </div>
 
     <!-- =============================================
-                                                                                                                                                                      MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
-                                                                                                                                                                      =============================================-->
+                                                                                                                                                                          MODAL PARA REGISTRAR NUEVO CLIENTE SIN RESERVACION EN EL HOTEL
+                                                                                                                                                                          =============================================-->
     <div id="rsvExternos" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -519,8 +518,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                     </div>
                 </div>
                 <!-- <div class="modal-footer">
-                                                                                                                                                                                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                                                                                                                                    </div> -->
+                                                                                                                                                                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                                                                                                                                        </div> -->
             </div>
 
         </div>

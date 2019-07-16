@@ -63,8 +63,7 @@ class AjaxRestaurantes{
 = PARA OBTENER LAS FECHAS DE CIERRE DE UN RESTAURANTE   =
 ======================================*/
 	public $idRestCierre;	
-	public function getInfoCierreRestaurante()
-	{
+	public function getInfoCierreRestaurante(){
 
 		$tabla = "RestauranteCierres";		
 		$idRestaurante = $this->idRestCierre;
@@ -73,10 +72,55 @@ class AjaxRestaurantes{
 
 		echo json_encode($respuesta);
 	}
-/*=====FIN  DE ACTIVAR UN RESTAURANTE  ======*/
+	/*=====FIN  PARA OBTENER LAS FECHAS DE CIERRE DE UN RESTAURANTE   ======*/
+
+/*======================================
+= PARA VALIDAR NO REPETIR FECHAS DE CIERRE LAS FECHAS DE CIERRE DE UN RESTAURANTE   =
+======================================*/
+	public $idRestCierreAdd;
+	public $fechaInicio;
+	public $fechaFin;
+	public function validarFechasCierreRestaurante(){
+
+		$tabla = "RestauranteCierres";
+		$idRestaurante = $this->idRestCierreAdd;
+		$fechaInicio = $this->fechaInicio;
+		$fechaFin = $this->fechaFin;
+
+		$respuesta = ModeloRestaurantes::mdlValidarFechasCierreRestaurante($tabla, $idRestaurante,$fechaInicio, $fechaFin);
+
+		echo json_encode($respuesta);
+	}
+	/*=====FIN  DE NO REPETIR FECHAS DE CIERRE LAS FECHAS DE CIERRE DE UN RESTAURANTE ======*/
+
+	/*======================================
+= PARA VALIDAR NO REPETIR FECHAS DE CIERRE LAS FECHAS DE CIERRE DE UN RESTAURANTE   =
+======================================*/
+	public $idRestCerrarAdd;
+	public $fechaInicioAdd;
+	public $fechaFinAdd;
+	public function guardaFecha()
+	{
+
+		$tabla = "RestauranteCierres";
+		$idRestaurante = $this->idRestCerrarAdd;
+		$fechaInicio = $this->fechaInicioAdd;
+		$fechaFin = $this->fechaFinAdd;
+
+		//creo array para enviar los datos
+		$datos = array(
+			"idRestaurante" => $idRestaurante,
+			"fechaInicio" => $fechaInicio,
+			"fechaFin" => $fechaFin
+		);
+
+		$respuesta = ModeloRestaurantes::mdlGuardarFechasCierre($tabla, $datos);
+
+		echo json_encode($respuesta);
+	}
+/*=====FIN  DE NO REPETIR FECHAS DE CIERRE LAS FECHAS DE CIERRE DE UN RESTAURANTE ======*/
+
 }
-
-
 
 /*======================================
 =   OBJETO-->OBTENER hotel   =
@@ -116,4 +160,24 @@ if (isset($_POST["idRestauranteCierre"])) {
 	$cierreRest->getInfoCierreRestaurante();
 }
 
+/*======================================
+=   OBJETO-->no repetir fechas de cierre restaurante =
+======================================*/
+if (isset($_POST["idRestCierreAdd"])) {
+	$cierreObjRest = new AjaxRestaurantes();
+	$cierreObjRest->idRestCierreAdd = $_POST["idRestCierreAdd"];
+	$cierreObjRest->fechaInicio = $_POST["fechaInicio"];
+	$cierreObjRest->fechaFin = $_POST["fechaFin"];
+	$cierreObjRest->validarFechasCierreRestaurante();
+}
+/*======================================
+=   OBJETO-->Guarda fecha de cierre restaurante =
+======================================*/
+if (isset($_POST["idRestCerrarAdd"])) {
+	$cierreObjRest = new AjaxRestaurantes();
+	$cierreObjRest->idRestCerrarAdd = $_POST["idRestCerrarAdd"];
+	$cierreObjRest->fechaInicioAdd = $_POST["fechaInicioAdd"];
+	$cierreObjRest->fechaFinAdd = $_POST["fechaFinAdd"];
+	$cierreObjRest->guardaFecha();
+}
 

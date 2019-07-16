@@ -130,8 +130,27 @@ PARA TRAER EL NUMERO DE SEATING QUE YA HAY DE FECHA/ X dadas
 
 		echo json_encode($respuesta);
 	}
+
+	public $idRestCierre;
+	public $fechaRestOpen;
+	public function restauranteAbiertoVerificar(){
+
+		$tabla = "RestauranteCierres";
+		$idRestaurante = $this->idRestCierre;
+		$fecha = $this->fechaRestOpen;		
+		//creo array para enviar los datos
+		$datos = array(
+			"idRestaurante" => $idRestaurante,
+			"fecha" => $fecha
+		);
+
+		$respuesta = ModeloReservas::mdlrestauranteAbiertoVerificar($tabla, $datos);
+
+		echo json_encode($respuesta);
+	}
 }
 /*==============================SECTION DE OBJETOS==================================*/
+
 /*======================================
 =   OBJETO-->obtnerListaDeRestaurantes   =
 ======================================*/
@@ -140,6 +159,16 @@ if(isset($_POST["idHotel"])){ //SI LA VARIABLE POST VIENE CON INFORMACION idHote
 	$idHotel = new AjaxReservasRestaurantes();
 	$idHotel -> idHotel = $_POST["idHotel"]; //la variable publica toma el valor por POST
 	$idHotel -> obtnerListaDeRestaurantes(); //ejecuto la funcion
+}
+/*======================================
+=   OBJETO-->para Verificar si restaurante no está cerrado =
+======================================*/
+if (isset($_POST["idRestCierre"])) { 
+
+	$restCierre = new AjaxReservasRestaurantes();
+	$restCierre->idRestCierre = $_POST["idRestCierre"];
+	$restCierre->fechaRestOpen = $_POST["fechaRestOpen"]; 
+	$restCierre->restauranteAbiertoVerificar(); 
 }
 /*======================================
 =   OBJETO-->convertidorFechaDia   =

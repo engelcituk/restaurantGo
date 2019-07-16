@@ -155,107 +155,133 @@ $("#listaRestaurante").change(function(){
 })
  /*===============FIN=================*/
 
+function restauranteAbierto() {
+	var fechaReserva = $("#fechaReserva").val();
+	var idRestaurante = localStorage.getItem("idRestauranteLST");
+
+	if (fechaReserva != '' ) {
+		// console.log("vas bien", fechaReserva);
+		var datos = new FormData();
+		datos.append("idRestCierre", idRestaurante);
+		datos.append("fechaRestOpen", fechaReserva);		
+
+		$.ajax({
+			url: "ajax/reservasRestaurantes.ajax.php", 
+			method: "POST", 
+			data: datos, 
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json", 
+			success: function (respuesta) { 																		
+				var conteo = parseInt(respuesta[0]["totalFechas"]);
+				if (conteo == 0) {  //si restaurante no esta cerrado, traigo su lista de seatings
+					traerListadoSeatings();
+					showReservasHuespedInfo()		
+				} else {
+					swal("Oops", "Para esta fecha el restaurante está cerrado, intente con otra fecha o restaurante", "error");
+				}
+			}
+		});	
+	} else {
+		swal("Oops", "Por favor indique una fecha para la reserva", "error");
+	}
+}
+/*======================================================
+= PARA CAPTURAR LA FECHA ELEGIDA Y TRAER EL HORARIO 
+DE ESE DÍA Y DE PASO TRAER LOS PAXMAXIMO O RESERVASMAXIMAS (QUE PONGO EN ATRIBUTOS QUE yo
+ME INVENTO) 
+======================================================*/
+function traerListadoSeatings(){
+	var fechaReservaObtenida = $("#fechaReserva").val();
+	var idHotel = localStorage.getItem("idHotelLST");
+	var idRestaurante = localStorage.getItem("idRestauranteLST");
+	var numOcupantes = $("#ocupantes").val();
+	var paxMaximoRestaurante = localStorage.getItem("paxMaximoDiaLST");
+	localStorage.setItem("numeroOcupantesPaxLS", numOcupantes);
+	localStorage.setItem("fechaReservaLTS", fechaReservaObtenida);
+	$("#numDePaxMaximaRestaurante").val("");
+
+	var datos = new FormData();
+	datos.append("fechaReservaObtenida", fechaReservaObtenida);
+	datos.append("idHotelCampo", idHotel);
+	datos.append("idRestaurantCampo", idRestaurante);
+
+	$.ajax({
+		url: "ajax/reservasRestaurantes.ajax.php",
+		method: "POST", 
+		data: datos, 
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json", 
+		success: function (respuesta) { 					
+			//  console.log("respuesta",respuesta);			 
+			listaHorarios = "<div class='input-group-addon'><i class='fas fa-clock'></i></div><select class='form-control horarioReserva' name='horarioReserva' id='horarioReserva' required><option value=''></option>"
+			for (i = 0; i < respuesta.length; i++) {
+				var cortarCadenaHora = respuesta[i][4];
+				var inicio = 0;
+				var fin = 8;
+				var subCadenaHora = cortarCadenaHora.substring(inicio, fin);
+				listaHorarios += "<option horaSeating=" + respuesta[i][4] + " paxMaxRestaurante=" + paxMaximoRestaurante + " paxMaximo=" + respuesta[i][5] + " reservaMaximas=" + respuesta[i][6] + "  value=" + respuesta[i][4] + ">" + subCadenaHora + "</option>";
+			}
+			listaHorarios += "</select>";
+			$("#horarioReserva").html(listaHorarios);
+			$("#numeroDePax").val(numOcupantes);
+		}
+	});
+}
 /*==============================================
 PARA TRAER LA CANTIDAD DE RESERVAS QUE LE CORRESPONDE AL HUESPED
 	DE ACUERDO A SUS NOCHES DE ESTANCIA
 	PARA MANDAR EL MENSAJE DE ALERTA
  ===================================*/
-$("#fechaReserva").change(function(){
+function showReservasHuespedInfo(){
 	$(".alert").remove();
-	var nochesDeEstancia = $("#noches").val();	
-	//recupero id hotel
+	var nochesDeEstancia = $("#noches").val();
 	var idHotel2 = localStorage.getItem("idHotelLST");
-	
-	// console.log("idHotel",idHotel2);
+
 	var datos = new FormData();
-	datos.append("nochesDeEstancia",nochesDeEstancia);
-	datos.append("idHotel2",idHotel2);
-	
+	datos.append("nochesDeEstancia", nochesDeEstancia);
+	datos.append("idHotel2", idHotel2);
+
 	$.ajax({
-		url:"ajax/reservasRestaurantes.ajax.php", //enviamos a este archivo nochesDeEstancia para que lo procese
-		method: "POST", //el envio es por POST
-		data: datos, //datos es la instancia de ajax por el que se envia el id
+		url: "ajax/reservasRestaurantes.ajax.php",
+		method: "POST",
+		data: datos,
 		cache: false,
 		contentType: false,
 		processData: false,
-		dataType:"json", //los datos son de tipo json
-		success:function(respuesta){ //obtengo una respuesta tipo json
-		// console.log("respuesta",respuesta);									
+		dataType: "json",
+		success: function (respuesta) {
 			var numMaxRsvHuesped = respuesta["numeroMaxDeReservas"];
 			var nochesEstancia = respuesta["nochesEstancia"];
 			var nochesEstanciaFalse = " No se encontró una configuración para las noches de estancia";
 			var numMaxRsvHuespedFalse = "sin limite";
 
 			if (respuesta) {
-				$.notify({							
-					message: '<i class="fas fa-moon"></i> <strong>Nota:</strong> El huesped tiene ' +nochesEstancia+' noches de estancia, por lo tanto puede hacer un máximo de '+numMaxRsvHuesped+' reserva(s).' 
-					},{
-						// settings
+				$.notify({
+					message: '<i class="fas fa-moon"></i> <strong>Nota:</strong> El huesped tiene ' + nochesEstancia + ' noches de estancia, por lo tanto puede hacer un máximo de ' + numMaxRsvHuesped + ' reserva(s).'
+				}, {
 						type: 'info',
 						delay: 6000
 					});
 				localStorage.setItem("numMaxRsvHuespedLST", numMaxRsvHuesped);//num. max. de reservas que puede hacer el huespd			
 				$("#maxRsvHuesped").val(numMaxRsvHuesped);
 			} else {
-				$.notify({							
-					message: '<i class="fas fa-moon"></i> <strong>Nota:</strong>' +nochesEstanciaFalse+' del huesped, puede hacer reservas '+numMaxRsvHuespedFalse+' .' 
-					},{
-						// settings
+				$.notify({
+					message: '<i class="fas fa-moon"></i> <strong>Nota:</strong>' + nochesEstanciaFalse + ' del huesped, puede hacer reservas ' + numMaxRsvHuespedFalse + ' .'
+				}, {
 						type: 'info',
 						delay: 6000
 					});
 				localStorage.setItem("numMaxRsvHuespedLST", numMaxRsvHuespedFalse);
 				$("#maxRsvHuesped").val(numMaxRsvHuespedFalse);
-				
-			}									
-		}
-	})
-})
 
-/*======================================================
-= PARA CAPTURAR LA FECHA ELEGIDA Y TRAER EL HORARIO 
-DE ESE DÍA Y DE PASO TRAER LOS PAXMAXIMO O RESERVASMAXIMAS (QUE PONGO EN ATRIBUTOS QUE yo
-ME INVENTO) 
-======================================================*/
-$("#fechaReserva").change(function(){
-	
-	var fechaReservaObtenida = $("#fechaReserva").val();
-	var idHotel = localStorage.getItem("idHotelLST");
-	var idRestaurante = localStorage.getItem("idRestauranteLST");
-	var numOcupantes =$("#ocupantes").val();
-	var paxMaximoRestaurante = localStorage.getItem("paxMaximoDiaLST");
-	localStorage.setItem("numeroOcupantesPaxLS", numOcupantes);
-	localStorage.setItem("fechaReservaLTS", fechaReservaObtenida);
-	$("#numDePaxMaximaRestaurante").val("");
-    var datos = new FormData();
-	datos.append("fechaReservaObtenida",fechaReservaObtenida);
-	datos.append("idHotelCampo",idHotel);
-	datos.append("idRestaurantCampo",idRestaurante);
-
-	$.ajax({
-		url:"ajax/reservasRestaurantes.ajax.php", 
-		method: "POST", //el envio es por POST
-		data: datos, //datos es la instancia de ajax por el que se envia fechaReservaObtenida
-		cache: false,
-		contentType: false,
-		processData: false,
-		dataType:"json", //los datos son de tipo json
-		success:function(respuesta){ //obtengo una respuesta tipo json					
-			//  console.log("respuesta",respuesta);			 
-			listaHorarios = "<div class='input-group-addon'><i class='fas fa-clock'></i></div><select class='form-control horarioReserva' name='horarioReserva' id='horarioReserva' required><option value=''></option>"
-				for (i =0;  i<respuesta.length; i++) {
-					var cortarCadenaHora = respuesta[i][4];
-					var inicio = 0;
-					var fin = 8;
-					var subCadenaHora=cortarCadenaHora.substring(inicio,fin);
-					listaHorarios += "<option horaSeating=" + respuesta[i][4] + " paxMaxRestaurante=" + paxMaximoRestaurante+" paxMaximo="+respuesta[i][5]+" reservaMaximas="+respuesta[i][6]+"  value="+respuesta[i][4]+">"+subCadenaHora+"</option>";
-				}
-			listaHorarios+="</select>";
-			$("#horarioReserva").html(listaHorarios);
-			$("#numeroDePax").val(numOcupantes);					
+			}
 		}
-	})
- })
+	});
+}
 
 /*=====  END OF PARA CAPTURAR LA FECHA ELEGIDA  ======*/
 

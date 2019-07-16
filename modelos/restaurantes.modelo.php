@@ -317,4 +317,44 @@ PARA GUARDAR LOS DATOS AL EDITAR EL RESTAURANTE EN EL MODAL
 
 		$stmt = null;
 	}
+
+	/*=============================================
+	FUNCION PARA OBTENER FECHAS DE CIERRE DEL RESTAURANTE POR idRestaurante/FECHAS
+	 =============================================*/
+	static public function mdlValidarFechasCierreRestaurante($tabla, $idRestaurante, $fechaInicio, $fechaFin){
+
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE idRestaurante = :idRestaurante AND fechaInicio=:fechaInicio AND fechaFin=:fechaFin");
+
+		$stmt->bindParam(":idRestaurante", $idRestaurante, PDO::PARAM_INT);
+		$stmt->bindParam(":fechaInicio", $fechaInicio, PDO::PARAM_STR);
+		$stmt->bindParam(":fechaFin", $fechaFin, PDO::PARAM_STR);
+
+		$stmt->execute();
+
+		return $stmt->fetchAll();
+
+		$stmt = null;
+	}
+	/*=============================================
+PARA GUARDAR LOS DATOS AL EDITAR EL RESTAURANTE EN EL MODAL
+=============================================*/
+	static public function mdlGuardarFechasCierre($tabla, $datos){
+
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (idRestaurante, fechaInicio, fechaFin) VALUES (:idRestaurante, :fechaInicio, :fechaFin)");
+
+		$stmt->bindParam(":idRestaurante", $datos["idRestaurante"], PDO::PARAM_INT);
+		$stmt->bindParam(":fechaInicio", $datos["fechaInicio"], PDO::PARAM_STR);
+		$stmt->bindParam(":fechaFin", $datos["fechaFin"], PDO::PARAM_STR);
+
+		if ($stmt->execute()) {
+
+			return "OK";
+		} else {
+			return "ERROR";
+		}
+
+		$stmt->close();
+
+		$stmt = null;
+	}
 }

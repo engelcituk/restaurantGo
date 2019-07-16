@@ -128,7 +128,7 @@ if ($_SESSION["C-RESTAURANTES"] == 1) {
                                         }
                                         echo '<td>
                               <a href="#" class="btn btn-success editRestaurante" data-toggle="modal" data-target="#editRestaurante" idRstrnt="' . $elemento["id"] . '"><i class="fa fa-edit"></i> </a>
-                              <a href="#" class="btn btn-warning cierreRestaurante" data-toggle="modal" data-target="#cierreRestaurante" nRestaurante="'.$elemento["nombre"] . '" idRstrnt="' . $elemento["id"] . '"><i class="fas fa-calendar-times"></i> </a>
+                              <a href="#" class="btn btn-warning" data-toggle="modal" data-target="#cierreRestaurante" nRestaurante="'.$elemento["nombre"] . '" idRstrnt="' . $elemento["id"] . '" onclick="cierreRestaurante('. $elemento["id"].')"><i class="fas fa-calendar-times"></i> </a>
 
                               <button class="btn btn-danger eliminarRestaurante"  idRstrnt="' . $elemento["id"] . '" disabled><i class="fa fa-trash "></i></button>
                                             
