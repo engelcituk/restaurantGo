@@ -93,17 +93,50 @@ $("#nombreCompleto").change(function(){
 		  $("#fechaReservaExternos").attr("readonly",true);                            
     }              
 })
+// para verificar que el restaurante no este  cerrado
+function restauranteAbiertoExternos(){
+	var fechaReserva = $("#fechaReservaExternos").val();
+	var idRestaurante = localStorage.getItem("idRestauranteLST");
+
+	if (fechaReserva != '') {
+		// console.log("vas bien", fechaReserva);
+		var datos = new FormData();
+		datos.append("idRestCierre", idRestaurante);
+		datos.append("fechaRestOpen", fechaReserva);
+
+		$.ajax({
+			url: "ajax/reservasRestaurantes.ajax.php",
+			method: "POST",
+			data: datos,
+			cache: false,
+			contentType: false,
+			processData: false,
+			dataType: "json",
+			success: function (respuesta) {
+				var conteo = parseInt(respuesta[0]["totalFechas"]);
+				if (conteo == 0) {  //si restaurante no esta cerrado, traigo su lista de seatings
+					getListadoSeatingsParaExternos();					
+				} else {
+					swal("Oops", "Para esta fecha el restaurante está cerrado, intente con otra fecha o restaurante", "error");
+					resetearListaSeatingsExternos();
+				}
+			}
+		});
+	} else {
+		swal("Oops", "Por favor indique una fecha para la reserva", "error");
+	}
+}
 /*======================================================
-= PARA CAPTURAR LA FECHA ELEGIDA Y TRAER EL HORARIO 
+= PARA CAPTURAR LA FECHA ELEGIDA Y TRAER EL HORARIO
 DE ESE DÍA Y DE PASO TRAER LOS PAXMAXIMO O RESERVASMAXIMAS (QUE PONGO EN ATRIBUTOS QUE yo
-ME INVENTO) 
+ME INVENTO)
 ======================================================*/
-$("#fechaReservaExternos").change(function(){	
+function getListadoSeatingsParaExternos(){	
 	var fechaReservaObtenida = $("#fechaReservaExternos").val();
 	var idHotel = localStorage.getItem("idHotelLST");
 	var idRestaurante = localStorage.getItem("idRestauranteLST");
 	localStorage.setItem("fechaReservaObtenidaLS", fechaReservaObtenida);
-	
+
     var datos = new FormData();
 	datos.append("fechaReservaObtenida",fechaReservaObtenida);
 	datos.append("idHotelCampo",idHotel);
@@ -131,9 +164,12 @@ $("#fechaReservaExternos").change(function(){
 			$("#horarioReservaExternos").html(listaHorarios);
 			// $("#numeroDePax").val(numOcupantes);					
 		}
-	})
- })
-
+	});
+}
+function resetearListaSeatingsExternos(){
+	listaHorarios = "<div class='input-group-addon'><i class='fas fa-clock'></i></div><select class='form-control horarioReservaExternos' name='horarioReservaExternos' id='horarioReservaExternos' required><option value=''></option></select>";
+	$("#horarioReservaExternos").html(listaHorarios);
+}
 /*=====  END OF PARA CAPTURAR LA FECHA ELEGIDA  ======*/
 
 $("#horarioReservaExternos").change(function(){       
@@ -294,8 +330,7 @@ $(document).on("click", "#btnClienteExternoGuardar", function () {
 		return false;
 	} else {
 		return true;
-	}
-
+	} 
 })
 /*======================================
 = CON ESTO NO PERMITO EL INGRESO DE ELEMENTOS

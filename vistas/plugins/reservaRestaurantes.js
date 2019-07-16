@@ -180,6 +180,7 @@ function restauranteAbierto() {
 					showReservasHuespedInfo()		
 				} else {
 					swal("Oops", "Para esta fecha el restaurante está cerrado, intente con otra fecha o restaurante", "error");
+					resetearListaSeatings();
 				}
 			}
 		});	
@@ -225,11 +226,15 @@ function traerListadoSeatings(){
 				var subCadenaHora = cortarCadenaHora.substring(inicio, fin);
 				listaHorarios += "<option horaSeating=" + respuesta[i][4] + " paxMaxRestaurante=" + paxMaximoRestaurante + " paxMaximo=" + respuesta[i][5] + " reservaMaximas=" + respuesta[i][6] + "  value=" + respuesta[i][4] + ">" + subCadenaHora + "</option>";
 			}
-			listaHorarios += "</select>";
+			listaHorarios += "</select></div>";
 			$("#horarioReserva").html(listaHorarios);
 			$("#numeroDePax").val(numOcupantes);
 		}
 	});
+}
+function resetearListaSeatings() {
+	listaHorarios = "<div class='input-group-addon'><i class='fas fa-clock'></i></div><select class='form-control horarioReserva' name='horarioReserva' id='horarioReserva' required><option value=''></option></select></div>";
+	$("#horarioReserva").html(listaHorarios);
 }
 /*==============================================
 PARA TRAER LA CANTIDAD DE RESERVAS QUE LE CORRESPONDE AL HUESPED
