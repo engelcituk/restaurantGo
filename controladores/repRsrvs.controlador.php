@@ -16,7 +16,7 @@ class ControladorReportes{
 	} 
 	/*=============================================
 	FUNCION PARA MOSTRAR LA LISTA DE RESERVAS
-	=============================================*/
+	=============================================*/ 
 	static public function ctrMostrarListaReservas($valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3,$valorCampoTabla4){
 
 		$tabla = "reservas";

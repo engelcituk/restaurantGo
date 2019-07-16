@@ -4,11 +4,11 @@ require_once "../../../controladores/repRsrvs.controlador.php";
 require_once "../../../modelos/repRsrvs.modelo.php";
 require_once('tcpdf_include.php');
 
-class imprimirListado{
+class imprimirListado{ 
 
 public $idRestaurantePdf;
 public $fechaInformePdfInicio;
-public $fechaInformePdfFinal;
+public $fechaInformePdfFinal; 
 public $nomRestaurantePdf;
 public $ordenConsultaPdf;
 public function imprimirListaReservas(){
@@ -47,15 +47,22 @@ $fechaFinal=$valorCampoTabla3;
 $newFechaFinal = date("d-m-Y", strtotime($fechaFinal));
 /*fin de formateo de fechas */
 
+$tabla = "reservas";
+$respuestaPax = ReporteReservas::mdlSumarPaxReporteReservas($tabla, $valorCampoTabla, $valorCampoTabla2, $valorCampoTabla3);
+$sumaPax= $respuestaPax["sumaPax"];
+
 $bloque2 = <<<EOF
 	<br><br>
 	<table style="font-size:10px; padding:5px 10px;">
 		<tr>
-			<td style="border: 1px solid #666; background-color:#00897b ; width:250px; text-align:center">
-				<strong>Reservas, restaurante: $nomRestaurante</strong>
+			<td style="border: 1px solid #666; background-color:#00897b ; width:200px; text-align:center">
+				<strong>Restaurante: $nomRestaurante</strong>
 			</td>
-			<td style="border: 1px solid #666; background-color:#00897b ; width:290px; text-align:center">
-				<strong>Entre las fechas: $newFechaInicio A $newFechaFinal</strong>
+			<td style="border: 1px solid #666; background-color:#00897b ; width:200px; text-align:center">
+				<strong>Fechas: $newFechaInicio A $newFechaFinal</strong>
+			</td>
+			<td style="border: 1px solid #666; background-color:#ffff8d  ; width:140px; text-align:center">
+				<strong>Total de pax: $sumaPax</strong>
 			</td>
 		</tr>
 		<tr>
@@ -76,6 +83,7 @@ $pdf->writeHTML($bloque2, false, false, false, false, '');
 
 // ---------------------------------------------------------
 $respuesta = ControladorReportes::ctrMostrarListaReservas($valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3, $valorCampoTabla4);
+
 
 $contador = 1;
 foreach ($respuesta  as $key => $elemento) {
@@ -129,3 +137,4 @@ $listaReservas -> nomRestaurantePdf = $_GET["nomRest"];
 $listaReservas -> ordenConsultaPdf = $_GET["orden"];
 $listaReservas -> imprimirListaReservas();
 ?>
+

@@ -5,21 +5,18 @@
         <div class="modal-content">
             <div class="modal-header modal-header-personalizado">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><i class="fas fa-edit"></i> Cierre restaurante</h4>
+                <h4 class="modal-title"><i class="fas fa-edit"></i> Fechas de cierre del restaurante</h4>
             </div>
             <div class="modal-body">
                 <!--======= FORMULARIO PARA EDITAR EL HOTEL==================-->
                 <div class="register-box-body">
                     <!-- formulario -->
-                    <form method="post">
-                        <!-- <div class="form-group has-feedback">
-                            <input type="number" class="form-control hidden" id="idRestCierre" name="idRestCierre" readonly>
-                        </div> -->
+                    <form method="post">                    
                         <div class="row">
-                            <strong>Fechas de cierre del restaurante</strong><br><br>
+                            
                             <table id="cierresRestaurante" class="table table-hover" cellspacing="0" width="100%" style="width:100%">
                                 <thead>
-                                    <tr class="info">                                       
+                                    <tr class="info">
                                         <th>Fecha Inicio</th>
                                         <th>Fecha Fin</th>
                                         <th>Eliminar</th>

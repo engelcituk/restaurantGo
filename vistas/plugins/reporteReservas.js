@@ -59,8 +59,8 @@ $("#fechaReporteFin").change(function(){
 				idRestaurante = 0;
 				nombreRestaurante="Todos";
 			}
-			var valorOrnenamiento =obtenerOrdenFiltro();
-			window.location = "index.php?ruta=reportes-reservacion&idRest="+idRestaurante+"&nomRest="+nombreRestaurante+"&fechaInicio="+inicio+"&fechaFinal="+final+"&orden="+valorOrnenamiento;						
+			var valorOrdenamiento =obtenerOrdenFiltro();
+			window.location = "index.php?ruta=reportes-reservacion&idRest="+idRestaurante+"&nomRest="+nombreRestaurante+"&fechaInicio="+inicio+"&fechaFinal="+final+"&orden="+valorOrdenamiento;						
 		}else{
 			swal ( "Oops","La fecha de inicio "+inicio+" es mayor que la fecha final "+final, "error");
 		}

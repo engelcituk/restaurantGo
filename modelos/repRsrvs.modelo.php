@@ -56,7 +56,32 @@ class ReporteReservas {
 				$stmt = null;
 		}
 	}
- 
+	static public function mdlSumarPaxReporteReservas($tabla, $valorCampoTabla, $valorCampoTabla2, $valorCampoTabla3){
+	
+		if($valorCampoTabla==0){
+
+			$stmt = Conexion::conectar()->prepare("SELECT SUM(pax) as sumaPax FROM $tabla WHERE fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
+						
+			$stmt->bindParam(":fechaInicio", $valorCampoTabla2, PDO::PARAM_STR);
+			$stmt->bindParam(":fechaFinal", $valorCampoTabla3, PDO::PARAM_STR);
+		}else{
+			$stmt = Conexion::conectar()->prepare("SELECT SUM(pax) as sumaPax FROM $tabla WHERE idRestaurante =:idRestaurante AND fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
+
+			$stmt->bindParam(":idRestaurante", $valorCampoTabla, PDO::PARAM_INT);
+			$stmt->bindParam(":fechaInicio", $valorCampoTabla2, PDO::PARAM_STR);
+			$stmt->bindParam(":fechaFinal", $valorCampoTabla3, PDO::PARAM_STR);
+		}
+		
+
+		$stmt->execute();		
+
+		return $stmt->fetch();
+
+		$stmt->close();
+
+		$stmt = null;
+	}
+	
 	/*=============================================
 	PARA LA CONSULTA QUE GENERA EL ARCHIVO EXCEL DE
 	 LISTA DE RESERVAS DE EQUIS RESTAURANTE
