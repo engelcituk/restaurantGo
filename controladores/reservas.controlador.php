@@ -188,8 +188,8 @@ class ControladorReservas{
 					   "fechaReserva" =>$_POST["fechaReserva"],
 					   "reservaIdentificador" =>$_POST["reserva"],
 					   "idHotel" =>$_POST["idHotel2"],
-						 "idRestaurante" =>$_POST["idRestaurante2"],
-						 "fechaLimiteRSV" =>$_POST["fechaMaximaRSV"],
+						"idRestaurante" =>$_POST["idRestaurante2"],
+						"fechaLimiteRSV" =>$_POST["fechaMaximaRSV"],
 					   "nombreRestaurante" =>$_POST["campoNombreRestaurante"],
 					   "apellido" =>$_POST["apellido"],
 					   "horario" =>$_POST["horarioReserva"],					  
@@ -197,7 +197,12 @@ class ControladorReservas{
 					   "origen"=>$origen,
 					   "usuario"=> $_SESSION["nombreDeUsuario"],
 					   "habitacion" =>$_POST["numHabitacion"],
-					   "pax" =>$_POST["numeroDePax"],					   
+					   "pax" =>$_POST["numeroDePax"],
+					   "AD" => $_POST["paxAdultos"],
+					   "CU" => $_POST["paxCuna"],
+					   "JR" => $_POST["paxJunior"],
+					   "NI" => $_POST["paxNinio"],
+					   "SE" => $_POST["paxSenior"],
 					   "ticket" =>$_POST["ticketElige"],
 					   "observaciones" =>$_POST["observaciones"]
 					);
@@ -304,7 +309,12 @@ class ControladorReservas{
 						   "origen"=>$origen,
 						   "usuario"=> $_SESSION["nombreDeUsuario"],
 						   "habitacion" =>$_POST["habitacionExternos"],
-						   "pax" =>$_POST["paxExternos"],					   
+						   "pax" =>$_POST["paxExternos"],							
+						   "AD" => $_POST["paxAdultosExt"],
+						   "CU" => $_POST["paxCunaExt"],
+						   "JR" => $_POST["paxJuniorExt"],
+						   "NI" => $_POST["paxNinioExt"],
+						   "SE" => $_POST["paxSeniorExt"],					   
 						   "ticket" =>$_POST["ticketEligeExternos"],
 						   "observaciones" =>$_POST["observacionesExterno"]
 						);

@@ -349,10 +349,78 @@ $("#paxExternos").change(function(){
 	var numeroPAx = $("#paxExternos").val(); 	
 	var soloDigitos = this.value.replace(/[^0-9]/g,'');
 	
-	   if(soloDigitos > 0 && soloDigitos < 100 && numeroPAx !=''){
+	   if(soloDigitos > 0  && numeroPAx !=''){
 		   console.log("CORRECTO");		   	        
 	   }else{
 		   swal ( "Oops" ,  "Ingrese un valor válido" ,  "error" );
 		   $("#paxExternos").val(""); 		   		    
 	   }	 
 })
+//para el desglose de pax
+$("#paxCunaExt").change(function () {
+	var numeroPax = $("#paxCunaExt").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxCunaExt").val(0);
+	}
+})
+$("#paxCunaExt").change(function () {
+	var numeroPax = $("#paxCunaExt").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxCunaExt").val(0);
+	}
+})
+$("#paxNinioExt").change(function () {
+	var numeroPax = $("#paxNinioExt").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxNinioExt").val(0);
+	}
+})
+$("#paxJuniorExt").change(function () {
+	var numeroPax = $("#paxJuniorExt").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxJuniorExt").val(0);
+	}
+})
+$("#paxAdultosExt").change(function () {
+	var numeroPax = $("#paxAdultosExt").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxAdultosExt").val(0);
+	}
+})
+$("#paxSeniorExt").change(function () {
+	var numeroPax = $("#paxSeniorExt").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxSeniorExt").val(0);
+	}
+})
+

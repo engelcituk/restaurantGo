@@ -90,7 +90,7 @@ class ModeloReservas{
 
 	static public function mdlRegistrarReserva($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(fechaDeLaReserva,reservaIdentificador,idHotel,idRestaurante,nombreRestaurante,apellido,hora,estado,usuario,habitacion,pax,ticket,fechaLimite,observaciones,origen) VALUES (:fechaReserva,:reservaIdentificador,:idHotel,:idRestaurante,:nombreRestaurante,:apellido,:hora,:estado,:usuario,:habitacion,:pax,:ticket, :fechaLimiteRSV,:observaciones,:origen)");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(fechaDeLaReserva,reservaIdentificador,idHotel,idRestaurante,nombreRestaurante,apellido,hora,estado,usuario,habitacion,pax,AD,CU,JR,NI,SE,ticket,fechaLimite,observaciones,origen) VALUES (:fechaReserva,:reservaIdentificador,:idHotel,:idRestaurante,:nombreRestaurante,:apellido,:hora,:estado,:usuario,:habitacion,:pax,:AD,:CU,:JR,:NI,:SE, :ticket, :fechaLimiteRSV,:observaciones,:origen)");
 
 		$stmt -> bindParam(":fechaReserva", $datos["fechaReserva"], PDO::PARAM_STR);
 		$stmt -> bindParam(":reservaIdentificador", $datos["reservaIdentificador"], PDO::PARAM_STR);
@@ -103,6 +103,11 @@ class ModeloReservas{
 		$stmt -> bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
 		$stmt -> bindParam(":habitacion", $datos["habitacion"], PDO::PARAM_STR);
 		$stmt -> bindParam(":pax", $datos["pax"], PDO::PARAM_INT);
+		$stmt -> bindParam(":AD", $datos["AD"], PDO::PARAM_INT);
+		$stmt -> bindParam(":CU", $datos["CU"], PDO::PARAM_INT);
+		$stmt -> bindParam(":JR", $datos["JR"], PDO::PARAM_INT);
+		$stmt -> bindParam(":NI", $datos["NI"], PDO::PARAM_INT);
+		$stmt -> bindParam(":SE", $datos["SE"], PDO::PARAM_INT);
 		$stmt -> bindParam(":ticket", $datos["ticket"], PDO::PARAM_STR);
 		$stmt -> bindParam(":fechaLimiteRSV", $datos["fechaLimiteRSV"], PDO::PARAM_STR);
 		$stmt -> bindParam(":observaciones", $datos["observaciones"], PDO::PARAM_STR);

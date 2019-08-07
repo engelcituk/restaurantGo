@@ -7,10 +7,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
         <section class="content-header">
             <!-- imprimo el nombre del hotel -->
             <h1> <?php echo $_SESSION["nombreHotel"] ?></h1>
-            <?php
 
-
-            ?>
             <ol class="breadcrumb">
                 <li><a href="inicio"><i class="fa fa-dashboard"></i> <?php echo $_SESSION["nombreHotel"]; ?></a></li>
                 <li id="nombreRestaurante" class="active">Restaurante</li>
@@ -77,7 +74,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                             </div>
                             <div class="col-md-3 col-xs-12">
                                 <span><strong>Buscar datos habitación</strong></span><br><br>
-                                <a href="#" class="btn btn-success buscarReserva" id="btnBuscarReserva"><i class="fa fa-search"></i> Buscar</a>
+                                <span class="btn btn-success buscarReserva" id="btnBuscarReserva"><i class="fa fa-search"></i> Buscar</span>
                             </div>
                             <div class="col-md-3 col-xs-12 hidden">
                                 <span><strong>Id hotel</strong></span><br><br>
@@ -100,48 +97,77 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                 </div>
                 <div class="box-body">
                     <!-- puedo poner texto aquí -->
-
                     <form method="post" class="form-inline" id="formularioReserva">
                         <div class="row hidden" id="datosHuesped">
                             <div class="col-md-12 col-xs-12">
-                                <h4><strong>Se ha encontrado datos con el número de habitación proporcionado:</strong></h4>
+                                <h4><strong>Datos de la habitación proporcionada y desglose de ocupantes:</strong></h4>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <thead>
+                                            <tr class="info ">
+                                                <th>Reserva</th>
+                                                <th>Apellido</th>
+                                                <th>Habitación</th>
+                                                <th>Ocupantes</th>
+                                                <th>Noches</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input type="text" class="form-control" name="reserva" id="reserva" readonly>
+                                                <td>
+                                                    <input type="text" class="form-control" name="apellido" id="apellido" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" name="numHabitacion" id="numHabitacion" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" name="ocupantes" id="ocupantes" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="text" class="form-control" name="noches" id="noches" readonly>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-xs-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-hover table-condensed">
+                                        <thead>
+                                            <tr class="info">
+                                                <th>Cuna</th>
+                                                <th>Niño</th>
+                                                <th>Junior</th>
+                                                <th>Adultos</th>
+                                                <th>Senior</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <input type="number" class="form-control paxDesglose" name="paxCuna" id="paxCuna" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control paxDesglose" name="paxNinio" id="paxNinio" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control paxDesglose" name="paxJunior" id="paxJunior" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control paxDesglose" name="paxAdultos" id="paxAdultos" readonly>
+                                                </td>
+                                                <td>
+                                                    <input type="number" class="form-control paxDesglose" name="paxSenior" id="paxSenior" readonly>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
 
-                            <div class="col-md-3 col-xs-12">
-                                <span><strong>Reserva</strong></span><br><br>
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fas fa-file-signature"></i></div>
-                                    <input type="text" class="form-control" name="reserva" id="reserva" readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-3 col-xs-12">
-                                <span><strong>Apellido</strong></span><br><br>
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fas fa-file-signature"></i></div>
-                                    <input type="text" class="form-control" name="apellido" id="apellido" readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-xs-4">
-                                <span><strong>Habitación</strong></span><br><br>
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fas fa-home"></i></div>
-                                    <input type="text" class="form-control" name="numHabitacion" id="numHabitacion" readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-xs-4">
-                                <span><strong>Ocupantes</strong></span><br><br>
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fas fa-users"></i></div>
-                                    <input type="text" class="form-control" name="ocupantes" id="ocupantes" readonly>
-                                </div>
-                            </div>
-                            <div class="col-md-2 col-xs-4">
-                                <span><strong>Noches</strong></span><br><br>
-                                <div class="input-group">
-                                    <div class="input-group-addon"><i class="fas fa-moon"></i></div>
-                                    <input type="text" class="form-control" name="noches" id="noches" readonly>
-                                </div>
-                            </div>
                         </div>
                         <?php
                         $respuestaFechaHoy = ControladorFechas::ctrObtnerFechaHoy();
@@ -153,8 +179,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                             $resultadoFecha = date('Y-m-d', $fechaFormateada);
                         }
                         ?>
-                        <div id="camposParaLaReserva" class="hidden">
-                            <hr>
+                        <div id="camposParaLaReserva" class="hidden">                        
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
                                     <h4><strong>Selecciona una fecha con reservas disponibles a partir de hoy: <?php echo $respuestaFechaHoyDMY; ?></strong></h4>
@@ -243,8 +268,8 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
     </div>
 
 
-    
-<?php
+
+    <?php
     include 'partials/hacerReservas/ticketImprimir.php';
     include 'partials/hacerReservas/clienteExterno.php';
 } else {

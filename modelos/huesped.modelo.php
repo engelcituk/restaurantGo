@@ -4,6 +4,8 @@ require_once "conectorSQLServer.php";
 class ModeloHuesped{
 	/*=============================================
 	CONSULTA A LA TABLA ReservasReservix de SQLServer
+	$tabla---> dbo.CARACOL$Reservas
+	$ocupantes--> dbo.CARACOL$Ocupantes
 	=============================================*/
 	static public function mdlMostrarListasHuesped($tabla, $valorCampo, $ocupantes, $hotel){		
 		//valorCampo=Habitacion .. si recibo busquedas por habitacion
@@ -13,6 +15,7 @@ class ModeloHuesped{
 				Rvas.Reserva,
 				Rvas.Noches,
 				COUNT(ocup.Reserva) AS Ocupantes,
+				ocup.TipoPersona,
 				Rvas.Habitacion,
 				Rvas.Apellido,
 				Rvas.Estado,
@@ -33,14 +36,16 @@ class ModeloHuesped{
 				Rvas.FechaEntrada,
 				Rvas.FechaSalida,
 				Rvas.Apellido,
-				Rvas.Hotel
+				Rvas.Hotel,
+				ocup.TipoPersona
+				
 		");
 			
 			$stmt->bindParam(":habitacion", $valorCampo, PDO::PARAM_STR);
 			$stmt->bindParam(":hotel", $hotel, PDO::PARAM_STR);
 			
 			$stmt -> execute();
-			return $stmt -> fetch();
+			return $stmt ->fetchAll();
 
 		}else{
 			//de lo contrario si id viene vacio hago consulta de todo la tabla

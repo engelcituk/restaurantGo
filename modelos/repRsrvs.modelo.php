@@ -23,7 +23,7 @@ class ReporteReservas {
 	=============================================*/
 	static public function mdlListaReporteReservas($tabla, $valorCampoTabla,$valorCampoTabla2,$valorCampoTabla3, $valorCampoTabla4){
 		date_default_timezone_set('UTC');
-		$hoy = date("Y-m-d");		
+		$hoy = date("Y-m-d");		 
 		
 			if($valorCampoTabla != 0){ 
 				

@@ -10,12 +10,17 @@
 		var nombreRestaurante = localStorage.getItem("nombreRestauranteLST");
 		
   	if (numHabitacion != '') {
-			$("#idHotel2").val(idHotel);  
+	  $("#idHotel2").val(idHotel);  
       $("#idRestaurante2").val(idRestaurante);
-			$("#campoNombreRestaurante").val(nombreRestaurante);             
+	  $("#campoNombreRestaurante").val(nombreRestaurante);
+	  		$("#paxAdultos").val("");
+			$("#paxCuna").val("");
+			$("#paxJunior").val("");
+			$("#paxNinio").val("");
+			$("#paxSenior").val("");
       //Objeto formdata para transmitir los datos obtenidos
 		var datos = new FormData();
-		datos.append("numHabitacion", numHabitacion);
+		datos.append("numHabitacion", numHabitacion); 
 		$.ajax({
 			url:"ajax/reservasHuesped.ajax.php", //enviamos a este archivo numHabitacion para que lo procese
 			method: "POST", //el envio es por POST
@@ -25,28 +30,53 @@
 			processData: false,
 			dataType:"json", //los datos son de tipo json
 			success:function(respuesta){ //obtengo una respuesta tipo json
-				if (respuesta) { //si obtengo resultados muestro datos
+				longitudRespuesta = respuesta.length;
+				if (longitudRespuesta>0) { //si obtengo resultados muestro datos
 					// console.log("respuesta", respuesta);
-					var fecha = respuesta.FechaSalida;
+					var sumaPax=0;
+					for (i = 0; i < respuesta.length; i++) {						
+						sumaPax += parseInt(respuesta[i]["Ocupantes"]);
+						var tipoPersona = respuesta[i]["TipoPersona"];
+						if (tipoPersona =="AD"){
+							$("#paxAdultos").val(respuesta[i]["Ocupantes"]);						
+						} else if (tipoPersona == "CU"){
+							$("#paxCuna").val(respuesta[i]["Ocupantes"]);
+						} else if (tipoPersona == "JR") {
+							$("#paxJunior").val(respuesta[i]["Ocupantes"]);
+						} else if (tipoPersona == "NI") {
+							$("#paxNinio").val(respuesta[i]["Ocupantes"]);
+						} else if (tipoPersona == "SE") {
+							$("#paxSenior").val(respuesta[i]["Ocupantes"]);
+						}												
+					}					
+					var fecha = respuesta[0].FechaSalida;
 					fechaMinima = localStorage.getItem("fechaMinimoLS");
 					fechaMaxima = fecha.substring(0,10);//corto resto de cadena que sobra para la fecha MAxima
 					// console.log("fechaMinimaLS",fechaMinima);
-					$("#numHabitacion").val(respuesta["Habitacion"])//le cargo en esos campos los resultados				
+					$("#numHabitacion").val(respuesta[0]["Habitacion"])//le cargo en esos campos los resultados				
 					$("#fechaReserva").attr({ "min": fechaMinima, "max": fechaMaxima });
 					$("#fechaMaximaRSV").val(fechaMaxima);
 					$('#datosHuesped').removeClass("hidden");
-					$("#apellido").val(respuesta["Apellido"]);
-					$("#reserva").val(respuesta["Reserva"]);
-					$("#noches").val(respuesta["Noches"]);
-					$("#ocupantes").val(respuesta["Ocupantes"]);
-					$("#numHabitacion").val(respuesta["Habitacion"]);
-					$("#pax").val(respuesta["Ocupantes"]);
+					$("#apellido").val(respuesta[0]["Apellido"]);
+					$("#reserva").val(respuesta[0]["Reserva"]);
+					$("#noches").val(respuesta[0]["Noches"]);
+					$("#ocupantes").val(sumaPax);
+					// $("#numeroDePax").val(sumaPax);
+					$("#numHabitacion").val(respuesta[0]["Habitacion"]);
+					$("#pax").val(sumaPax);
 					$("#mensajeAlerta").hide();
 					$("#mensajeAlerta").hide();
 					$('#camposParaLaReserva').removeClass("hidden");
 
+					//recorro los inpus, si estos estan vacios les pongo 0
+					$('.paxDesglose').each(function () {
+						if ($(this).val() == "") {
+							$(this).val(0);
+						}
+					})
 					//muestro las alertas de los horarios
 					mostrarAlertasHorarios(horaCierreRestaurante);
+					
 					
 				} else { 				
 					$("#rowMensajeResultados").after('<div class="alert alert-danger alert-dismissible"><a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>¡Alerta! </strong> No se encontraron datos con el numero de habitacion proporcionado. Indique otro numero</div>');

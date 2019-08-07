@@ -127,6 +127,41 @@
                                    </div>
                                </div>
                                <div class="col-md-12 col-xs-12">
+                                   <h5><strong>Desglozar los pax:</strong></h5>
+                                   <div class="table-responsive">
+                                       <table class="table table-bordered table-hover table-condensed">
+                                           <thead>
+                                               <tr class="info">
+                                                   <th>Cuna</th>
+                                                   <th>Niño</th>
+                                                   <th>Junior</th>
+                                                   <th>Adultos</th>
+                                                   <th>Senior</th>
+                                               </tr>
+                                           </thead>
+                                           <tbody>
+                                               <tr>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesglose" name="paxCunaExt" id="paxCunaExt" value="0" min="0" required>
+                                                   </td>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesglose" name="paxNinioExt" id="paxNinioExt" value="0" min="0" required>
+                                                   </td>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesglose" name="paxJuniorExt" id="paxJuniorExt" value="0" min="0" required>
+                                                   </td>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesglose" name="paxAdultosExt" id="paxAdultosExt" value="0" min="0" required>
+                                                   </td>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesglose" name="paxSeniorExt" id="paxSeniorExt" value="0" min="0" required>
+                                                   </td>
+                                               </tr>
+                                           </tbody>
+                                       </table>
+                                   </div>
+                               </div>
+                               <div class="col-md-12 col-xs-12">
                                    <label for="usr">Observaciones</label>
                                    <textarea class="form-control nombreCompletoClienteExterno" rows="3" id="observacionesExterno" name="observacionesExterno" onchange="getPaxAcumuladosDia()"></textarea>
                                </div>

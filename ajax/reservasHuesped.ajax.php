@@ -22,7 +22,7 @@ class AjaxReservix{
 	$tabla = $cadena."Reservas";// dbo.CARACOL$Reservas
 	$ocupantes = $cadena."Ocupantes";// dbo.CARACOL$Ocupantes
 	
-	$valorCampo = $this->numHabitacion; // el valor de habitacion. por ejemplo ( 7)
+	$valorCampo = $this->numHabitacion; // el valor de habitacion. por ejemplo ( 7) 
 
 	//llamo al controlador que muestra la consulta de los usuarios
 	$respuesta = ControladorHuesped::ctrMostrarListasHuesped($tabla, $valorCampo, $ocupantes, $hotel); //(Habitacion, 7) como parametros para ejecutar
