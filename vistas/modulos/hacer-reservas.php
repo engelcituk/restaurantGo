@@ -90,7 +90,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     <input type="text" class="form-control" name="idRestauranteVar" id="idRestauranteVar">
                                 </div>
                             </div>
-                        </div><br><br>
+                        </div>
                         <div id="rowMensajeResultados"></div>
                     </form>
 
@@ -138,11 +138,11 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     <table class="table table-bordered table-hover table-condensed">
                                         <thead>
                                             <tr class="info">
-                                                <th>Cuna</th>
-                                                <th>Niño</th>
-                                                <th>Junior</th>
-                                                <th>Adultos</th>
-                                                <th>Senior</th>
+                                                <th>CU</th>
+                                                <th>NI</th>
+                                                <th>JR</th>
+                                                <th>AD</th>
+                                                <th>SE</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -179,11 +179,11 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                             $resultadoFecha = date('Y-m-d', $fechaFormateada);
                         }
                         ?>
-                        <div id="camposParaLaReserva" class="hidden">                        
+                        <div id="camposParaLaReserva" class="hidden">
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
                                     <h4><strong>Selecciona una fecha con reservas disponibles a partir de hoy: <?php echo $respuestaFechaHoyDMY; ?></strong></h4>
-                                </div><br><br>
+                                </div>
 
                                 <div class="col-md-12 col-xs-12">
                                     <div id="msjReservasHechasSeating">

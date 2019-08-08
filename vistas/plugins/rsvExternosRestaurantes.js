@@ -318,7 +318,7 @@ $(document).on("click", "#btnClienteExternoGuardar", function () {
 	var paxAcumuladosMasPaxHuesped = parseInt(totalPaxAcumulados + paxHuesped);
 	var paxAcumuladosDiaMasPaxHuesped = parseInt(paxAcumuladoDia + paxHuesped);
 	var rsvAcumuladosMasRsvHuesped = parseInt(totalRSVAcumulados + valorRSVHuesped);
-
+	var paxCamposIguales = coincidirPaxExternos();
 	if (paxAcumuladosMasPaxHuesped > numDePaxMaximaRestaurante) {
 		swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para esta hora", "error");
 		return false;
@@ -328,10 +328,32 @@ $(document).on("click", "#btnClienteExternoGuardar", function () {
 	} else if (rsvAcumuladosMasRsvHuesped > numDeRSVMaximaRestaurante) {
 		swal("Oops", "Las reservas acumuladas para esta hora de este día supera el limite establecido para este seating", "error");
 		return false;
+	} else if (!paxCamposIguales){
+		swal("Oops", "La cantida de pax indicada no coincide con la suma total de los desglosados", "error");
+		return false;
 	} else {
 		return true;
 	} 
 })
+//funcion para ver si campo pax coinciden con los pax desglosados
+function coincidirPaxExternos(){
+	var paxExternos = $("#paxExternos").val();	
+	var sumaPax=0;
+	var iguales;
+	$('.paxDesgloseExt').each(function () {
+		if ($(this).val() == "") {
+			$(this).val(0);
+		}
+		sumaPax += parseInt($(this).val());
+	})
+	if (paxExternos == sumaPax){
+		iguales =true;
+		return iguales;		
+	}else{
+		iguales = false;
+		return iguales;
+	}
+}
 /*======================================
 = CON ESTO NO PERMITO EL INGRESO DE ELEMENTOS
  QUE NO SEAN NUMERICOS en campo paxExternos

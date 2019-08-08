@@ -44,12 +44,17 @@ $fechaInicio=$valorCampoTabla2;
 $newFechaInicio = date("d-m-Y", strtotime($fechaInicio));
 
 $fechaFinal=$valorCampoTabla3;
-$newFechaFinal = date("d-m-Y", strtotime($fechaFinal));
+$newFechaFinal = date("d-m-Y", strtotime($fechaFinal)); 
 /*fin de formateo de fechas */
 
 $tabla = "reservas";
 $respuestaPax = ReporteReservas::mdlSumarPaxReporteReservas($tabla, $valorCampoTabla, $valorCampoTabla2, $valorCampoTabla3);
 $sumaPax= $respuestaPax["sumaPax"];
+$sumaPaxCuna = $respuestaPax["Cuna"];
+$sumaPaxNinios = $respuestaPax["Ninios"];
+$sumaPaxJuniors = $respuestaPax["Juniors"];
+$sumaPaxAdultos = $respuestaPax["Adultos"];
+$sumaPaxSeniors = $respuestaPax["Seniors"];
 
 $bloque2 = <<<EOF
 	<br><br>
@@ -61,8 +66,8 @@ $bloque2 = <<<EOF
 			<td style="border: 1px solid #666; background-color:#00897b ; width:200px; text-align:center">
 				<strong>Fechas: $newFechaInicio A $newFechaFinal</strong>
 			</td>
-			<td style="border: 1px solid #666; background-color:#ffff8d  ; width:140px; text-align:center">
-				<strong>Total de pax reporte: $sumaPax</strong>
+			<td style="border: 1px solid #666; background-color:#ffff8d  ; width:140px; text-align:center">				
+				<strong>Total pax reporte: $sumaPax</strong>
 			</td>
 		</tr>
 		<tr>
@@ -132,7 +137,7 @@ $bloque3 = <<<EOF
 			</td>
 			<td style="border: 1px solid #666; color:#333; background-color:white; width:430px; text-align:justify">$elemento[observaciones]
 			</td>	
-		</tr>							
+		</tr>									
 	</table>
 	
 EOF;
@@ -140,6 +145,21 @@ $contador = $contador + 1;
 $pdf->writeHTML($bloque3, false, false, false, false, '');
 }
 
+$bloque4 = <<<EOF
+	<br><br>
+	<table style="font-size:10px; padding:5px 10px;">		
+		<tr>					
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>CU:</strong> $sumaPaxCuna</td>
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>NI:</strong> $sumaPaxNinios</td>
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>JR:</strong> $sumaPaxJuniors</td>
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>AD:</strong> $sumaPaxAdultos</td>			
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>SE:</strong> $sumaPaxSeniors</td>			
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>Total:</strong> $sumaPax</td>		
+		</tr>
+	</table>
+
+EOF;
+$pdf->writeHTML($bloque4, false, false, false, false, '');
 //salida del pdf
 $pdf->Output('listaReservas.pdf');
 // el segundo parametro D hace que se descargue

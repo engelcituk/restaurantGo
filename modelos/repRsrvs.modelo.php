@@ -60,12 +60,12 @@ class ReporteReservas {
 	
 		if($valorCampoTabla==0){
 
-			$stmt = Conexion::conectar()->prepare("SELECT SUM(pax) as sumaPax FROM $tabla WHERE fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
+			$stmt = Conexion::conectar()->prepare("SELECT SUM(pax) as sumaPax, SUM(CU) as Cuna,SUM(NI) as Ninios, SUM(JR) as Juniors, SUM(AD) as Adultos, SUM(SE) as Seniors FROM $tabla WHERE fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
 						
 			$stmt->bindParam(":fechaInicio", $valorCampoTabla2, PDO::PARAM_STR);
 			$stmt->bindParam(":fechaFinal", $valorCampoTabla3, PDO::PARAM_STR);
 		}else{
-			$stmt = Conexion::conectar()->prepare("SELECT SUM(pax) as sumaPax FROM $tabla WHERE idRestaurante =:idRestaurante AND fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
+			$stmt = Conexion::conectar()->prepare("SELECT SUM(pax) as sumaPax, SUM(CU) as Cuna,SUM(NI) as Ninios, SUM(JR) as Juniors, SUM(AD) as Adultos, SUM(SE) as Seniors FROM $tabla WHERE idRestaurante =:idRestaurante AND fechaDeLaReserva BETWEEN :fechaInicio AND :fechaFinal");
 
 			$stmt->bindParam(":idRestaurante", $valorCampoTabla, PDO::PARAM_INT);
 			$stmt->bindParam(":fechaInicio", $valorCampoTabla2, PDO::PARAM_STR);

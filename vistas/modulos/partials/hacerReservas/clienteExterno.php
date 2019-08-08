@@ -132,29 +132,29 @@
                                        <table class="table table-bordered table-hover table-condensed">
                                            <thead>
                                                <tr class="info">
-                                                   <th>Cuna</th>
-                                                   <th>Niño</th>
-                                                   <th>Junior</th>
-                                                   <th>Adultos</th>
-                                                   <th>Senior</th>
+                                                   <th>CU</th>
+                                                   <th>NI</th>
+                                                   <th>JR</th>
+                                                   <th>AD</th>
+                                                   <th>SE</th>
                                                </tr>
                                            </thead>
                                            <tbody>
                                                <tr>
                                                    <td>
-                                                       <input type="number" class="form-control paxDesglose" name="paxCunaExt" id="paxCunaExt" value="0" min="0" required>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxCunaExt" id="paxCunaExt" value="0" min="0" required>
                                                    </td>
                                                    <td>
-                                                       <input type="number" class="form-control paxDesglose" name="paxNinioExt" id="paxNinioExt" value="0" min="0" required>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxNinioExt" id="paxNinioExt" value="0" min="0" required>
                                                    </td>
                                                    <td>
-                                                       <input type="number" class="form-control paxDesglose" name="paxJuniorExt" id="paxJuniorExt" value="0" min="0" required>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxJuniorExt" id="paxJuniorExt" value="0" min="0" required>
                                                    </td>
                                                    <td>
-                                                       <input type="number" class="form-control paxDesglose" name="paxAdultosExt" id="paxAdultosExt" value="0" min="0" required>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxAdultosExt" id="paxAdultosExt" value="0" min="0" required>
                                                    </td>
                                                    <td>
-                                                       <input type="number" class="form-control paxDesglose" name="paxSeniorExt" id="paxSeniorExt" value="0" min="0" required>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxSeniorExt" id="paxSeniorExt" value="0" min="0" required>
                                                    </td>
                                                </tr>
                                            </tbody>
