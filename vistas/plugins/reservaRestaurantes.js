@@ -177,7 +177,8 @@ function restauranteAbierto() {
 				var conteo = parseInt(respuesta[0]["totalFechas"]);
 				if (conteo == 0) {  //si restaurante no esta cerrado, traigo su lista de seatings
 					traerListadoSeatings();
-					showReservasHuespedInfo()		
+					showReservasHuespedInfo();
+					sumarPaxDesglosados();		
 				} else {
 					swal("Oops", "Para esta fecha el restaurante está cerrado, intente con otra fecha o restaurante", "error");
 					resetearListaSeatings();
@@ -228,7 +229,7 @@ function traerListadoSeatings(){
 			}
 			listaHorarios += "</select></div>";
 			$("#horarioReserva").html(listaHorarios);
-			$("#numeroDePax").val(numOcupantes);
+			// $("#numeroDePax").val(numOcupantes);
 		}
 	});
 }
@@ -346,6 +347,7 @@ $("#horarioReserva").change(function(){
  =traigo el NUMERO DE PAX O TOTAL DE RESERVAS ya realizados en ese seating 
  ==================================================================*/
 $("#horarioReserva").change(function(){
+	sumarPaxDesglosados();
 	var valueHorario2 = $("option:selected",this).text();
 	//capturo la fecha y la hora elegida
 	var fechaDeLaReserva = $("#fechaReserva").val();
@@ -443,6 +445,7 @@ $("#horarioReserva").change(function(){
  TRAIGO LA CANTIDA DE RESERVAS QUE HA HECHO EL HUESPED            =
  ==================================================================*/
   $("#ticketElige").change(function(){
+	  sumarPaxDesglosados();
 	  obtenerPaxAcumuladosDia();
   	//traigo el identificador de la reserva del hotel y max de reservas que el huesped puede hacer
   	var identificadorReservaHotel = $("#reserva").val();
@@ -516,6 +519,17 @@ $("#horarioReserva").change(function(){
 	  	
  })
   /*=====  END OF VALIDAR QUE EL HUESPED PUEDA HACER RESERVA  ======*/
+function sumarPaxDesglosados() {
+	var sumaPax = 0;	
+	$('.paxDesglose').each(function () {
+		if ($(this).val() == "") {
+			$(this).val(0);
+		}
+		sumaPax += parseInt($(this).val());
+	})
+	$("#numeroDePax").val(sumaPax); 
+	
+}
   //validaciones para controlar el numero de pax
 $(document).on("input", "#numeroDePax", function(){
 	this.value = this.value.replace(/[^0-9]/g,'');
@@ -537,12 +551,59 @@ $("#numeroDePax").change(function(){
     else
          {
 		  swal ( "Oops","Escriba un valor superior a cero", "error");
-		  $("#numeroDePax").val(numeroOcupantesPax);
+		//   $("#numeroDePax").val(numeroOcupantesPax);
 		  $("#btnGuardarReserva").attr("disabled",true);                    
     }	
 })	
+/** Para validar que los pax desglosados sean numeros y que sean validos*/
+$("#paxNinio").change(function () {
+	var numeroPax = $("#paxNinio").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
 
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxNinio").val(0);
+	}
+})
+$("#paxJunior").change(function () {
+	var numeroPax = $("#paxJunior").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxJunior").val(0);
+	}
+})
+$("#paxAdultos").change(function () {
+	var numeroPax = $("#paxAdultos").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxAdultos").val(0);
+	}
+})
+$("#paxSenior").change(function () {
+	var numeroPax = $("#paxSenior").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxSenior").val(0);
+	}
+})
+
+/**fin validaciones pax */
 $(document).on("click", "#btnGuardarReserva", function(){
+	sumarPaxDesglosados();//envio la suma de los pax desglozados
 	obtenerPaxAcumuladosDia();
 	var paxHuesped = parseInt($("#numeroDePax").val());
 	var paxAcumuladoDia = parseInt($("#numDePaxDiaRestaurante").val());
@@ -645,20 +706,7 @@ function obtenerPaxAcumuladosDia() {
 		}
 	})	
 }
-// function mostrarSumapaxDia(sumaPax){
-	
-// 	var sumaPaxtotalDia = parseInt(sumaPax);
-// 	var numDePaxMaximaRestaurante = parseInt($("#numDePaxMaximaRestaurante").val());
-// 	var numeroPAxHuesped = parseInt($("#numeroDePax").val());
-// 	var totalPAxHuespedMasAcumulado = sumaPaxtotalDia + numeroPAxHuesped;
-	
-// 	if (totalPAxHuespedMasAcumulado > numDePaxMaximaRestaurante){
 
-// 		swal("Oops", "Los pax acumulados más la que indica su reserva supera el limite de pax que puede cubrir para este dia"+totalPAxHuespedMasAcumulado, "error");
-
-// 		return false;
-// 	}	
-// }
 //Esta es para 
 $("#fechaRsvFiltroDia").change(function () {
 	var fechaSeleccionada = $("#fechaRsvFiltroDia").val();

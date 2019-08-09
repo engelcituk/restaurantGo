@@ -138,29 +138,29 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     <table class="table table-bordered table-hover table-condensed">
                                         <thead>
                                             <tr class="info">
-                                                <th>CU</th>
-                                                <th>NI</th>
-                                                <th>JR</th>
                                                 <th>AD</th>
+                                                <th>JR</th>
+                                                <th>NI</th>
+                                                <th>CU</th>
                                                 <th>SE</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td>
-                                                    <input type="number" class="form-control paxDesglose" name="paxCuna" id="paxCuna" readonly>
+                                                    <input type="number" class="form-control paxDesglose" name="paxAdultos" id="paxAdultos">
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control paxDesglose" name="paxNinio" id="paxNinio" readonly>
+                                                    <input type="number" class="form-control paxDesglose" name="paxJunior" id="paxJunior">
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control paxDesglose" name="paxJunior" id="paxJunior" readonly>
+                                                    <input type="number" class="form-control paxDesglose" name="paxNinio" id="paxNinio">
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control paxDesglose" name="paxAdultos" id="paxAdultos" readonly>
+                                                    <input type="number" class="form-control paxDesglose" name="paxCuna" id="paxCuna">
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control paxDesglose" name="paxSenior" id="paxSenior" readonly>
+                                                    <input type="number" class="form-control paxDesglose" name="paxSenior" id="paxSenior">
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -190,28 +190,28 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                                     </div>
                                 </div>
 
-                                <div class="col-md-3 col-xs-6">
+                                <div class="col-md-4 col-xs-6">
                                     <span><strong>Fecha:</strong></span><br>
                                     <div class="input-group">
                                         <div class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></div>
                                         <input type="date" class="form-control" id="fechaReserva" name="fechaReserva" required onchange="restauranteAbierto()">
                                     </div>
                                 </div>
-                                <div class="col-md-2 col-xs-6">
+                                <div class="col-md-4 col-xs-6">
                                     <span><strong>Horario:</strong></span><br>
                                     <div class="input-group" id="horarioReserva">
                                         <div class="input-group-addon"><i class="fas fa-clock"></i></div>
 
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-xs-6">
+                                <div class="col-md-3 col-xs-6 hidden">
                                     <span><strong>Pax:</strong></span><br>
                                     <div class="input-group">
                                         <div class="input-group-addon"><i class="fas fa-users"></i></div>
-                                        <input type="number" class="form-control" id="numeroDePax" name="numeroDePax" required>
+                                        <input type="number" class="form-control" id="numeroDePax" name="numeroDePax" readonly>
                                     </div>
                                 </div>
-                                <div class="col-md-3 col-xs-6">
+                                <div class="col-md-4 col-xs-6">
                                     <span><strong>Encabezado/pie ticket:</strong></span><br>
                                     <div class="input-group">
                                         <div class="input-group-addon"><i class="fas fa-language"></i></div>

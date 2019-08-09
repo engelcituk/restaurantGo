@@ -92,11 +92,46 @@
                                        </select>
                                    </div>
                                </div>
-                               <div class="col-md-6 col-xs-12">
+                               <div class="col-md-12 col-xs-12">
+                                   <h5><strong>Desglozar pax:</strong></h5>
+                                   <div class="table-responsive">
+                                       <table class="table table-bordered table-hover table-condensed">
+                                           <thead>
+                                               <tr class="info">
+                                                   <th>AD</th>
+                                                   <th>JR</th>
+                                                   <th>NI</th>
+                                                   <th>CU</th>
+                                                   <th>SE</th>
+                                               </tr>
+                                           </thead>
+                                           <tbody>
+                                               <tr>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxAdultosExt" id="paxAdultosExt" value="0" min="0" required>
+                                                   </td>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxJuniorExt" id="paxJuniorExt" value="0" min="0" required>
+                                                   </td>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxNinioExt" id="paxNinioExt" value="0" min="0" required>
+                                                   </td>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxCunaExt" id="paxCunaExt" value="0" min="0" required>
+                                                   </td>
+                                                   <td>
+                                                       <input type="number" class="form-control paxDesgloseExt" name="paxSeniorExt" id="paxSeniorExt" value="0" min="0" required>
+                                                   </td>
+                                               </tr>
+                                           </tbody>
+                                       </table>
+                                   </div>
+                               </div>
+                               <div class="col-md-6 col-xs-12 hidden">
                                    <label for="usr">Pax</label>
                                    <div class="input-group">
                                        <div class="input-group-addon"><i class="fas fa-sort-numeric-up"></i></div>
-                                       <input type="number" class="form-control" id="paxExternos" name="paxExternos" min="1" max="100" required readonly>
+                                       <input type="number" class="form-control" id="paxExternos" name="paxExternos" min="1" required>
                                    </div>
                                </div>
                                <div class="col-md-6 col-xs-12">
@@ -126,41 +161,7 @@
                                        <input type="number" class="form-control" id="sumaPaxExternos" name="sumaPaxExternos" required readonly>
                                    </div>
                                </div>
-                               <div class="col-md-12 col-xs-12">
-                                   <h5><strong>Desglozar los pax:</strong></h5>
-                                   <div class="table-responsive">
-                                       <table class="table table-bordered table-hover table-condensed">
-                                           <thead>
-                                               <tr class="info">
-                                                   <th>CU</th>
-                                                   <th>NI</th>
-                                                   <th>JR</th>
-                                                   <th>AD</th>
-                                                   <th>SE</th>
-                                               </tr>
-                                           </thead>
-                                           <tbody>
-                                               <tr>
-                                                   <td>
-                                                       <input type="number" class="form-control paxDesgloseExt" name="paxCunaExt" id="paxCunaExt" value="0" min="0" required>
-                                                   </td>
-                                                   <td>
-                                                       <input type="number" class="form-control paxDesgloseExt" name="paxNinioExt" id="paxNinioExt" value="0" min="0" required>
-                                                   </td>
-                                                   <td>
-                                                       <input type="number" class="form-control paxDesgloseExt" name="paxJuniorExt" id="paxJuniorExt" value="0" min="0" required>
-                                                   </td>
-                                                   <td>
-                                                       <input type="number" class="form-control paxDesgloseExt" name="paxAdultosExt" id="paxAdultosExt" value="0" min="0" required>
-                                                   </td>
-                                                   <td>
-                                                       <input type="number" class="form-control paxDesgloseExt" name="paxSeniorExt" id="paxSeniorExt" value="0" min="0" required>
-                                                   </td>
-                                               </tr>
-                                           </tbody>
-                                       </table>
-                                   </div>
-                               </div>
+
                                <div class="col-md-12 col-xs-12">
                                    <label for="usr">Observaciones</label>
                                    <textarea class="form-control nombreCompletoClienteExterno" rows="3" id="observacionesExterno" name="observacionesExterno" onchange="getPaxAcumuladosDia()"></textarea>
