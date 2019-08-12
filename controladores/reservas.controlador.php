@@ -479,7 +479,12 @@ class ControladorReservas{
 					   "usuario"=> $_SESSION["nombreDeUsuario"],					   
 					   "fechaReserva" =>$fechaReserva,					   
 					   "nuevaHora" => $horarioReserva,
-					   "pax" =>$numeroDePax,					  					  
+					   "pax" =>$numeroDePax,
+					   "AD" => $_POST["paxAdultosEdit"],
+					   "CU" => $_POST["paxCunaEdit"],
+					   "JR" => $_POST["paxJuniorEdit"],
+					   "NI" => $_POST["paxNinioEdit"],
+					   "SE" => $_POST["paxSeniorEdit"],					  					  
 					   "observaciones" =>$_POST["observaciones"]
 					);
 				

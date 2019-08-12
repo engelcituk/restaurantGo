@@ -180,7 +180,7 @@ $("#fechaFiltro").change(function(){ //lstSelectRest es lista Select de restaura
 		processData: false,
 		dataType:"json", //los datos son de tipo json
 		success:function(respuesta){ //obtengo una respuesta tipo json
-			// console.log("respuesta",respuesta);
+			console.log("respuesta",respuesta);
 			
 			var cortarCadenaHora = respuesta["hora"];
 					var inicio = 0;
@@ -195,6 +195,11 @@ $("#fechaFiltro").change(function(){ //lstSelectRest es lista Select de restaura
 					$("#nombreRestaurante").val(respuesta["nombreRestaurante"]);
 					$("#apellido").val(respuesta["apellido"]);
 					$("#pax").val(respuesta["pax"]);
+					$("#paxAdultosEdit").val(respuesta["AD"]);
+					$("#paxJuniorEdit").val(respuesta["JR"]);
+					$("#paxNinioEdit").val(respuesta["NI"]);
+					$("#paxCunaEdit").val(respuesta["CU"]);
+					$("#paxSeniorEdit").val(respuesta["SE"]);
 					$("#observaciones").val(respuesta["observaciones"]);
 					$("#habitacion").val(respuesta["habitacion"]);			
 					$("#hora").val(subCadenaHora);
@@ -303,8 +308,8 @@ $("#nuevaFecha").change(function(){
 	//obtengo de localStorage el id del restaurante y el nombre para el informe
 	var idHotel = localStorage.getItem("idHotelEditNuevoLS");
  	var idRestaurante = localStorage.getItem("idRestauranteNuevoLS");
- 	var nuevoPaxCampo = localStorage.getItem("nuevoPaxLS");
-	
+ 	// var nuevoPaxCampo = localStorage.getItem("nuevoPaxLS");
+	sumarPaxDesglosadosEditar();//sumo los pax de la reservas desglosadas	
 	var datos = new FormData();
 	datos.append("fechaReservaObtenida",nuevaFecha);
 	datos.append("idHotelCampo",idHotel);
@@ -330,7 +335,7 @@ $("#nuevaFecha").change(function(){
 			}
 			listaHorarios+="</select>";
 			$("#nuevoHorario").html(listaHorarios);
-			$("#nuevoPax").val(nuevoPaxCampo);							
+			// $("#nuevoPax").val(nuevoPaxCampo);							
 			$("#nuevoHorario").removeClass("hidden");		
 		}
 	})
@@ -364,7 +369,7 @@ $("#nuevoHorario").change(function(){
 	var valorHora= $("#nuevoHorario option:selected").val();	
 	if (valorHora === '') {                    
 	    $("#enviarNuevaRsv").attr("disabled",true); 
-	    $("#nuevoPax").attr("readonly",true);
+	    // $("#nuevoPax").attr("readonly",true);
 	    $("#nuevoPax").val(paxStorage);
 	    $.notify({							
 			message: '<i class="fas fa-exclamation-triangle"></i> <strong>Advertencia: </strong> Elige una hora del listado' 
@@ -379,7 +384,7 @@ $("#nuevoHorario").change(function(){
 
 	   } else {         
 	  $("#enviarNuevaRsv").removeAttr("disabled");
-	  $("#nuevoPax").removeAttr("readonly");
+	//   $("#nuevoPax").removeAttr("readonly");
 	  $("#nuevoPax").val(paxStorage);
 	  $.notify({							
 		message: '<i class="fas fa-thumbs-up"></i> <strong>Nota:</strong> Para este día y hora se puede cubrir un limite de '+paxMaximo+' pax.' 
@@ -405,7 +410,7 @@ $(".nuevoHorario").change(function(){
 	var idRestaurante = localStorage.getItem("idRestauranteEditLS");
 	var numReservasMax = localStorage.getItem("reservaMaximasLS");
 	var numDePaxMaxima = localStorage.getItem("paxMaximoLS");
-	
+	sumarPaxDesglosadosEditar();
 	var datos = new FormData();
 
 	datos.append("fechaDeLaReserva",fechaDeLaReserva);
@@ -537,7 +542,8 @@ $(document).on("input", "#nuevoPax", function(){
 = PARA el campo de observaciones
 ======================================*/
  $("#observaciones").change(function(){ 	
- 	var campoObservaciones= $("#observaciones").val();	
+	 var campoObservaciones= $("#observaciones").val();
+	 sumarPaxDesglosadosEditar();	
 	if (campoObservaciones === '') {                    
 	    $("#enviarNuevaRsv").attr("disabled",true);	   	  
 	   } else {        
@@ -583,3 +589,82 @@ $(document).on("click", ".btnActivarRSV", function(){
 		}
 
 })
+/*===============================================
+=  para la parte de editar los pax desglozados  =
+===============================================*/
+
+
+/*======================================
+= PARA VALIDAR QUE EN EL CAMPO paxExternos
+ SOLO SE INGRESEN NUMEROS
+  Del modal Ingrese los datos del cliente
+======================================*/
+
+//para el desglose de pax
+$("#paxCunaEdit").change(function () {
+	var numeroPax = $("#paxCunaEdit").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxCunaEdit").val(0);
+	}
+})
+$("#paxNinioEdit").change(function () {
+	var numeroPax = $("#paxNinioEdit").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxNinioEdit").val(0);
+	}
+})
+$("#paxJuniorEdit").change(function () {
+	var numeroPax = $("#paxJuniorEdit").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxJuniorEdit").val(0);
+	}
+})
+$("#paxAdultosEdit").change(function () {
+	var numeroPax = $("#paxAdultosEdit").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxAdultosEdit").val(0);
+	}
+})
+$("#paxSeniorEdit").change(function () {
+	var numeroPax = $("#paxSeniorEdit").val();
+	var soloDigitos = this.value.replace(/[^0-9]/g, '');
+
+	if (soloDigitos >= 0 && numeroPax != '') {
+		console.log("CORRECTO");
+	} else {
+		swal("Oops", "Ingrese un valor válido", "error");
+		$("#paxSeniorEdit").val(0);
+	}
+})
+//para sumar los pax desglosados
+//funcion para ver si campo pax coinciden con los pax desglosados
+function sumarPaxDesglosadosEditar() {
+	var sumaPax = 0;
+	$('.paxDesgloseEdit').each(function () {
+		if ($(this).val() == "") {
+			$(this).val(0);
+		}
+		sumaPax += parseInt($(this).val());
+	})
+	$("#nuevoPax").val(sumaPax);
+}

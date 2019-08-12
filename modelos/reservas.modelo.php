@@ -430,7 +430,7 @@ class ModeloReservas{
 	=============================================*/
 	static public function mdlEditarLaReserva($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET fechaDeLaReserva =:fecha, nombreRestaurante=:nombreRestaurante, hora= :hora, usuario =:usuario, pax=:pax, observaciones=:observaciones WHERE id =:id");
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET fechaDeLaReserva =:fecha, nombreRestaurante=:nombreRestaurante, hora= :hora, usuario =:usuario, pax=:pax, AD=:AD, CU=:CU, JR=:JR, NI=:NI, SE=:SE, observaciones=:observaciones WHERE id =:id");
 
 		$stmt -> bindParam(":id", $datos["id"], PDO::PARAM_INT);
 		$stmt -> bindParam(":nombreRestaurante", $datos["nombreRestaurante"], PDO::PARAM_STR);
@@ -438,6 +438,11 @@ class ModeloReservas{
 		$stmt -> bindParam(":hora", $datos["nuevaHora"], PDO::PARAM_STR);
 		$stmt -> bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
 		$stmt -> bindParam(":pax", $datos["pax"], PDO::PARAM_INT);
+		$stmt -> bindParam(":AD", $datos["AD"], PDO::PARAM_INT);
+		$stmt -> bindParam(":CU", $datos["CU"], PDO::PARAM_INT);
+		$stmt -> bindParam(":JR", $datos["JR"], PDO::PARAM_INT);
+		$stmt -> bindParam(":NI", $datos["NI"], PDO::PARAM_INT);
+		$stmt -> bindParam(":SE", $datos["SE"], PDO::PARAM_INT);
 		$stmt -> bindParam(":observaciones", $datos["observaciones"], PDO::PARAM_STR);
 
 		if ($stmt->execute()) {

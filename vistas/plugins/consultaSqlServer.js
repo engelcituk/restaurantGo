@@ -2,8 +2,9 @@
 =            BUSCAR HABITACION            =
 ======================================*/
  $(document).on("click", ".buscarReserva", function(){
- 	// ^--cuando se le da clic a la clase (buscarReserva) obtengo el atributo id
-		var numHabitacion =$("#campoBuscaHabitacion").val();
+	 // ^--cuando se le da clic a la clase (buscarReserva) obtengo el atributo id
+	 	var hab = $("#campoBuscaHabitacion").val();
+	 	var numHabitacion = hab.trim(); //elimino espacios a principio y final
 		var horaCierreRestaurante = localStorage.getItem("horaCierreRestauranteLST");
 		var idHotel = localStorage.getItem("idHotelLST");
 		var idRestaurante = localStorage.getItem("idRestauranteLST");

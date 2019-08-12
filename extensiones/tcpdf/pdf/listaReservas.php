@@ -16,8 +16,9 @@ public function imprimirListaReservas(){
 $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 $pdf->setPrintHeader(false);//elimino la linea que se imprime en la parte superior
 $pdf->startPageGroup(); //permite tener varias paginas de nuestro doc PDF
-$pdf->addPage();//adicionamos la nueva pagina
-
+//$pdf->addPage(); //adicionamos la nueva pagina
+$pdf->AddPage('L', 'A4');
+// $pdf->Cell(0, 0, 'A4 LANDSCAPE', 1, 1, 'C');
 //para el encabezado, logo...
 $bloque1 = <<<EOF
 	<table>
@@ -58,28 +59,29 @@ $sumaPaxSeniors = $respuestaPax["Seniors"];
 
 $bloque2 = <<<EOF
 	<br><br>
-	<table style="font-size:10px; padding:5px 10px;">
-		<tr>
-			<td style="border: 1px solid #666; background-color:#00897b ; width:200px; text-align:center">
-				<strong>Restaurante: $nomRestaurante</strong>
-			</td>
-			<td style="border: 1px solid #666; background-color:#00897b ; width:200px; text-align:center">
-				<strong>Fechas: $newFechaInicio A $newFechaFinal</strong>
-			</td>
-			<td style="border: 1px solid #666; background-color:#ffff8d  ; width:140px; text-align:center">				
-				<strong>Total pax reporte: $sumaPax</strong>
-			</td>
-		</tr>
-		<tr>
-			<td style="border: 1px solid #666; background-color:#80cbc4; width:40px; text-align:justify"><strong>No.</strong></td>		
-			<td style="border: 1px solid #666; background-color:#80cbc4; width:70px; text-align:justify"><strong>Fecha</strong></td>
-			<td style="border: 1px solid #666; background-color:#80cbc4; width:120px; text-align:justify"><strong>Reserva</strong></td>
-			<td style="border: 1px solid #666; background-color:#80cbc4; width:80px; text-align:justify"><strong>Apellido</strong></td>
-			<td style="border: 1px solid #666; background-color:#80cbc4; width:80px; text-align:justify"><strong>No. Hab.</strong></td>			
-			<td style="border: 1px solid #666; background-color:#80cbc4; width:60px; text-align:justify"><strong>Hora</strong></td>			
-			<td style="border: 1px solid #666; background-color:#80cbc4; width:90px; text-align:justify"><strong>usuario</strong></td>
-						
-		</tr>
+	<table style="font-size:10px; padding:3px 5px;">
+		<thead>
+			<tr>
+				<th style="border: 1px solid #666; background-color:#00897b ; width:393.5px; text-align:center">
+					<strong>Restaurante: $nomRestaurante</strong>
+				</th>
+				<th style="border: 1px solid #666; background-color:#00897b ; width:393.5px; text-align:center">
+					<strong>Fechas: $newFechaInicio A $newFechaFinal</strong>
+				</th>								
+			</tr>				
+			<tr>
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:40px; text-align:justify"><strong>No.</strong></th>		
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:70px; text-align:justify"><strong>Fecha</strong></th>
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:120px; text-align:justify"><strong>Reserva</strong></th>
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:80px; text-align:justify"><strong>Apellido</strong></th>
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:60px; text-align:justify"><strong>No.Hab.</strong></th>
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:60px; text-align:justify"><strong>Hora</strong></th>
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:70px; text-align:justify"><strong>Usuario</strong></th>
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:40px; text-align:justify"><strong>Pax</strong></th>
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:150px; text-align:justify"><strong>Desglose pax</strong></th>
+				<th style="border: 1px solid #666; background-color:#80cbc4; width:97px; text-align:justify"><strong>Observaciones</strong></th>				
+			</tr>
+		</thead>
 	</table>
 
 EOF;
@@ -109,35 +111,18 @@ $bloque3 = <<<EOF
 			</td>
 			<td style="border: 1px solid #666; color:#333; background-color:white; width:80px; text-align:justify">$elemento[apellido]
 			</td>
-			<td style="border: 1px solid #666; background-color:white; width:80px; text-align:center">$elemento[habitacion]</td>			
-			
+			<td style="border: 1px solid #666; background-color:white; width:60px; text-align:center">$elemento[habitacion]</td>
 			<td style="border: 1px solid #666; color:#333; background-color:white; width:60px; text-align:justify">$hora
 			</td>			
-			<td style="border: 1px solid #666; color:#333; background-color:white; width:90px; text-align:justify">$elemento[usuario]
-			</td>						
-		</tr>
-		<tr>
-			<td style="border: 1px solid #666; color:#333; background-color:white; width:110px; text-align:justify"><strong>Desglose de pax</strong>
-			</td>
-			<td style="border: 1px solid #666; color:#333; background-color:white; width:60px; text-align:justify"><strong>CU:</strong> $cuna  
-			</td>
-			<td style="border: 1px solid #666; color:#333; background-color:white; width:60px; text-align:justify"><strong>NI:</strong> $ninio 
-			</td>
-			<td style="border: 1px solid #666; color:#333; background-color:white; width:80px; text-align:justify"><strong>JR:</strong> $junior
-			</td>
-			<td style="border: 1px solid #666; color:#333; background-color:white; width:80px; text-align:justify"><strong>AD:</strong> $adulto 
-			</td>
-			<td style="border: 1px solid #666; color:#333; background-color:white; width:60px; text-align:justify"><strong>SE:</strong>  $senior
-			</td>
-			<td style="border: 1px solid #666; color:#333; background-color:#bbdefb; width:90px; text-align:right"><strong>Pax: </strong> $elemento[pax]
-			</td>
-		</tr>		
-		<tr>
-			<td style="border: 1px solid #666; color:#333; background-color:white; width:110px; text-align:justify"><strong>Observaciones</strong>
-			</td>
-			<td style="border: 1px solid #666; color:#333; background-color:white; width:430px; text-align:justify">$elemento[observaciones]
+			<td style="border: 1px solid #666; color:#333; background-color:white; width:70px; text-align:justify">$elemento[usuario]
 			</td>	
-		</tr>									
+			<td style="border: 1px solid #666; color:#333; background-color:#eeeeee; width:40px; text-align:justify"><strong>$elemento[pax]</strong>
+			</td>
+			<td style="border: 1px solid #666; color:#333; background-color:#eeeeee; width:150px; text-align:justify"><strong>CU:</strong>$cuna  <strong>NI:</strong>$ninio  <strong>JR:</strong>$junior  <strong>AD:</strong>$adulto  <strong>SE:</strong>$senior
+			</td>
+			<td style="border: 1px solid #666; color:#333; background-color:white; width:97px; text-align:justify">$elemento[observaciones]
+			</td>					
+		</tr>														
 	</table>
 	
 EOF;
@@ -146,19 +131,20 @@ $pdf->writeHTML($bloque3, false, false, false, false, '');
 }
 
 $bloque4 = <<<EOF
-	<br><br>
 	<table style="font-size:10px; padding:5px 10px;">		
-		<tr>					
-			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>CU:</strong> $sumaPaxCuna</td>
-			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>NI:</strong> $sumaPaxNinios</td>
-			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>JR:</strong> $sumaPaxJuniors</td>
-			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>AD:</strong> $sumaPaxAdultos</td>			
-			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>SE:</strong> $sumaPaxSeniors</td>			
-			<td style="border: 1px solid #666; background-color:#e0e0e0; width:90px; text-align:justify"><strong>Total:</strong> $sumaPax</td>		
+		<tr>
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:110px; text-align:justify"><strong>TotalPax desglose</strong></td>					
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:114px; text-align:justify"><strong>CU:</strong> $sumaPaxCuna</td>
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:114px; text-align:justify"><strong>NI:</strong> $sumaPaxNinios</td>
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:114px; text-align:justify"><strong>JR:</strong> $sumaPaxJuniors</td>
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:114px; text-align:justify"><strong>AD:</strong> $sumaPaxAdultos</td>			
+			<td style="border: 1px solid #666; background-color:#e0e0e0; width:114px; text-align:justify"><strong>SE:</strong> $sumaPaxSeniors</td>			
+			<td style="border: 1px solid #666; background-color:#ffff8d; width:107px; text-align:justify"><strong>Total pax:</strong> $sumaPax</td>		
 		</tr>
 	</table>
 
 EOF;
+
 $pdf->writeHTML($bloque4, false, false, false, false, '');
 //salida del pdf
 $pdf->Output('listaReservas.pdf');

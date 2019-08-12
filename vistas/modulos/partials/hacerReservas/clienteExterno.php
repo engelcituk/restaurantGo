@@ -93,7 +93,7 @@
                                    </div>
                                </div>
                                <div class="col-md-12 col-xs-12">
-                                   <h5><strong>Desglozar pax:</strong></h5>
+                                   <h5><strong>Desglosar pax:</strong></h5>
                                    <div class="table-responsive">
                                        <table class="table table-bordered table-hover table-condensed">
                                            <thead>

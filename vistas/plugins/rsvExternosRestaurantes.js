@@ -380,18 +380,7 @@ $("#paxCunaExt").change(function () {
 		swal("Oops", "Ingrese un valor válido", "error");
 		$("#paxCunaExt").val(0);
 	}
-})
-$("#paxCunaExt").change(function () {
-	var numeroPax = $("#paxCunaExt").val();
-	var soloDigitos = this.value.replace(/[^0-9]/g, '');
-
-	if (soloDigitos >= 0 && numeroPax != '') {
-		console.log("CORRECTO");
-	} else {
-		swal("Oops", "Ingrese un valor válido", "error");
-		$("#paxCunaExt").val(0);
-	}
-})
+}) 
 $("#paxNinioExt").change(function () {
 	var numeroPax = $("#paxNinioExt").val();
 	var soloDigitos = this.value.replace(/[^0-9]/g, '');
