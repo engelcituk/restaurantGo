@@ -182,7 +182,7 @@ if ($_SESSION["HACER RESERVAS"] == 1) {
                         <div id="camposParaLaReserva" class="hidden">
                             <div class="row">
                                 <div class="col-md-12 col-xs-12">
-                                    <h4><strong>Selecciona una fecha con reservas disponibles a partir de hoy: <?php echo $respuestaFechaHoyDMY; ?></strong></h4>
+                                    <h4><strong>Selecciona una fecha: </strong></h4>
                                 </div>
 
                                 <div class="col-md-12 col-xs-12">
