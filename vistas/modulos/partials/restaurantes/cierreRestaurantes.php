@@ -5,15 +5,16 @@
         <div class="modal-content">
             <div class="modal-header modal-header-personalizado">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><i class="fas fa-edit"></i> Fechas de cierre del restaurante</h4>
+                <h4 class="modal-title"><i class="fas fa-edit"></i> Fechas de cierres restaurante </h4>
             </div>
             <div class="modal-body">
                 <!--======= FORMULARIO PARA EDITAR EL HOTEL==================-->
                 <div class="register-box-body">
                     <!-- formulario -->
-                    <form method="post">                    
+                    <form method="post">
+                        <strong>Hotel: <span id="nombreHotelSpan" class="label label-primary"></span> Restaurante: <span id="nombreRestSpan" class="label label-primary"></span></strong> <br> <br>
                         <div class="row">
-                            
+
                             <table id="cierresRestaurante" class="table table-hover" cellspacing="0" width="100%" style="width:100%">
                                 <thead>
                                     <tr class="info">

@@ -495,5 +495,24 @@ class ModeloReservas{
 
 		$stmt = null;
 	}
+	/*=============================================
+	CUENTO SI RESTAURANTE TIENE RSVS EN UN RANGO DE FECHAS DADOS
+	=============================================*/
+	static public function mdlVerificarSiRestauranteTieneRSV($tabla, $datos){
+
+		$stmt = Conexion::conectar()->prepare("SELECT COUNT(*) AS totalReservas FROM $tabla WHERE idRestaurante=:idRestaurante AND fechaDeLaReserva between :fechaInicio and :fechaFinal");
+		
+		$stmt->bindParam(":idRestaurante", $datos["idRestaurante"], PDO::PARAM_INT);
+		$stmt->bindParam(":fechaInicio", $datos["fechaInicio"], PDO::PARAM_STR);
+		$stmt->bindParam(":fechaFinal", $datos["fechaFinal"], PDO::PARAM_STR);
+
+		$stmt->execute();
+
+		return $stmt->fetch();
+
+		$stmt->close();
+
+		$stmt = null;
+	}
 	
 }

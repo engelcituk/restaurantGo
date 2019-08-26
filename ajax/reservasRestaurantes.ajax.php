@@ -148,6 +148,27 @@ PARA TRAER EL NUMERO DE SEATING QUE YA HAY DE FECHA/ X dadas
 
 		echo json_encode($respuesta);
 	}
+
+	public $idRestCierre2;
+	public $fechaInicio;
+	public $fechaFinal;
+	public function verificarSiRestauranteTieneRSV(){
+
+		$tabla = "reservas";
+		$idRestaurante = $this->idRestCierre2;
+		$fechaInicio = $this->fechaInicio;
+		$fechaFinal = $this->fechaFinal;
+		//creo array para enviar los datos
+		$datos = array(
+			"idRestaurante" => $idRestaurante,
+			"fechaInicio" => $fechaInicio,
+			"fechaFinal" => $fechaFinal
+		);
+
+		$respuesta = ModeloReservas::mdlVerificarSiRestauranteTieneRSV($tabla, $datos);
+
+		echo json_encode($respuesta);
+	}
 }
 /*==============================SECTION DE OBJETOS==================================*/
 
@@ -169,6 +190,17 @@ if (isset($_POST["idRestCierre"])) {
 	$restCierre->idRestCierre = $_POST["idRestCierre"];
 	$restCierre->fechaRestOpen = $_POST["fechaRestOpen"]; 
 	$restCierre->restauranteAbiertoVerificar(); 
+}
+/*======================================
+=   OBJETO-->para Verificar si restaurante no está cerrado =
+======================================*/
+if (isset($_POST["idRestCierre2"])) {
+
+	$restCierre2 = new AjaxReservasRestaurantes();
+	$restCierre2->idRestCierre2 = $_POST["idRestCierre2"];
+	$restCierre2->fechaInicio = $_POST["fechaInicio"];
+	$restCierre2->fechaFinal = $_POST["fechaFin"];
+	$restCierre2->verificarSiRestauranteTieneRSV();
 }
 /*======================================
 =   OBJETO-->convertidorFechaDia   =
@@ -225,6 +257,16 @@ if(isset($_POST["fechaDeLaReserva"])){
 =   OBJETO-->contarReservasYPaxAcumuladosDia   =
 ======================================*/
 if (isset($_POST[ "fechaDeLaReservaDia"])) {
+
+	$contarRsvSumPax = new AjaxReservasRestaurantes();
+	$contarRsvSumPax->fechaDeLaReservaDia = $_POST["fechaDeLaReservaDia"]; //variable toma el valor por POST	
+	$contarRsvSumPax->idRestauranteSeatingDia = $_POST["idRestauranteSeatingDia"];
+	$contarRsvSumPax->contarReservasYPaxAcumuladosDia();
+}
+/*======================================
+=   OBJETO-->contarReservasYPaxAcumuladosDia   =
+======================================*/
+if (isset($_POST["fechaDeLaReservaDia"])) {
 
 	$contarRsvSumPax = new AjaxReservasRestaurantes();
 	$contarRsvSumPax->fechaDeLaReservaDia = $_POST["fechaDeLaReservaDia"]; //variable toma el valor por POST	

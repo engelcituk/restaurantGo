@@ -270,12 +270,13 @@ $("#paxMaximoDiaEditar").change(function () {
 /*======================================
 =            EDITAR RESTAURANTE            =
 ======================================*/
-function cierreRestaurante(idRestaurante){
+function cierreRestaurante(idRestaurante,nombreRestaurante, idHotel){ 
 	// ^--cuando se le da clic a la clase (editRestaurante) obtengo el atributo id
 	// var idRestaurante = $(this).attr("idRstrnt");
 	// var nombreRestaurante = $(this).attr("nRestaurante");
 	$("#cierresRestaurante tbody").empty();//limpio la tabla para cargale lo que traigo por ajax
-			
+	getDatosHotel(idHotel);
+	$("#nombreRestSpan").text(nombreRestaurante);	
 	var datos = new FormData();
 	datos.append("idRestauranteCierre", idRestaurante);	
 	$.ajax({
@@ -306,6 +307,23 @@ function cierreRestaurante(idRestaurante){
 		}
 	})
 	
+}
+function getDatosHotel(idHotel) {
+	var datos = new FormData();
+	datos.append("idHotel", idHotel);
+	$.ajax({
+		url: "ajax/hoteles.ajax.php", //enviamos a este archivo el id para que lo procese
+		method: "POST", //el envio es por POST
+		data: datos, //datos es la instancia de ajax 
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json", //los datos son de tipo json
+		success: function (respuesta) { //obtengo una respuesta tipo json	
+			var nombreHotel = respuesta["nombre"];
+			$("#nombreHotelSpan").text(nombreHotel);			
+		}
+	})
 }
 //limpio los tr dinamicos al ocultal modal
 $('#cierreRestaurante').on('hidden.bs.modal', function (e) {
@@ -382,7 +400,8 @@ function validarFecha(idRestaurante,idFila){
 					if (longitud > 0) {						
 						swal("Oops", "Ya existen datos iguales a la ingresada", "error");
 						} else {
-						guardaFecha(idRestaurante, fechaInicio, fechaFin, idFila);
+						//verifico si en el restaurante no hay reservas
+						verificaSinoHayReservas(idRestaurante, fechaInicio, fechaFin, idFila);
 					}
 				}
 			});
@@ -393,6 +412,34 @@ function validarFecha(idRestaurante,idFila){
 	} else {
 		swal("Oops", "No dejes campos de fecha vacios", "error");
 	}
+}
+function verificaSinoHayReservas(idRestaurante, fechaInicio, fechaFin, idFila) {
+
+	var nombreRestaurante = $("#nombreRestSpan").text();
+
+	var datos = new FormData();
+	datos.append("idRestCierre2", idRestaurante);
+	datos.append("fechaInicio", fechaInicio);
+	datos.append("fechaFin", fechaFin);
+
+	$.ajax({
+		url: "ajax/reservasRestaurantes.ajax.php", //enviamos a este archivo el id para que lo procese
+		method: "POST", //el envio es por POST
+		data: datos, //datos es la instancia de ajax 
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json", //los datos son de tipo json
+		success: function (respuesta) { //obtengo una respuesta tipo json
+			var totalReservas = parseInt(respuesta["totalReservas"]);
+			console.log("totalRsvs", totalReservas);
+			if (totalReservas > 0) {				
+				swal("Oops", "Existe(n) " + totalReservas +" reserva(s) creada(s) para el restaurante "+nombreRestaurante+" en las fechas seleccionadas. Favor de reagendar las reservas y/o cancelarlas antes de volver a intentar crear la fecha de cierre", "error");	
+			} else {
+				guardaFecha(idRestaurante, fechaInicio, fechaFin, idFila);
+			}			
+		}
+	});
 }
 function guardaFecha(idRestaurante, fechaInicio, fechaFin, idFila){
 	// hago la operacion aquí 

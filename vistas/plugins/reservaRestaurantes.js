@@ -173,7 +173,8 @@ function restauranteAbierto() {
 			contentType: false,
 			processData: false,
 			dataType: "json", 
-			success: function (respuesta) { 																		
+			success: function (respuesta) {
+				// console.log(respuesta); 																		
 				var conteo = parseInt(respuesta[0]["totalFechas"]);
 				if (conteo == 0) {  //si restaurante no esta cerrado, traigo su lista de seatings
 					traerListadoSeatings();
